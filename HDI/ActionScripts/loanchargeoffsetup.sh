@@ -3,6 +3,7 @@
 # put R code in user's home directory
 git clone  https://github.com/Microsoft/r-server-loan-chargeoff.git  loanchargeoff
 cp loanchargeoff/HDI/RSparkCluster/* /home/$1
+chmod 777 /home/$1/*.R
 rm -rf loanchargeoff
 
 # turn off telemetry 
