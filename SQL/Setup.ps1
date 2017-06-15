@@ -27,7 +27,7 @@ cd $dataDirPath
 $helpShortCutFile = "LoanChargeOffHelp.url"
 
 # List of files to be downloaded
-$dataList = "loan_info_10k.csv", "member_info_10k.csv", "payments_info_10k.csv", "loan_info_1m.csv", "member_info_1m.csv", "payments_info_1m.csv"
+$dataList = "loan_info_10k.csv", "member_info_10k.csv", "payments_info_10k.csv", "loan_info_100k.csv", "member_info_100k.csv", "payments_info_100k.csv", "loan_info_1m.csv", "member_info_1m.csv", "payments_info_1m.csv"
 foreach ($dataFile in $dataList)
 {
     $down = $baseurl + '/' + $dataFile
@@ -53,8 +53,8 @@ git checkout master
 
 $passwords = $password | ConvertTo-SecureString -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential("$serverName\$username", $passwords)
-$command1 = "C:\Windows\Temp\runDB.ps1"
-$command2 ="C:\Windows\Temp\setupHelp.ps1"
+$command1 = "runDB.ps1"
+$command2 ="setupHelp.ps1"
 
 Enable-PSRemoting -Force
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command1 -ArgumentList $dataDirPath

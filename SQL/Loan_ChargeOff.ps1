@@ -41,7 +41,7 @@ $uninterrupted="",
 $dataPath = "",
 
 [parameter(Mandatory=$false,ParameterSetName = "CM")]
-[ValidateSet("l", "L", "s", "S", "")]
+[ValidateSet("10k", "100k", "1m")]
 [String]
 $dataSize = ""
 )
@@ -53,11 +53,7 @@ $filePath = $scriptPath.Path+ "\"
 # Script level variables
 ##########################################################################
 
-$table_suffix = "_10k"
-if ($dataSize -eq 'l' -or $dataSize -eq 'L')
-{
-	$table_suffix = "_1m"
-}
+$table_suffix = "_" + $dataSize
 
 $trainingTable = "loan_chargeoff_train" + $table_suffix
 $testTable = "loan_chargeoff_test" + $table_suffix

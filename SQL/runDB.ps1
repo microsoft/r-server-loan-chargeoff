@@ -9,8 +9,10 @@
 #            dbuser - (Optional) username for database LoanChargeOff
 #            dbpass - (Optional) database password
 #            createuser - (Optional) whethere to create a database user
+#            datadir - directory where raw csv data has been downloaded
+#            datasize - size of the data to train on (10k, 100k, 1m)
 ##############################################################################################
-Param([string]$dbuser, [string]$dbpass, [bool]$createuser = $true, [string]$datadir)
+Param([string]$dbuser, [string]$dbpass, [bool]$createuser = $true, [string]$datadir, [ValidateSet("10k", "100k", "1m")][string]$datasize=10k)
 # Function to generate a temporary password for SQL Server
 Function Get-TempPassword()
 {
@@ -74,4 +76,4 @@ else
 	sqlcmd -S $env:COMPUTERNAME -v username="$dbusername" -v password="$dbpassword" -i .\createuser.sql  
 }
 
-.\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName LoanChargeOff -username $dbusername -password $dbpassword -uninterrupted y -dataPath $datadir
+.\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName LoanChargeOff -username $dbusername -password $dbpassword -uninterrupted y -dataPath $datadir -dataSize $datasize
