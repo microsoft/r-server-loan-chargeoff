@@ -37,7 +37,7 @@ foreach ($dataFile in $dataList)
 # making sure that the data files conform to windows style of line ending. 
 foreach ($dataFile in $dataList)
 {
-    unix2dos $dataDirPath + "/" + $dataFile 
+    unix2dos $dataFile 
 }
 
 #checkout setup scripts/code from github
