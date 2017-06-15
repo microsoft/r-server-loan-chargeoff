@@ -48,6 +48,7 @@ $dataSize = ""
 
 $scriptPath = Get-Location
 $filePath = $scriptPath.Path+ "\"
+$dataFilePath = $dataPath + "\"
 
 ##########################################################################
 # Script level variables
@@ -147,11 +148,11 @@ if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
 		# upload csv files into SQL tables
         foreach ($dataFile in $dataList)
         {
-            $destination = $dataPath + $dataFile + $table_suffix + ".csv"
-			$error_file = $dataPath + $dataFile + $table_suffix + ".error"			
-            Write-Host -ForeGroundColor 'magenta'("    Populate SQL table: {0}..." -f $dataFile)
+            $destination = $dataFilePath + $dataFile + $table_suffix + ".csv"
+			$error_file = $dataFilePath + $dataFile + $table_suffix + ".error"			
+            Write-Host -ForeGroundColor 'magenta'("    Populate SQL table: {0}... from {1}" -f $dataFile, $destination)
             $tableName = $DBName + ".dbo." + $dataFile + $table_suffix
-            $tableSchema = $dataPath + $dataFile + $table_suffix + ".xml"
+            $tableSchema = $dataFilePath + $dataFile + $table_suffix + ".xml"
             bcp $tableName format nul -c -x -f $tableSchema  -U $username -S $ServerName -P $password  -t ','
             Write-Host -ForeGroundColor 'magenta'("    Loading {0} to SQL table..." -f $dataFile)
             bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $username -P $password -e $error_file
@@ -236,11 +237,11 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
 		# upload csv files into SQL tables
         foreach ($dataFile in $dataList)
         {
-            $destination = $dataPath + $dataFile + $table_suffix + ".csv"
-			$error_file = $dataPath + $dataFile + $table_suffix + ".error"
-            Write-Host -ForeGroundColor 'magenta'("    Populate SQL table: {0}..." -f $dataFile)
+            $destination = $dataFilePath + $dataFile + $table_suffix + ".csv"
+			$error_file = $dataFilePath + $dataFile + $table_suffix + ".error"
+            Write-Host -ForeGroundColor 'magenta'("    Populate SQL table: {0} from {1}..." -f $dataFile, $destination)
             $tableName = $DBName + ".dbo." + $dataFile + $table_suffix
-            $tableSchema = $dataPath + $dataFile + $table_suffix + ".xml"
+            $tableSchema = $dataFilePath + $dataFile + $table_suffix + ".xml"
             bcp $tableName format nul -c -x -f $tableSchema  -U $username -S $ServerName -P $password  -t ','
             Write-Host -ForeGroundColor 'magenta'("    Loading {0} to SQL table..." -f $dataFile)
             bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $username -P $password -e $error_file

@@ -12,7 +12,8 @@
 #            datadir - directory where raw csv data has been downloaded
 #            datasize - size of the data to train on (10k, 100k, 1m)
 ##############################################################################################
-Param([string]$dbuser, [string]$dbpass, [bool]$createuser = $true, [string]$datadir, [ValidateSet("10k", "100k", "1m")][string]$datasize=10k)
+Param([string]$datadir, [string]$scriptdir, [string]$dbuser, [string]$dbpass, [bool]$createuser = $true, [ValidateSet("10k", "100k", "1m")][string]$datasize="10k")
+cd $scriptdir
 # Function to generate a temporary password for SQL Server
 Function Get-TempPassword()
 {
