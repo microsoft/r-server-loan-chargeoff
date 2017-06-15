@@ -11,9 +11,9 @@
 param([string]$serverName,[string]$baseurl,[string]$username,[string]$password)
 
 # This is the directory for the data/code download
-$solutionTemplateSetupDir = "D:\SolutionTemplateSetup"
+$solutionTemplateSetupDir = "D:\LoanChargeOffSolution"
 $dataDir = $solutionTemplateSetupDir + "Data"
-$checkoutDir = "LoanChargeOff"
+$checkoutDir = "Code"
 New-Item -Name $solutionTemplateSetupDir -ItemType directory
 
 $setupLog = $solutionTemplateSetupDir + "setup_log.txt"
@@ -24,7 +24,7 @@ cd $dataDir
 $helpShortCutFile = "LoanChargeOffHelp.url"
 
 # List of files to be downloaded
-$dataList = "loan_info_10k.csv", "member_info_10k.csv", "payments_info_10k.csv", "loan_info_1m.csv", "member_info_1m.csv", "payments_info_1m.csv","step1_create_tables_10k.sql","step1_create_tables_1m.sql","step2_features_label_view_10k.sql","step2_features_label_view_1m.sql","step2a_optional_feature_selection.sql","step3_train_test_model.sql","step4_chargeoff_batch_prediction.sql","step4a_chargeoff_ondemand_prediction.sql","createuser.sql","Loan_ChargeOff.ps1","runDB.ps1","runDB_LargeDataSet.ps1","setupHelp.ps1",$helpShortCutFile
+$dataList = "loan_info_10k.csv", "member_info_10k.csv", "payments_info_10k.csv", "loan_info_1m.csv", "member_info_1m.csv", "payments_info_1m.csv"
 foreach ($dataFile in $dataList)
 {
     $down = $baseurl + '/' + $dataFile
@@ -32,7 +32,6 @@ foreach ($dataFile in $dataList)
     Start-BitsTransfer -Source $down  
 }
 # making sure that the data files conform to windows style of line ending. 
-$dataList = "loan_info_10k.csv", "member_info_10k.csv", "payments_info_10k.csv", "loan_info_1m.csv", "member_info_1m.csv", "payments_info_1m.csv"
 foreach ($dataFile in $dataList)
 {
     unix2dos $dataDir + "/" + $dataFile 
