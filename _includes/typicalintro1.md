@@ -1,0 +1,1 @@
+This solution package shows how to use a prediction model to increase the response rate to a campaign by recommending  <strong>how to contact</strong> (for example, Email, SMS, or Cold Call) as well as <strong>when to contact</strong> (day of week and time of day) each lead identified for use in a new campaign.

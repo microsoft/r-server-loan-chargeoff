@@ -1,2 +1,0 @@
-Loan_Data10000.csv filter=lfs diff=lfs merge=lfs -text
-Loan_Data100000.csv filter=lfs diff=lfs merge=lfs -text
