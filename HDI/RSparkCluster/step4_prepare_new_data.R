@@ -49,6 +49,8 @@ prepare_newdata <- function(HDFSDataDir,
       return(x)
     }
     dataList <- lapply(dataList, replaceFun)
+    dataList$memberId <- as.integer(dataList$memberId)
+    dataList$loanId <- as.integer(dataList$loanId)
     return(dataList)
   }
   
