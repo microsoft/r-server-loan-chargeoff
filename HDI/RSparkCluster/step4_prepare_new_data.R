@@ -8,7 +8,7 @@
 prepare_newdata <- function(HDFSDataDir,
                             HDFSWorkDir,
                             Loan_Data,
-                            recentData = FALSE)
+                            recentData = TRUE)
   
 {
   print("step4: Start getting new data...")
