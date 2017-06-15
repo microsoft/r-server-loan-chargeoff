@@ -20,12 +20,12 @@ $checkoutDir = "Code"
 New-Item -Path "D:\" -Name $solutionTemplateSetupDir -ItemType directory -force
 New-Item -Path $solutionTemplateSetupPath -Name $dataDir -ItemType directory -force
 
-$setupLog = $solutionTemplateSetupDir + "setup_log.txt"
+$setupLog = $solutionTemplateSetupPath + "\setup_log.txt"
 Start-Transcript -Path $setupLog -Append
 
 cd $dataDirPath
 
-$helpShortCutFile = "LoanChargeOffHelp.url"
+$helpShortCutFilePath = $solutionTemplateSetupPath + "\LoanChargeOffHelp.url"
 
 # List of files to be downloaded
 $dataList = "loan_info_10k", "member_info_10k", "payments_info_10k", "loan_info_100k", "member_info_100k", "payments_info_100k", "loan_info_1m", "member_info_1m", "payments_info_1m"
@@ -53,8 +53,8 @@ cd $sqlsolutionCodePath
 # make sure the hashes match for data files
 foreach ($dataFile in $dataList)
 {
-	$dataFileHash = $dataDirPath + "\" + $dataFile + $dataExtn | Get-Hash -Algorithm SHA512
-	$storedHash = $dataFile + $hashExtn | Get-Content
+	$dataFileHash = Get-FileHash ($dataDirPath + "\" + $dataFile + $dataExtn) -Algorithm SHA512
+	$storedHash = Get-Content ($dataFile + $hashExtn)
 	if ($dataFileHash.Hash -ne $storedHash)
 	{
 		Write-Host -ForeGroundColor 'Red' "Data file has been corrupted. Please try again."
@@ -62,9 +62,11 @@ foreach ($dataFile in $dataList)
 	}
 }
 # making sure that the data files conform to windows style of line ending. 
+Write-Host -ForeGroundColor 'Cyan' "Converting data files from unix2dos"
 foreach ($dataFile in $dataList)
 {
-    unix2dos $dataFile + $dataExtn
+    $csvfile = $dataDirPath + "\" + $dataFile + $dataExtn
+	unix2dos $csvfile
 }
 
 # Start the script for DB creation. Due to privilege issues with SYSTEM user (the user that runs the 
@@ -77,7 +79,7 @@ $command2 ="setupHelp.ps1"
 
 Enable-PSRemoting -Force
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command1 -ArgumentList $dataDirPath, $sqlsolutionCodePath
-Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command2 -ArgumentList $helpShortCutFile
+Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command2 -ArgumentList $helpShortCutFilePath
 Disable-PSRemoting -Force
 
 cd $originalLocation.Path
