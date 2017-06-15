@@ -11,15 +11,18 @@
 param([string]$serverName,[string]$baseurl,[string]$username,[string]$password)
 
 # This is the directory for the data/code download
-$solutionTemplateSetupDir = "D:\LoanChargeOffSolution"
-$dataDir = $solutionTemplateSetupDir + "Data"
+$solutionTemplateSetupDir = "LoanChargeOffSolution"
+$solutionTemplateSetupPath = "D:\" + $solutionTemplateSetupDir
+$dataDir = "Data"
+$dataDirPath = $solutionTemplateSetupPath + "\" + $dataDir
 $checkoutDir = "Code"
-New-Item -Name $solutionTemplateSetupDir -ItemType directory
+New-Item -Path "D:\" -Name $solutionTemplateSetupDir -ItemType directory -force
+New-Item -Path $solutionTemplateSetupPath -Name $dataDir -ItemType directory -force
 
 $setupLog = $solutionTemplateSetupDir + "setup_log.txt"
 Start-Transcript -Path $setupLog -Append
 
-cd $dataDir
+cd $dataDirPath
 
 $helpShortCutFile = "LoanChargeOffHelp.url"
 
@@ -34,11 +37,11 @@ foreach ($dataFile in $dataList)
 # making sure that the data files conform to windows style of line ending. 
 foreach ($dataFile in $dataList)
 {
-    unix2dos $dataDir + "/" + $dataFile 
+    unix2dos $dataDirPath + "/" + $dataFile 
 }
 
 #checkout setup scripts/code from github
-cd $solutionTemplateSetupDir
+cd $solutionTemplateSetupPath
 git clone -n https://github.com/Microsoft/r-server-loan-chargeoff $checkoutDir
 cd $checkoutDir
 git config core.sparsecheckout true
@@ -54,7 +57,7 @@ $command1 = "C:\Windows\Temp\runDB.ps1"
 $command2 ="C:\Windows\Temp\setupHelp.ps1"
 
 Enable-PSRemoting -Force
-Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command1 -ArgumentList $dataDir
+Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command1 -ArgumentList $dataDirPath
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command2 -ArgumentList $helpShortCutFile
 Disable-PSRemoting -Force
 
