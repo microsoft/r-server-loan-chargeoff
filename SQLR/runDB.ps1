@@ -7,11 +7,11 @@
 #
 # Parameters:
 #            datadir - directory where raw csv data has been downloaded
-#            script - directory where scripts are checked out from github
+#            scriptdir - directory where scripts are checked out from github
 #            dbuser - (Optional) username for database LoanChargeOff
 #            dbpass - (Optional) database password
 #            createuser - (Optional) whethere to create a database user
-#            datasize - size of the data to train on (10k, 100k, 1m)
+#            datasize - size of the dataset (10k, 100k, 1m)
 ##############################################################################################
 Param([string]$datadir, [string]$scriptdir, [string]$dbuser, [string]$dbpass, [bool]$createuser = $true, [ValidateSet("10k", "100k", "1m")][string]$datasize="10k")
 cd $scriptdir

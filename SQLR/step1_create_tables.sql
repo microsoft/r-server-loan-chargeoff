@@ -1,3 +1,12 @@
+/*
+ * SQL Script to create tables required for training, testing and scoring
+ * of models. 
+ * It creates tables for member_info, loan_info and payments_info tables.
+ * It also creates tables to store models with evaluation stats, selected features
+ * and prediction tables.
+ * $(datasize) is substituted through Invoke-SqlCmd's Variable option
+ * (in powershell).
+ */
 SET ansi_nulls on
 GO
 SET quoted_identifier on

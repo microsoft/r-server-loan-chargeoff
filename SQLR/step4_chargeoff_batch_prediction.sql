@@ -1,4 +1,6 @@
-
+/*
+ * SQLR script to do batch scoring.
+ */
 SET ANSI_NULLS ON 
 GO 
 SET QUOTED_IDENTIFIER ON 
@@ -7,6 +9,14 @@ GO
 DROP PROCEDURE IF EXISTS [dbo].[predict_chargeoff]
 GO
 
+/*
+ * Stored Procedure to do batch scoring using the 'best model' based on f1score.
+ * Parameters:
+ *            @score_table - Table with data to score/make prediction on
+ *            @score_prediction_table - Table to store predictions
+ *            @models_table - Table which has serialized binary models stored along with evaluation stats (during training step)
+ *            @connectionString - connection string to connect to the database for use in the R script
+ */
 CREATE PROCEDURE [predict_chargeoff] @score_table varchar(100), @score_prediction_table varchar(100), @models_table varchar(100), @connectionString varchar(300)
 
 AS

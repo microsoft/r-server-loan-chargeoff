@@ -1,3 +1,11 @@
+#######################################################################
+# Script to create help short cut and solution folder shortcut.
+#
+# Parameters:
+#           helpfile - path to the help url file.
+#           solutionPath - path to the solution folder with data and
+#                          source.
+#######################################################################
 param( [string]$helpfile, [string]$solutionPath)
 
 #git clone 

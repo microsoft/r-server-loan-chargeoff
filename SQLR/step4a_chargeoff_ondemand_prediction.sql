@@ -1,9 +1,16 @@
-
+/*
+ * SQLR script to do on demand scoring/prediction of one record.
+ */
 SET ANSI_NULLS ON 
 GO 
 SET QUOTED_IDENTIFIER ON 
 GO 
-
+/*
+ * Stored Procedure for on demand scoring/prediction using the 'best model' based on f1score.
+ * Parameters:
+ *           @models_table - Table which has serialized binary models stored along with evaluation stats (during training step)
+ *           Rest of the parameters are the features used during training.
+ */
 DROP PROCEDURE IF EXISTS [dbo].[predict_chargeoff_ondemand]
 GO
 

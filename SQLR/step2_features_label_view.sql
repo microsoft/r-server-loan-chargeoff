@@ -1,3 +1,10 @@
+/*
+ * SQL script to create views with feature and label columns for training, testing and prediction.
+ * We also persist these views to physical tables for faster training/scoring times. 
+ * If there is not much data these views can be used directly.
+ * $(datasize) is substituted through Invoke-SqlCmd's Variable option
+ * (in powershell).
+ */
 -- View over the underlying table for features and labels required
 drop view if exists vw_loan_chargeoff_train_$(datasize)
 go
