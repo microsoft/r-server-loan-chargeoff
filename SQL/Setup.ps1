@@ -40,7 +40,12 @@ foreach ($dataFile in $dataList)
 
 #checkout setup scripts/code from github
 cd $solutionTemplateSetupPath
-Remove-Item $checkoutDir -Force -Recurse
+
+if (Test-Path $checkoutDir)
+{
+	Remove-Item $checkoutDir -Force -Recurse
+}
+
 git clone -n https://github.com/Microsoft/r-server-loan-chargeoff $checkoutDir
 cd $checkoutDir
 git config core.sparsecheckout true
@@ -62,13 +67,13 @@ foreach ($dataFile in $dataList)
 	}
 }
 # making sure that the data files conform to windows style of line ending. 
-Write-Host -ForeGroundColor 'magenta' "Converting data files from unix2dos"
+Write-Host -ForeGroundColor 'magenta' "Converting data files from unix2dos..."
 foreach ($dataFile in $dataList)
 {
     $csvfile = $dataDirPath + "\" + $dataFile + $dataExtn
 	unix2dos $csvfile
 }
-
+Write-Host -ForeGroundColor 'magenta' "Done with unix2dos conversion"
 # Start the script for DB creation. Due to privilege issues with SYSTEM user (the user that runs the 
 # extension script), we use ps-remoting to login as admin use and run the DB creation scripts
 

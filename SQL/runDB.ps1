@@ -6,38 +6,19 @@
 # commandlet in PowerShell.
 #
 # Parameters:
+#            datadir - directory where raw csv data has been downloaded
+#            script - directory where scripts are checked out from github
 #            dbuser - (Optional) username for database LoanChargeOff
 #            dbpass - (Optional) database password
 #            createuser - (Optional) whethere to create a database user
-#            datadir - directory where raw csv data has been downloaded
 #            datasize - size of the data to train on (10k, 100k, 1m)
 ##############################################################################################
 Param([string]$datadir, [string]$scriptdir, [string]$dbuser, [string]$dbpass, [bool]$createuser = $true, [ValidateSet("10k", "100k", "1m")][string]$datasize="10k")
 cd $scriptdir
-# Function to generate a temporary password for SQL Server
-Function Get-TempPassword()
-{
-	Param
-	(
-		[int]$length=10,
-		[string[]]$sourcedata
-	)
-	
-	For ($loop=1; $loop -le $length; $loop++)
-	{
-		$TempPassword += ($sourcedata | Get-Random)
-	}
-	return $TempPassword
-}
 
-$passwordSource=$NULL
 $dbpassword = ""
 $dbusername = "rdemo"
 $passwordFile = "ExportedSqlPassword.txt"
-For ($a=33;$a -le 126; $a++)
-{
-	$passwordSource += ,[char][byte]$a
-}
 
 if ($dbuser)
 {
@@ -69,7 +50,8 @@ if (!$createuser)
 else
 {
 	Write-Host -ForegroundColor Cyan "Creating database user"
-	$dbpassword = Get-TempPassword -length 15 -sourcedata $passwordSource
+	[Reflection.Assembly]::LoadWithPartialName("System.Web")
+	$dbpassword = [System.Web.Security.Membership]::GeneratePassword(15,0)
 	$securePassword = $dbpassword | ConvertTo-SecureString -AsPlainText -Force
 	$secureTxt = $securePassword | ConvertFrom-SecureString
 	Set-Content $passwordFile $secureTxt
