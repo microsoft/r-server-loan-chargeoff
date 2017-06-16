@@ -363,5 +363,5 @@ Write-Host -foregroundcolor 'green'("Loan Chargeoff Prediction Workflow Finished
 
 $endTime =Get-Date
 $totalTime = ($endTime-$startTime).ToString()
-Write-Host "Finished running at:" $endTime
+Write-Host "Finished running Loan_ChargeOff.ps1 at:" $endTime
 Write-Host "Total time used: " -foregroundcolor 'green' $totalTime.ToString()

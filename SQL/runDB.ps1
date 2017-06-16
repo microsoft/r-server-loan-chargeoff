@@ -55,8 +55,25 @@ else
 	$securePassword = $dbpassword | ConvertTo-SecureString -AsPlainText -Force
 	$secureTxt = $securePassword | ConvertFrom-SecureString
 	Set-Content $passwordFile $secureTxt
+	# Variables to pass to createuser.sql script
+	# Cannot use -v option as sqlcmd does not like special characters which maybe part of the randomly generated password.
+	$sqlcmdvars = @{"username" = "$dbusername", "password" = "$dbpassword"}
+	$old_env = @{}
 	
-	sqlcmd -S $env:COMPUTERNAME -v username="$dbusername" -v password="$dbpassword" -i .\createuser.sql  
+	foreach ($var in $sqlcmdvars.GetEnumerator()) {
+		# Save Environment
+		$old_env.Add($var.Name, [Environment]::GetEnvironmentVariable($var.Value, "User"))
+		[Environment]::SetEnvironmentVariable($var.Name, $var.Value)
+	}
+	try {
+		sqlcmd -S $env:COMPUTERNAME -v username="$dbusername" -v password="$dbpassword" -i .\createuser.sql
+	} finally {
+		# Restore Environment
+		foreach ($var in $old_env.GetEnumerator()) {
+			[Environment]::SetEnviromentVariable($var.Name, $var.Value)
+		}
+	}
+	Write-Host -ForegroundColor Cyan "Done creating database user"
 }
 
 .\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName LoanChargeOff -username $dbusername -password $dbpassword -uninterrupted y -dataPath $datadir -dataSize $datasize

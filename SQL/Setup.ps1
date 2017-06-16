@@ -10,6 +10,8 @@
 ################################################################################################
 param([string]$serverName,[string]$baseurl,[string]$username,[string]$password)
 
+$startTime= Get-Date
+Write-Host "Start time for setup is:" $startTime
 $originalLocation = Get-Location
 # This is the directory for the data/code download
 $solutionTemplateSetupDir = "LoanChargeOffSolution"
@@ -24,8 +26,6 @@ $setupLog = $solutionTemplateSetupPath + "\setup_log.txt"
 Start-Transcript -Path $setupLog -Append
 
 cd $dataDirPath
-
-$helpShortCutFilePath = $solutionTemplateSetupPath + "\LoanChargeOffHelp.url"
 
 # List of files to be downloaded
 $dataList = "loan_info_10k", "member_info_10k", "payments_info_10k", "loan_info_100k", "member_info_100k", "payments_info_100k", "loan_info_1m", "member_info_1m", "payments_info_1m"
@@ -53,6 +53,7 @@ echo "/*`r`n!HDI" | out-file -encoding ascii .git/info/sparse-checkout
 git checkout master
 
 $sqlsolutionCodePath = $solutionTemplateSetupPath + "\" + $checkoutDir + "\SQL"
+$helpShortCutFilePath = $sqlsolutionCodePath + "\LoanChargeOffHelp.url"
 cd $sqlsolutionCodePath
 
 # make sure the hashes match for data files
@@ -62,7 +63,7 @@ foreach ($dataFile in $dataList)
 	$storedHash = Get-Content ($dataFile + $hashExtn)
 	if ($dataFileHash.Hash -ne $storedHash)
 	{
-		Write-Host -ForeGroundColor 'Red' "Data file has been corrupted. Please try again."
+		Write-Error "Data file has been corrupted. Please try again."
 		throw
 	}
 }
@@ -88,5 +89,9 @@ Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $com
 Disable-PSRemoting -Force
 
 cd $originalLocation.Path
+$endTime= Get-Date
+$totalTime = $endTime - $startTime
+Write-Host "Finished running setup at " $endTime
+Write-Host "Total time for setup:" $totalTime
 Stop-Transcript
 
