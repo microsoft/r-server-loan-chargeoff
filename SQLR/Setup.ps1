@@ -74,7 +74,7 @@ foreach ($dataFile in $dataList)
     $csvfile = $dataDirPath + "\" + $dataFile + $dataExtn
 	unix2dos $csvfile
 }
-Write-Host -ForeGroundColor 'magenta' "Done with unix2dos conversion"
+Write-Host -ForeGroundColor 'magenta' "Done with unix2dos conversion."
 # Start the script for DB creation. Due to privilege issues with SYSTEM user (the user that runs the 
 # extension script), we use ps-remoting to login as admin use and run the DB creation scripts
 
@@ -85,7 +85,7 @@ $command2 ="setupHelp.ps1"
 
 Enable-PSRemoting -Force
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command1 -ArgumentList $dataDirPath, $sqlsolutionCodePath
-Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command2 -ArgumentList $helpShortCutFilePath $solutionTemplateSetupPath
+Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command2 -ArgumentList $helpShortCutFilePath, $solutionTemplateSetupPath
 Disable-PSRemoting -Force
 
 cd $originalLocation.Path
