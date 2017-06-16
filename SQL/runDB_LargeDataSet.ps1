@@ -54,7 +54,7 @@ if (!$createuser)
 		}
 		else
 		{
-			Write-Host -ForegroundColor DarkYellow "Either ExportedSqlPassword.txt must exist with encrypted database password or must provide password using dbpass parameter."
+			Write-Host -ForegroundColor Yellow "Either ExportedSqlPassword.txt must exist with encrypted database password or must provide password using dbpass parameter."
 			throw
 		}
 	}

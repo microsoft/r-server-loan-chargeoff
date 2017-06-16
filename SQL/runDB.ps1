@@ -77,7 +77,7 @@ else
 		#Try to read password from stored file
 		if (Test-Path $passwordFile)
 		{
-			Write-Host -ForegroundColor 'DarkYellow' "Retrieving password from stored file."
+			Write-Host -ForegroundColor 'Yellow' "Retrieving password from stored file."
 			$secureTxtFromFile = Get-Content $passwordFile
 			$securePasswordObj = $secureTxtFromFile | ConvertTo-SecureString
 			#get back the original unencrypted password
