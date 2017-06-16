@@ -20,6 +20,14 @@ $dbpassword = ""
 $dbusername = "rdemo"
 $passwordFile = "ExportedSqlPassword.txt"
 
+function Retrieve-FilePassword([string]$file=$passwordFile)
+{
+	$secureTxtFromFile = Get-Content $file
+	$securePasswordObj = $secureTxtFromFile | ConvertTo-SecureString
+	#get back the original unencrypted password
+	$PasswordBSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePasswordObj)
+	[System.Runtime.InteropServices.Marshal]::PtrToStringAuto($PasswordBSTR)
+}
 
 if ($dbuser)
 {
@@ -31,11 +39,7 @@ if (!$createuser)
 	{
 		if (Test-Path $passwordFile)
 		{
-			$secureTxtFromFile = Get-Content $passwordFile
-			$securePasswordObj = $secureTxtFromFile | ConvertTo-SecureString
-			#get back the original unencrypted password
-			$PasswordBSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePasswordObj)
-			$dbpassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($PasswordBSTR)
+			$dbpassword = Retrieve-FilePassword($passwordFile)
 		}
 		else
 		{
@@ -78,11 +82,7 @@ else
 		if (Test-Path $passwordFile)
 		{
 			Write-Host -ForegroundColor 'Yellow' "Retrieving password from stored file."
-			$secureTxtFromFile = Get-Content $passwordFile
-			$securePasswordObj = $secureTxtFromFile | ConvertTo-SecureString
-			#get back the original unencrypted password
-			$PasswordBSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePasswordObj)
-			$dbpassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($PasswordBSTR)
+			$dbpassword = Retrieve-FilePassword($passwordFile)
 		}
 		else
 		{
