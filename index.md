@@ -3,13 +3,8 @@ layout: default
 title: HOME
 ---
 
-Marketing campaigns are not only about what you say, but also when you say it. Effective campaigns driven by advanced analytics systematically test and learn delivery timing to optimize open rates, click through rates and conversion rates. By delivering campaigns on different days and at different times of day, marketers can discover the optimum timing for distribution and direct customer contact. Algorithmic testing leads to improvements in world-class designs and copy, and is central to the campaign. Optimization is the formula for improving both sales leads and revenue generation, as well as producing strong ROI for your marketing investment.
-
-The Microsoft Marketing Campaign Optimization solution is a combination of a Machine learning prediction model and an interactive visualization tool, PowerBI. The solution is used to increase the response rate to a campaign by recommending the channel to contact (for example, e-mail, SMS, or cold call) as well as when to contact (day of week and time of day) targeted leads for use in a new campaign. The solution uses simulated data, which can easily be configured to use your own organization’s data, to model the acquisition campaign response. The model uses predictors such as demographics, historical campaign performance and product details. 
-
-This solution predicts the probability of a lead conversion from each channel, at various times of the day and days of the week, for every lead in the database. The final recommendation for targeting each lead is decided based upon the combination of channel, day of week and time of day with the highest probability of conversion. The solution has been modeled after a standardized data science process, where the data preparation, model training and evaluation can be easily done by a data scientist and the insights visualized and correlated to KPIs by marketing via Power BI visualization.
-
-
+A charged off loan is a loan that is declared by a creditor (usually a lending institution) that an amount of debt is unlikely to be collected, usually when the loan repayment is severely delinquent by the debtor. Given that high chargeoff has negative impact on lending institutions' year end financials, lending institutions often monitor loan chargeoff risk very closely to prevent loans from getting charged-off.
+Using Azure HDInsight R Sever, a lending institution can leverage machine learning predictive analytics to predict the likelihood of loans getting charged off and run a report on the analytics result stored in HDFS and hive tables. 
 
 <div class="alert alert-success">
 <h2>Select the platform you wish to explore:</h2>
@@ -27,7 +22,7 @@ This solution predicts the probability of a lead conversion from each channel, a
 </div>
 <p></p>
 <div class="cig">
-On the VM created for you from the <a href="https://aka.ms/campaignoptimization">Cortana Intelligence Gallery</a>, the SQL Server 2016 database <code>Campaign</code> contains all the data and results of the end-to-end modeling process.  
+On the VM created for you from the <a href="https://aka.ms/campaignoptimization">Cortana Intelligence Gallery</a>, the SQL Server 2016 database <code>LoanChargeOff</code> contains all the data and results of the end-to-end modeling process.  
 </div>
 
 <div class="onp">
