@@ -18,7 +18,7 @@ $solutionTemplateSetupDir = "LoanChargeOffSolution"
 $solutionTemplateSetupPath = "D:\" + $solutionTemplateSetupDir
 $dataDir = "Data"
 $dataDirPath = $solutionTemplateSetupPath + "\" + $dataDir
-$checkoutDir = "Code"
+$checkoutDir = "Source"
 New-Item -Path "D:\" -Name $solutionTemplateSetupDir -ItemType directory -force
 New-Item -Path $solutionTemplateSetupPath -Name $dataDir -ItemType directory -force
 
@@ -52,7 +52,7 @@ git config core.sparsecheckout true
 echo "/*`r`n!HDI" | out-file -encoding ascii .git/info/sparse-checkout
 git checkout master
 
-$sqlsolutionCodePath = $solutionTemplateSetupPath + "\" + $checkoutDir + "\SQL"
+$sqlsolutionCodePath = $solutionTemplateSetupPath + "\" + $checkoutDir + "\SQLR"
 $helpShortCutFilePath = $sqlsolutionCodePath + "\LoanChargeOffHelp.url"
 cd $sqlsolutionCodePath
 
@@ -85,7 +85,7 @@ $command2 ="setupHelp.ps1"
 
 Enable-PSRemoting -Force
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command1 -ArgumentList $dataDirPath, $sqlsolutionCodePath
-Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command2 -ArgumentList $helpShortCutFilePath
+Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command2 -ArgumentList $helpShortCutFilePath $solutionTemplateSetupPath
 Disable-PSRemoting -Force
 
 cd $originalLocation.Path

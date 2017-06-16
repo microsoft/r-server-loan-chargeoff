@@ -1,4 +1,4 @@
-param( [string]$helpfile)
+param( [string]$helpfile, [string]$solutionPath)
 
 #git clone 
 $desktop = [Environment]::GetFolderPath("Desktop")
@@ -21,3 +21,9 @@ Write-Host $startupfolder
 ls $startupfolder
 cp -Verbose $down $startupfolder
 cp -Verbose $down $desktop
+
+#create shortcut to solution folder on desktop
+$WsShell = New-Object -ComObject WScript.Shell
+$shortcut = $WsShell.CreateShortcut($desktop + "LoanChargeOff.lnk")
+$shortcut.TargetPath = $solutionPath
+$shortcut.Save()
