@@ -166,12 +166,12 @@ if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
 		# create the views for features and label with training, test and scoring split
 		Write-Host -ForeGroundColor 'magenta'("    Creating features label view and persisting...")
 		$script = $filepath + "step2_features_label_view.sql"
-		ExecuteSQL $script "datasize = $dataSize"
+		ExecuteSQL $script "datasize=$dataSize"
 		Write-Host -ForeGroundColor 'magenta'("    Done creating features label view and persisting...")
 	
 		# create the stored procedure for training
 		$script = $filepath + "step3_train_test_model.sql"
-		ExecuteSQL $script
+		ExecuteSQL $script "datasize=$dataSize"
 		Write-Host -ForeGroundColor 'magenta'("    Done creating training and eval stored proc...")
 	
 		# execute the training
@@ -188,7 +188,7 @@ if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
 		
 		# create the stored procedure for recommendations
 		$script = $filepath + "step4_chargeoff_batch_prediction.sql"
-		ExecuteSQL $script 
+		ExecuteSQL $script "datasize=$dataSize"
 		Write-Host -ForeGroundColor 'magenta'("    Done creating batch scoring stored proc...")
 		
 		#score on the data
@@ -198,13 +198,13 @@ if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
 		
 		# create the stored procedure for recommendations
 		$script = $filepath + "step4a_chargeoff_ondemand_prediction.sql"
-		ExecuteSQL $script 
+		ExecuteSQL $script "datasize=$dataSize"
 		Write-Host -ForeGroundColor 'magenta'("    Done creating on demand scoring stored proc [predict_chargeoff_ondemand]...")
 	
 	}
     catch
     {
-        Write-Host -ForegroundColor DarkYellow "Exception in populating database tables:"
+        Write-Host -ForegroundColor Yellow "Exception executing Data Science pipeline..."
         Write-Host -ForegroundColor Red $Error[0].Exception 
         throw
     }
@@ -288,7 +288,7 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
 {
     # create the stored procedure for feature engineering
     $script = $filepath + "step2a_optional_feature_selection.sql"
-    ExecuteSQL $script
+    ExecuteSQL $script "datasize=$dataSize"
 
     # execute the feature engineering
     Write-Host -ForeGroundColor 'Cyan' (" selecting features using MicrosoftML selectFeatures mlTransform with Logistic Regression...")
@@ -310,7 +310,7 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
 {
     # create the stored procedure for training
     $script = $filepath + "step3_train_test_model.sql"
-    ExecuteSQL $script
+    ExecuteSQL $script "datasize=$dataSize"
 
     Write-Host -ForeGroundColor 'magenta'("    Starting training and evaluation of models...")
     $modelNames = 'logistic_reg','fast_linear','fast_trees','fast_forest','neural_net'
@@ -336,7 +336,7 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
 {
     # create the stored procedure for recommendations
     $script = $filepath + "step4_chargeoff_batch_prediction.sql"
-    ExecuteSQL $script 
+    ExecuteSQL $script "datasize=$dataSize"
 
     # compute loan chargeoff predictions
     Write-Host -ForeGroundColor 'Cyan' ("Scoring based on best performing model score table = $scoreTable, prediction table = $predictionTable...")
@@ -354,7 +354,7 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
 {
     # create the stored procedure for recommendations
     $script = $filepath + "step4a_chargeoff_ondemand_prediction.sql"
-    ExecuteSQL $script 
+    ExecuteSQL $script "datasize=$dataSize"
 
     Write-Host -ForeGroundColor 'Cyan' ("Done creating on demand chargeoff prediction stored proc [predict_chargeoff_ondemand]...")
 }

@@ -43,7 +43,7 @@ if (!$createuser)
 		}
 		else
 		{
-			Write-Host -ForegroundColor DarkYellow "Either ExportedSqlPassword.txt must exist with encrypted database password or must provide password using dbpass parameter."
+			Write-Host -ForegroundColor Yellow "Either ExportedSqlPassword.txt must exist with encrypted database password or must provide password using dbpass parameter."
 			throw
 		}
 	}
@@ -76,7 +76,7 @@ else
 		$secureTxt = $securePassword | ConvertFrom-SecureString
 		Set-Content $passwordFile $secureTxt
 	} catch {
-		Write-Host -ForegroundColor 'Red' "Error creating database user, see error message output"
+		Write-Host -ForegroundColor 'Yellow' "Error creating database user, see error message output"
 		Write-Host -ForegroundColor 'Red' $Error[0].Exception 
 		#Try to read password from stored file
 		if (Test-Path $passwordFile)
