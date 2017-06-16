@@ -20,6 +20,7 @@ $dbpassword = ""
 $dbusername = "rdemo"
 $passwordFile = "ExportedSqlPassword.txt"
 
+
 if ($dbuser)
 {
 	$dbusername = $dbuser
@@ -64,7 +65,8 @@ else
 		[Environment]::SetEnvironmentVariable($var.Name, $var.Value)
 	}
 	try {
-		sqlcmd -S $env:COMPUTERNAME -v username="$dbusername" -v password="$dbpassword" -i .\createuser.sql
+		#sqlcmd -S $env:COMPUTERNAME -b -i .\createuser.sql
+		Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile .\createuser.sql
 		# save password securely for later retrieval
 		$securePassword = $dbpassword | ConvertTo-SecureString -AsPlainText -Force
 		$secureTxt = $securePassword | ConvertFrom-SecureString
@@ -72,6 +74,21 @@ else
 	} catch {
 		Write-Host -ForegroundColor 'Red' "Error creating database user, see error message output"
 		Write-Host -ForegroundColor 'Red' $Error[0].Exception 
+		#Try to read password from stored file
+		if (Test-Path $passwordFile)
+		{
+			Write-Host -ForegroundColor 'DarkYellow' "Retrieving password from stored file."
+			$secureTxtFromFile = Get-Content $passwordFile
+			$securePasswordObj = $secureTxtFromFile | ConvertTo-SecureString
+			#get back the original unencrypted password
+			$PasswordBSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePasswordObj)
+			$dbpassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($PasswordBSTR)
+		}
+		else
+		{
+			Write-Host -ForegroundColor DarkYellow "Either ExportedSqlPassword.txt must exist with encrypted database password or must provide password using dbpass parameter."
+			throw
+		}
 	} finally {
 		# Restore Environment
 		foreach ($var in $old_env.GetEnumerator()) {

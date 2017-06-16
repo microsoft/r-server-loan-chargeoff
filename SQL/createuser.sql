@@ -1,3 +1,4 @@
+:on error exit
 --
 -- remove old $(username) user and login from master
 --
