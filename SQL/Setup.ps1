@@ -34,7 +34,7 @@ $hashExtn = ".hash"
 foreach ($dataFile in $dataList)
 {
     $down = $baseurl + '/' + $dataFile + $dataExtn
-    Write-Host $down
+    Write-Host -ForeGroundColor 'magenta' "Downloading file $down..."
     Start-BitsTransfer -Source $down  
 }
 
@@ -62,7 +62,7 @@ foreach ($dataFile in $dataList)
 	}
 }
 # making sure that the data files conform to windows style of line ending. 
-Write-Host -ForeGroundColor 'Cyan' "Converting data files from unix2dos"
+Write-Host -ForeGroundColor 'magenta' "Converting data files from unix2dos"
 foreach ($dataFile in $dataList)
 {
     $csvfile = $dataDirPath + "\" + $dataFile + $dataExtn
