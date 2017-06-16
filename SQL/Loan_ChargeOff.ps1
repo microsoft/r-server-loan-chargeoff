@@ -70,9 +70,11 @@ function ExecuteSQL
 {
 param(
 [String]
-$sqlscript
+$sqlscript,
+[String]
+$VariableArray=""
 )
-    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $username -Password $password -InputFile $sqlscript -QueryTimeout 200000
+    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $username -Password $password -InputFile $sqlscript -Variable $VariableArray -QueryTimeout 200000
 }
 ##########################################################################
 # Function wrapper to invoke SQL query
@@ -139,8 +141,8 @@ if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
    {
         # create training and test tables
         Write-Host -ForeGroundColor 'green' ("Create SQL tables: member_info, loan_info, payments_info")
-        $script = $filePath + "step1_create_tables" + $table_suffix + ".sql"
-        ExecuteSQL $script
+        $script = $filePath + "step1_create_tables.sql"
+        ExecuteSQL $script "datasize = $dataSize"
     
         Write-Host -ForeGroundColor 'green' ("Populate SQL tables: member_info, loan_info, payments_info")
         $dataList = "member_info", "loan_info", "payments_info"
@@ -163,8 +165,8 @@ if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
 
 		# create the views for features and label with training, test and scoring split
 		Write-Host -ForeGroundColor 'magenta'("    Creating features label view and persisting...")
-		$script = $filepath + "step2_features_label_view" + $table_suffix + ".sql"
-		ExecuteSQL $script
+		$script = $filepath + "step2_features_label_view.sql"
+		ExecuteSQL $script "datasize = $dataSize"
 		Write-Host -ForeGroundColor 'magenta'("    Done creating features label view and persisting...")
 	
 		# create the stored procedure for training
@@ -228,8 +230,8 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
     {
         # create training and test tables
         Write-Host -ForeGroundColor 'green' ("Create SQL tables: member_info, loan_info, payments_info")
-        $script = $filePath + "step1_create_tables" + $table_suffix + ".sql"
-        ExecuteSQL $script
+        $script = $filePath + "step1_create_tables.sql"
+        ExecuteSQL $script "datasize = $dataSize"
     
         Write-Host -ForeGroundColor 'green' ("Populate SQL tables: member_info, loan_info, payments_info")
         $dataList = "member_info", "loan_info", "payments_info"
@@ -269,8 +271,8 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
 {
     # create features, labels view
 	Write-Host -ForeGroundColor 'Cyan' (" Creating feature/label views...")
-    $script = $filepath + "step2_features_label_view" + $table_suffix + ".sql"
-    ExecuteSQL $script
+    $script = $filepath + "step2_features_label_view.sql"
+    ExecuteSQL $script "datasize = $dataSize"
 }
 
 ##########################################################################
