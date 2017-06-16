@@ -69,8 +69,7 @@ loan_main <- function(LocalWorkDir,
   source("step4_prepare_new_data.R")
   newDataSet <- prepare_newdata(HDFSDataDir = HDFSDataDir,
                                 HDFSWorkDir = HDFSWorkDir,
-                                Loan_Data = Loan_Data, 
-                                recentData = TRUE)
+                                Loan_Data = Loan_Data)
   
   # step5: loan prediction
   source("step5_loan_prediction.R")
