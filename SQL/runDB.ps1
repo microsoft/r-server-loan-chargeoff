@@ -49,15 +49,13 @@ if (!$createuser)
 }
 else
 {
-	Write-Host -ForegroundColor Cyan "Creating database user"
+	Write-Host -ForegroundColor 'Cyan' "Creating database user"
 	[Reflection.Assembly]::LoadWithPartialName("System.Web")
 	$dbpassword = [System.Web.Security.Membership]::GeneratePassword(15,0)
-	$securePassword = $dbpassword | ConvertTo-SecureString -AsPlainText -Force
-	$secureTxt = $securePassword | ConvertFrom-SecureString
-	Set-Content $passwordFile $secureTxt
+	
 	# Variables to pass to createuser.sql script
 	# Cannot use -v option as sqlcmd does not like special characters which maybe part of the randomly generated password.
-	$sqlcmdvars = @{"username" = "$dbusername", "password" = "$dbpassword"}
+	$sqlcmdvars = @{"username" = "$dbusername"; "password" = "$dbpassword"}
 	$old_env = @{}
 	
 	foreach ($var in $sqlcmdvars.GetEnumerator()) {
@@ -67,13 +65,20 @@ else
 	}
 	try {
 		sqlcmd -S $env:COMPUTERNAME -v username="$dbusername" -v password="$dbpassword" -i .\createuser.sql
+		# save password securely for later retrieval
+		$securePassword = $dbpassword | ConvertTo-SecureString -AsPlainText -Force
+		$secureTxt = $securePassword | ConvertFrom-SecureString
+		Set-Content $passwordFile $secureTxt
+	} catch {
+		Write-Host -ForegroundColor 'Red' "Error creating database user, see error message output"
+		Write-Host -ForegroundColor 'Red' $Error[0].Exception 
 	} finally {
 		# Restore Environment
 		foreach ($var in $old_env.GetEnumerator()) {
-			[Environment]::SetEnviromentVariable($var.Name, $var.Value)
+			[Environment]::SetEnvironmentVariable($var.Name, $var.Value)
 		}
 	}
-	Write-Host -ForegroundColor Cyan "Done creating database user"
+	Write-Host -ForegroundColor 'Cyan' "Done creating database user"
 }
 
 .\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName LoanChargeOff -username $dbusername -password $dbpassword -uninterrupted y -dataPath $datadir -dataSize $datasize
