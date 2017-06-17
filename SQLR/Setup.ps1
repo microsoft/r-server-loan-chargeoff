@@ -57,6 +57,7 @@ $helpShortCutFilePath = $sqlsolutionCodePath + "\LoanChargeOffHelp.url"
 cd $sqlsolutionCodePath
 
 # make sure the hashes match for data files
+Write-Host -ForeGroundColor 'magenta' "Checking integrity of downloaded files..."
 foreach ($dataFile in $dataList)
 {
 	$dataFileHash = Get-FileHash ($dataDirPath + "\" + $dataFile + $dataExtn) -Algorithm SHA512
@@ -67,6 +68,8 @@ foreach ($dataFile in $dataList)
 		throw
 	}
 }
+Write-Host -ForeGroundColor 'magenta' "File integrity check successful."
+
 # making sure that the data files conform to windows style of line ending. 
 Write-Host -ForeGroundColor 'magenta' "Converting data files from unix2dos..."
 foreach ($dataFile in $dataList)

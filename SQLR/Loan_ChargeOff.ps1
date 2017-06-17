@@ -74,7 +74,7 @@ $sqlscript,
 [String]
 $VariableArray=""
 )
-    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $username -Password $password -InputFile $sqlscript -Variable $VariableArray -QueryTimeout 200000
+    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $username -Password "$password" -InputFile $sqlscript -Variable $VariableArray -QueryTimeout 200000
 }
 ##########################################################################
 # Function wrapper to invoke SQL query
@@ -85,7 +85,7 @@ param(
 [String]
 $sqlquery
 )
-    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $username -Password $password -Query $sqlquery -QueryTimeout 200000
+    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $username -Password "$password" -Query $sqlquery -QueryTimeout 200000
 }
 
 ##########################################################################
@@ -115,7 +115,7 @@ $connectionString2 = GetConnectionString2
 # Check if the SQL server or database exists
 ##########################################################################
 $query = "IF NOT EXISTS(SELECT * FROM sys.databases WHERE NAME = '$DBName') CREATE DATABASE $DBName"
-Invoke-Sqlcmd -ServerInstance $ServerName -Username $username -Password $password -Query $query -ErrorAction SilentlyContinue
+Invoke-Sqlcmd -ServerInstance $ServerName -Username $username -Password "$password" -Query $query -ErrorAction SilentlyContinue
 if ($? -eq $false)
 {
     Write-Host -ForegroundColor Red "Failed the test to connect to SQL server: $ServerName database: $DBName !"
@@ -126,7 +126,7 @@ if ($? -eq $false)
 }
 
 $query = "USE $DBName;"
-Invoke-Sqlcmd -ServerInstance $ServerName -Username $username -Password $password -Query $query 
+Invoke-Sqlcmd -ServerInstance $ServerName -Username $username -Password "$password" -Query $query 
 
 
 ##########################################################################
@@ -155,10 +155,10 @@ if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
             Write-Host -ForeGroundColor 'magenta'("    Populate SQL table: {0}... from {1}" -f $dataFile, $destination)
             $tableName = $DBName + ".dbo." + $dataFile + $table_suffix
             $tableSchema = $dataFilePath + $dataFile + $table_suffix + ".xml"
-            bcp $tableName format nul -c -x -f $tableSchema  -U $username -S $ServerName -P $password  -t ','
+            bcp $tableName format nul -c -x -f $tableSchema  -U $username -S $ServerName -P "$password"  -t ','
             Write-Host -ForeGroundColor 'magenta'("    Loading {0} to SQL table..." -f $dataFile)
-            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $username -P $password -e $error_file
-            Write-Host -ForeGroundColor 'magenta'("    Done...Loading {0} to SQL table..." -f $dataFile)
+            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $username -P "$password" -e $error_file
+            Write-Host -ForeGroundColor 'magenta'("    Done...Loading {0} to SQL table {1}..." -f $dataFile, $tableName)
         }
     
 
@@ -244,10 +244,10 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
             Write-Host -ForeGroundColor 'magenta'("    Populate SQL table: {0} from {1}..." -f $dataFile, $destination)
             $tableName = $DBName + ".dbo." + $dataFile + $table_suffix
             $tableSchema = $dataFilePath + $dataFile + $table_suffix + ".xml"
-            bcp $tableName format nul -c -x -f $tableSchema  -U $username -S $ServerName -P $password  -t ','
+            bcp $tableName format nul -c -x -f $tableSchema  -U $username -S $ServerName -P "$password"  -t ','
             Write-Host -ForeGroundColor 'magenta'("    Loading {0} to SQL table..." -f $dataFile)
-            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $username -P $password -e $error_file
-            Write-Host -ForeGroundColor 'magenta'("    Done...Loading {0} to SQL table..." -f $dataFile)
+            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $username -P "$password" -e $error_file
+            Write-Host -ForeGroundColor 'magenta'("    Done...Loading {0} to SQL table {1}..." -f $dataFile, $tableName)
         }
     }
     catch

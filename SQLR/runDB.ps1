@@ -98,4 +98,4 @@ else
 	Write-Host -ForegroundColor 'Cyan' "Done creating database user"
 }
 
-.\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName LoanChargeOff -username $dbusername -password $dbpassword -uninterrupted y -dataPath $datadir -dataSize $datasize
+.\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName LoanChargeOff -username $dbusername -password "$dbpassword" -uninterrupted y -dataPath $datadir -dataSize $datasize
