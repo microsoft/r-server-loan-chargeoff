@@ -39,9 +39,9 @@ loan_prediction <- function(LocalWorkDir,
   importedModel <- function(bestModelName) {
     switch(as.character(bestModelName),
            forest = {import_model <- model_obj$forest_model},
+           linear = {import_model <- model_obj$linear_model},
            logistic = {import_model <- model_obj$logistic_model},
            tree = {import_model <- model_obj$tree_model},
-           linear = {import_model <- model_obj$linear_model},
            NN = {import_model <- model_obj$NN_model})
   }
   

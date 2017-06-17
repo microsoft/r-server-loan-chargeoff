@@ -1,5 +1,8 @@
+:on error exit
 --
--- remove old $(username) user and login from master
+-- remove old $(username) user and login from master.
+-- $(username) and $(password) is substituted by Invoke-SqlCmd
+-- through environment variables.
 --
 USE [master]
 GO

@@ -1,3 +1,9 @@
+/*
+ * SQLR script to demonstrate feature selection available in MicrosoftML package.
+ * We use this same mechanism during training so this step is optional to run, but
+ * serves as an example of an approach for feature selection, i.e., preselect features
+ * and store in database table for later use in training of models.
+ */
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6,6 +12,14 @@ GO
 DROP PROCEDURE IF EXISTS [dbo].[select_features];
 GO
 
+/*
+ * Stored procedure for feature selection.
+ * Parameters:
+ *           @training_set_table - table with training data
+ *           @test_set_table - table with test data
+ *           @selected_features_table - table to store selected features in
+ *           @connectionString - connection string to connect to the database for use in the R script
+ */
 CREATE PROCEDURE [select_features] @training_set_table varchar(100), @test_set_table varchar(100), @selected_features_table varchar(100), @connectionString varchar(300)
 AS 
 BEGIN
