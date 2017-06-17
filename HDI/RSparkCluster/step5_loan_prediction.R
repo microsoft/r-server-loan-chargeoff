@@ -38,11 +38,11 @@ loan_prediction <- function(LocalWorkDir,
   # define a function to get the best model
   importedModel <- function(bestModelName) {
     switch(as.character(bestModelName),
-           random_forest = {import_model <- model_obj$forest_model},
+           forest = {import_model <- model_obj$forest_model},
            logistic = {import_model <- model_obj$logistic_model},
-           fast_tree = {import_model <- model_obj$tree_model},
-           fast_linear = {import_model <- model_obj$linear_model},
-           neural_network = {import_model <- model_obj$NN_model})
+           tree = {import_model <- model_obj$tree_model},
+           linear = {import_model <- model_obj$linear_model},
+           NN = {import_model <- model_obj$NN_model})
   }
   
   # select the best model based on Stage
