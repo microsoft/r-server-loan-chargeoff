@@ -69,8 +69,7 @@ loan_web_scoring <- function(Loan_Data,
   source(paste("/home/", userName, "/step4_prepare_new_data.R", sep=""))
   newDataSet <- prepare_newdata(HDFSDataDir = HDFSDataDir,
                                 HDFSWorkDir = HDFSWorkDir,
-                                Loan_Data = Loan_Data,
-                                recentData = FALSE)
+                                Loan_Data = Loan_Data)
   
   # step2: loan prediction
   source(paste("/home/", userName, "/step5_loan_prediction.R", sep=""))

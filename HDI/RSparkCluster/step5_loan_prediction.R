@@ -68,20 +68,16 @@ loan_prediction <- function(LocalWorkDir,
   print("The prediction results are stored : ")
   print(Output_Table)
   
+  ## Create a hive table and upload predicted results into that hive table which can be consumed by PowerBI for visulization
   renameColumns <- function(dataList) {
     names(dataList)[match(c('Score.1', 'Probability.1'), names(dataList))] <- c('Score', 'Probability')
     return(dataList)
   }
   
-  # Remove dot in column names so that it can be uploaded to hive 
-  rxDataStep(inData = Output_Table,
-             outFile = Output_Table,
+  rxDataStep(inData = Output_Table, outFile = RxHiveData(table="loanchargeoff_predictions"), 
              transformFunc = renameColumns,
              transformVars = c('Score.1', 'Probability.1'),
-             overwrite=TRUE)
-
-  ## Upload prediction results into hive table which then can be consumed by PowerBI for visualization
-  rxDataStep(inData = Output_Table, outFile = RxHiveData(table="loanchargeoff_predictions"), overwrite = TRUE, reportProgress = 0)
+             overwrite = TRUE, reportProgress = 0)
   print("The prediction results are also stored in hive table loanchargeoff_predictions")
   
   return(finalResult)
