@@ -21,7 +21,7 @@ $passwordFile = "ExportedSqlPassword.txt"
 # complex passwords with special characters so limiting to alphanumeric.
 Function GetRandomSQLPassword([Int]$length=30)
 {
-	$passwordChars = 48..57 + 65..90 + 97.122
+	$passwordChars = 48..57 + 65..90 + 97..122
 	Get-Random -Count $length -InputObject $passwordChars | % -begin {$pwd=$null} -process {$pwd +=[char]$_} -end {$pwd}
 }
 # create the database user
