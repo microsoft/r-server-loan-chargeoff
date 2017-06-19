@@ -1,7 +1,9 @@
 ################################################################################################
 # Powershell script for setting up the solution template. This script checks out the solution 
 # from github and deploys it to SQL Server on the local Data Science VM (DSVM).
-# 
+#
+# WARNING: This script is only meant to be run from the solution template deployment process.
+#
 # Parameters:
 #            serverName - Name of the server with SQL Server with R Services (this is the DSVM server)
 #            baseurl - url from which to download data files

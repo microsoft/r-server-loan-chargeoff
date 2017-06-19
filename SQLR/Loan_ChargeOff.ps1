@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-Script to provide Loan ChargeOff predictions, using SQL & MRS.
+Script to provide Loan ChargeOff predictions, using SQL Server R Services using MicrosoftML and RevoScaleR packages.
 .DESCRIPTION
 This script will show the E2E work flow of loan chargeoff prediction machine learning
-templates with Microsoft SQL Server 2016 and Microsoft R services. 
+templates with Microsoft SQL Server 2016 and SQL Servevr R Services. 
 For the detailed description, please read README.md.
 #>
 [CmdletBinding()]
