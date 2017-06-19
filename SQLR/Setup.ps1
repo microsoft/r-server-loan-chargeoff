@@ -72,14 +72,6 @@ foreach ($dataFile in $dataList)
 }
 Write-Host -ForeGroundColor 'magenta' "File integrity check successful."
 
-# making sure that the data files conform to windows style of line ending. 
-Write-Host -ForeGroundColor 'magenta' "Converting data files from unix2dos..."
-foreach ($dataFile in $dataList)
-{
-    $csvfile = $dataDirPath + "\" + $dataFile + $dataExtn
-	unix2dos $csvfile
-}
-Write-Host -ForeGroundColor 'magenta' "Done with unix2dos conversion."
 # Start the script for DB creation. Due to privilege issues with SYSTEM user (the user that runs the 
 # extension script), we use ps-remoting to login as admin use and run the DB creation scripts
 
