@@ -103,7 +103,6 @@ select *,
 (select top 1 remain_balance from payments_info_$(datasize) p2 where DATEDIFF(month, p2.payment_date,p1.payment_date) = 4 AND p1.loanId = p2.loanId) remain_balance_4,
 (select top 1 remain_balance from payments_info_$(datasize) p2 where DATEDIFF(month, p2.payment_date,p1.payment_date) = 5 AND p1.loanId = p2.loanId) remain_balance_5
 from payments_info_$(datasize) p1 ) AS t inner join loan_info_$(datasize) l ON t.loanId = l.loanId inner join member_info_$(datasize) m ON l.memberId = m.memberId 
-where t.charge_off IS NOT NULL
 and payment_date > '2017-02-12';
 go
 
