@@ -160,11 +160,11 @@ if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
 	
 		# execute the training
 		Write-Host -ForeGroundColor 'magenta'("    Starting training and evaluation of models...")
-		$modelNames = 'logistic_reg','fast_linear','fast_trees','fast_forest','neural_net'
-		foreach ($modelName in $modelNames)
+		$modelNames = @{"logistic_reg" = "Logistic Regression model with rxLogisticRegression";"fast_linear" = "Linear binary classification model with rxFastLinear";"fast_trees" = "Fast Decision Trees model with rxFastTrees";"fast_forest" = "Random Forest with rxFastForest";"neural_net" = "Neural Network with rxNeuralNet"}
+		foreach ($modelName in $modelNames.GetEnumerator())
 		{
-			Write-Host -ForeGroundColor 'Cyan' (" Training $modelName...")
-			$query = "EXEC train_model $trainingTable, $testTable, $evalScoreTable, $modelTable, $modelName, '$connectionString2'"
+			Write-Host -ForeGroundColor 'Cyan' (" Training $(modelName.Value)...")
+			$query = "EXEC train_model $trainingTable, $testTable, $evalScoreTable, $modelTable, $($modelName.Name), '$connectionString2'"
 			ExecuteSQLQuery $query
 		}
 		
