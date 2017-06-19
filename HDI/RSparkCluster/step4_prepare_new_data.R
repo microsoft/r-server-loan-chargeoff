@@ -7,8 +7,7 @@
 
 prepare_newdata <- function(HDFSDataDir,
                             HDFSWorkDir,
-                            Loan_Data,
-                            recentData = FALSE)
+                            Loan_Data)
   
 {
   print("step4: Start getting new data...")
@@ -56,16 +55,10 @@ prepare_newdata <- function(HDFSDataDir,
   
   # define the new data set
   newData <- RxXdfData(paste(HDFSWorkDir,"/newSet",sep=""), fileSystem = hdfsFS)
-  if (recentData){
-    rxDataStep(inData = dataDS, outFile = newData, 
-               rowSelection = (paydate == '2017-03-12'), 
-               transformFunc = NAreplace,
-               overwrite = TRUE)
-  }else{
-    rxDataStep(inData = dataDS, outFile = newData,
-               transformFunc = NAreplace,
-               overwrite = TRUE)
-  }
+  rxDataStep(inData = dataDS, outFile = newData, 
+             rowSelection = (paydate == '2017-03-12'), 
+             transformFunc = NAreplace,
+             overwrite = TRUE)
   
   return(newData)
 }

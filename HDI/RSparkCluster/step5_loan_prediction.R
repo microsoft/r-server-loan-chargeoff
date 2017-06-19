@@ -38,11 +38,11 @@ loan_prediction <- function(LocalWorkDir,
   # define a function to get the best model
   importedModel <- function(bestModelName) {
     switch(as.character(bestModelName),
-           random_forest = {import_model <- model_obj$forest_model},
+           forest = {import_model <- model_obj$forest_model},
+           linear = {import_model <- model_obj$linear_model},
            logistic = {import_model <- model_obj$logistic_model},
-           fast_tree = {import_model <- model_obj$tree_model},
-           fast_linear = {import_model <- model_obj$linear_model},
-           neural_network = {import_model <- model_obj$NN_model})
+           tree = {import_model <- model_obj$tree_model},
+           NN = {import_model <- model_obj$NN_model})
   }
   
   # select the best model based on Stage
@@ -68,20 +68,16 @@ loan_prediction <- function(LocalWorkDir,
   print("The prediction results are stored : ")
   print(Output_Table)
   
+  ## Create a hive table and upload predicted results into that hive table which can be consumed by PowerBI for visulization
   renameColumns <- function(dataList) {
     names(dataList)[match(c('Score.1', 'Probability.1'), names(dataList))] <- c('Score', 'Probability')
     return(dataList)
   }
   
-  # Remove dot in column names so that it can be uploaded to hive 
-  rxDataStep(inData = Output_Table,
-             outFile = Output_Table,
+  rxDataStep(inData = Output_Table, outFile = RxHiveData(table="loanchargeoff_predictions"), 
              transformFunc = renameColumns,
              transformVars = c('Score.1', 'Probability.1'),
-             overwrite=TRUE)
-
-  ## Upload prediction results into hive table which then can be consumed by PowerBI for visualization
-  rxDataStep(inData = Output_Table, outFile = RxHiveData(table="loanchargeoff_predictions"), overwrite = TRUE, reportProgress = 0)
+             overwrite = TRUE, reportProgress = 0)
   print("The prediction results are also stored in hive table loanchargeoff_predictions")
   
   return(finalResult)
