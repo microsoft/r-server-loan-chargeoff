@@ -163,7 +163,7 @@ if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
 		$modelNames = @{"logistic_reg" = "Logistic Regression model with rxLogisticRegression";"fast_linear" = "Linear binary classification model with rxFastLinear";"fast_trees" = "Fast Decision Trees model with rxFastTrees";"fast_forest" = "Random Forest with rxFastForest";"neural_net" = "Neural Network with rxNeuralNet"}
 		foreach ($modelName in $modelNames.GetEnumerator())
 		{
-			Write-Host -ForeGroundColor 'Cyan' (" Training $(modelName.Value)...")
+			Write-Host -ForeGroundColor 'Cyan' (" Training $($modelName.Value)...")
 			$query = "EXEC train_model $trainingTable, $testTable, $evalScoreTable, $modelTable, $($modelName.Name), '$connectionString2'"
 			ExecuteSQLQuery $query
 		}
