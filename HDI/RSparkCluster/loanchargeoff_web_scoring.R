@@ -86,9 +86,8 @@ LocalWorkDir <- paste("/var/RevoShare/", Sys.info()[["user"]], "/LoanChargeOff/p
 HDFSDataDir <- "/LoanChargeOff/Data"
 HDFSWorkDir <- "/LoanChargeOff/web"
 
-# Specify the local path contains the .csv files and load the .csv files
-local_data_dir <- "LoanChargeOff/Data/1kData"
-Loan_Data_df <- read.csv(file.path(local_data_dir, "Loan_Data1000.csv"))
+# input data 
+Loan_Data_df <- read.csv("https://raw.githubusercontent.com/Microsoft/r-server-loan-chargeoff/master/HDI/Data/Loan_Data1000.csv")
 
 # Call the web service
 result_string <- api_frame$loan_web_scoring(
