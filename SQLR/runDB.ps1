@@ -17,12 +17,16 @@ cd $scriptdir
 $dbusername = "rdemo"
 $passwordFile = "ExportedSqlPassword.txt"
 
-#check if user already exists
-
+# Utility function to generate random alphanumeric password. SQL connection string does not like some of the more 
+# complex passwords with special characters so limiting to alphanumeric.
+Function GetRandomSQLPassword([Int]$length=30)
+{
+	$passwordChars = 48..57 + 65..90 + 97.122
+	Get-Random -Count $length -InputObject $passwordChars | % -begin {$pwd=$null} -process {$pwd +=[char]$_} -end {$pwd}
+}
 # create the database user
 Write-Host -ForegroundColor 'Cyan' "Creating database user"
-[Reflection.Assembly]::LoadWithPartialName("System.Web")
-$dbpassword = [System.Web.Security.Membership]::GeneratePassword(15,0)
+$dbpassword = GetRandomSQLPassword
 
 # Variables to pass to createuser.sql script
 # Cannot use -v option as sqlcmd does not like special characters which maybe part of the randomly generated password.
