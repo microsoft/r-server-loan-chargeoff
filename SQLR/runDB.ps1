@@ -1,101 +1,62 @@
 ##############################################################################################
 # Script to invoke the LoanChargeOff data science workflow with a smaller dataset of 10,000
-# loans. 
-# It also creates a SQL Server user and stores the password in 'ExporedSqlPassword.txt'. 
-# Users can retrieve the password from the file and decrypt using ConvertTo-SecureString 
-# commandlet in PowerShell.
-#
+# loans for the first time. 
+# It creates a SQL Server user and stores the password in 'ExporedSqlPassword.txt'. 
+# Users can retrieve the password from the file and decrypt executing GetSQLUserPassword.ps1
+# script.
+# WARNING: This script should only be run once through the template deployment process. It is
+#          not meant to be run by users as it assumes database and users don't already exist.
 # Parameters:
 #            datadir - directory where raw csv data has been downloaded
 #            scriptdir - directory where scripts are checked out from github
-#            dbuser - (Optional) username for database LoanChargeOff
-#            dbpass - (Optional) database password
-#            createuser - (Optional) whethere to create a database user
 #            datasize - size of the dataset (10k, 100k, 1m)
 ##############################################################################################
-Param([string]$datadir, [string]$scriptdir, [string]$dbuser, [string]$dbpass, [bool]$createuser = $true, [ValidateSet("10k", "100k", "1m")][string]$datasize="10k")
+Param([string]$datadir, [string]$scriptdir, [string]$dbname="LoanChargeOff")
 cd $scriptdir
 
-$dbpassword = ""
 $dbusername = "rdemo"
 $passwordFile = "ExportedSqlPassword.txt"
 
-function Retrieve-FilePassword([string]$file=$passwordFile)
-{
-	$secureTxtFromFile = Get-Content $file
-	$securePasswordObj = $secureTxtFromFile | ConvertTo-SecureString
-	#get back the original unencrypted password
-	$PasswordBSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePasswordObj)
-	[System.Runtime.InteropServices.Marshal]::PtrToStringAuto($PasswordBSTR)
-}
+#check if user already exists
 
-if ($dbuser)
-{
-	$dbusername = $dbuser
+# create the database user
+Write-Host -ForegroundColor 'Cyan' "Creating database user"
+[Reflection.Assembly]::LoadWithPartialName("System.Web")
+$dbpassword = [System.Web.Security.Membership]::GeneratePassword(15,0)
+
+# Variables to pass to createuser.sql script
+# Cannot use -v option as sqlcmd does not like special characters which maybe part of the randomly generated password.
+$sqlcmdvars = @{"username" = "$dbusername"; "password" = "$dbpassword"}
+$old_env = @{}
+
+foreach ($var in $sqlcmdvars.GetEnumerator()) {
+	# Save Environment
+	$old_env.Add($var.Name, [Environment]::GetEnvironmentVariable($var.Value, "User"))
+	[Environment]::SetEnvironmentVariable($var.Name, $var.Value)
 }
-if (!$createuser)
-{
-	if (!$dbpass)
-	{
-		if (Test-Path $passwordFile)
-		{
-			$dbpassword = Retrieve-FilePassword($passwordFile)
-		}
-		else
-		{
-			Write-Host -ForegroundColor Yellow "Either ExportedSqlPassword.txt must exist with encrypted database password or must provide password using dbpass parameter."
-			throw
-		}
-	}
-	else
-	{
-		$dbpassword = $dbpass
-	}
-}
-else
-{
-	Write-Host -ForegroundColor 'Cyan' "Creating database user"
-	[Reflection.Assembly]::LoadWithPartialName("System.Web")
-	$dbpassword = [System.Web.Security.Membership]::GeneratePassword(15,0)
-	
-	# Variables to pass to createuser.sql script
-	# Cannot use -v option as sqlcmd does not like special characters which maybe part of the randomly generated password.
-	$sqlcmdvars = @{"username" = "$dbusername"; "password" = "$dbpassword"}
-	$old_env = @{}
-	
-	foreach ($var in $sqlcmdvars.GetEnumerator()) {
-		# Save Environment
-		$old_env.Add($var.Name, [Environment]::GetEnvironmentVariable($var.Value, "User"))
+try {
+	#sqlcmd -S $env:COMPUTERNAME -b -i .\createuser.sql
+	Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile .\createuser.sql
+	# save password securely for later retrieval
+	$securePassword = $dbpassword | ConvertTo-SecureString -AsPlainText -Force
+	$secureTxt = $securePassword | ConvertFrom-SecureString
+	Set-Content $passwordFile $secureTxt
+} catch {
+	Write-Host -ForegroundColor 'Yellow' "Error creating database user, see error message output"
+	Write-Host -ForegroundColor 'Red' $Error[0].Exception 
+} finally {
+	# Restore Environment
+	foreach ($var in $old_env.GetEnumerator()) {
 		[Environment]::SetEnvironmentVariable($var.Name, $var.Value)
 	}
-	try {
-		#sqlcmd -S $env:COMPUTERNAME -b -i .\createuser.sql
-		Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile .\createuser.sql
-		# save password securely for later retrieval
-		$securePassword = $dbpassword | ConvertTo-SecureString -AsPlainText -Force
-		$secureTxt = $securePassword | ConvertFrom-SecureString
-		Set-Content $passwordFile $secureTxt
-	} catch {
-		Write-Host -ForegroundColor 'Yellow' "Error creating database user, see error message output"
-		Write-Host -ForegroundColor 'Red' $Error[0].Exception 
-		#Try to read password from stored file
-		if (Test-Path $passwordFile)
-		{
-			Write-Host -ForegroundColor 'Yellow' "Retrieving password from stored file."
-			$dbpassword = Retrieve-FilePassword($passwordFile)
-		}
-		else
-		{
-			Write-Host -ForegroundColor DarkYellow "Either ExportedSqlPassword.txt must exist with encrypted database password or must provide password using dbpass parameter."
-			throw
-		}
-	} finally {
-		# Restore Environment
-		foreach ($var in $old_env.GetEnumerator()) {
-			[Environment]::SetEnvironmentVariable($var.Name, $var.Value)
-		}
-	}
-	Write-Host -ForegroundColor 'Cyan' "Done creating database user"
 }
+Write-Host -ForegroundColor 'Cyan' "Done creating database user"
 
-.\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName LoanChargeOff -username $dbusername -password "$dbpassword" -uninterrupted y -dataPath $datadir -dataSize $datasize
+# Create database if doesn't exist
+$query = "IF NOT EXISTS(SELECT * FROM sys.databases WHERE NAME = '$dbname') CREATE DATABASE $dbname"
+Invoke-Sqlcmd -ServerInstance $ServerName -Username $dbusername -Password "$dbpassword" -Query $query -ErrorAction SilentlyContinue
+if ($? -eq $false)
+{
+	Write-Host -ForegroundColor Red "Failed to execute sql query to create database."
+}
+.\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName $dbname -username $dbusername -password "$dbpassword" -uninterrupted y -dataPath $datadir

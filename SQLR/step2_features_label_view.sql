@@ -83,7 +83,7 @@ select t.loanId, t.payment_date, t.payment, t.past_due, t.remain_balance,
   m.memberId,m.residentialState,m.annualIncome,m.yearsEmployment,m.homeOwnership,m.incomeVerified,m.creditScore,m.dtiRatio,m.revolvingBalance,m.revolvingUtilizationRate,m.numDelinquency2Years,m.numDerogatoryRec,m.numInquiries6Mon,m.lengthCreditHistory,m.numOpenCreditLines,m.numTotalCreditLines,m.numChargeoff1year,
   ISNULL(t.payment_1, 0) payment_1,ISNULL(t.payment_2, 0) payment_2,ISNULL(t.payment_3, 0) payment_3,ISNULL(t.payment_4, 0) payment_4,ISNULL(t.payment_5, 0) payment_5, 
   ISNULL(t.past_due_1, 0) past_due_1,ISNULL(t.past_due_2, 0) past_due_2,ISNULL(t.past_due_3, 0) past_due_3,ISNULL(t.past_due_4, 0) past_due_4,ISNULL(t.past_due_5, 0) past_due_5,
-  ISNULL(t.remain_balance_1, 0) remain_balance_1,ISNULL(t.remain_balance_2, 0) remain_balance_2,ISNULL(t.remain_balance_3, 0) remain_balance_3,ISNULL(t.remain_balance_4, 0) remain_balance_4,ISNULL(t.remain_balance_5, 0) remain_balance_5, t.charge_off
+  ISNULL(t.remain_balance_1, 0) remain_balance_1,ISNULL(t.remain_balance_2, 0) remain_balance_2,ISNULL(t.remain_balance_3, 0) remain_balance_3,ISNULL(t.remain_balance_4, 0) remain_balance_4,ISNULL(t.remain_balance_5, 0) remain_balance_5
 from 
 (
 select *, 
@@ -101,8 +101,7 @@ select *,
 (select top 1 remain_balance from payments_info_$(datasize) p2 where DATEDIFF(month, p2.payment_date,p1.payment_date) = 2 AND p1.loanId = p2.loanId) remain_balance_2,
 (select top 1 remain_balance from payments_info_$(datasize) p2 where DATEDIFF(month, p2.payment_date,p1.payment_date) = 3 AND p1.loanId = p2.loanId) remain_balance_3,
 (select top 1 remain_balance from payments_info_$(datasize) p2 where DATEDIFF(month, p2.payment_date,p1.payment_date) = 4 AND p1.loanId = p2.loanId) remain_balance_4,
-(select top 1 remain_balance from payments_info_$(datasize) p2 where DATEDIFF(month, p2.payment_date,p1.payment_date) = 5 AND p1.loanId = p2.loanId) remain_balance_5,
-(select MAX(charged_off+0) from payments_info_$(datasize) p2 where DATEDIFF(month, p1.payment_date,p2.payment_date) IN (1,2,3) AND p1.loanId = p2.loanId) charge_off
+(select top 1 remain_balance from payments_info_$(datasize) p2 where DATEDIFF(month, p2.payment_date,p1.payment_date) = 5 AND p1.loanId = p2.loanId) remain_balance_5
 from payments_info_$(datasize) p1 ) AS t inner join loan_info_$(datasize) l ON t.loanId = l.loanId inner join member_info_$(datasize) m ON l.memberId = m.memberId 
 where t.charge_off IS NOT NULL
 and payment_date > '2017-02-12';

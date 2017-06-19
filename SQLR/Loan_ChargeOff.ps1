@@ -43,7 +43,7 @@ $dataPath = "",
 [parameter(Mandatory=$false,ParameterSetName = "CM")]
 [ValidateSet("10k", "100k", "1m")]
 [String]
-$dataSize = ""
+$dataSize = "10k"
 )
 
 $scriptPath = Get-Location
@@ -89,34 +89,18 @@ $sqlquery
 }
 
 ##########################################################################
-# Get connection string
-##########################################################################
-function GetConnectionString
-{
-    $connectionString = "Driver=SQL Server;Server=$ServerName;Database=$DBName;UID=$username;PWD=$password"
-    $connectionString
-}
-
-$ServerName2="localhost"
-
-function GetConnectionString2
-{
-    $connectionString2 = "Driver=SQL Server;Server=$ServerName2;Database=$DBName;UID=$username;PWD=$password"
-    $connectionString2
-}
-
-##########################################################################
 # Construct the SQL connection strings
 ##########################################################################
-$connectionString = GetConnectionString
-$connectionString2 = GetConnectionString2
+$connectionString = "Driver=SQL Server;Server=$ServerName;Database=$DBName;UID=$username;PWD=$password"
+$ServerName2="localhost"
+$connectionString2 = "Driver=SQL Server;Server=$ServerName2;Database=$DBName;UID=$username;PWD=$password"
 
 ##########################################################################
 # Check if the SQL server or database exists
 ##########################################################################
-$query = "IF NOT EXISTS(SELECT * FROM sys.databases WHERE NAME = '$DBName') CREATE DATABASE $DBName"
-Invoke-Sqlcmd -ServerInstance $ServerName -Username $username -Password "$password" -Query $query -ErrorAction SilentlyContinue
-if ($? -eq $false)
+$query = "SELECT database_id FROM sys.databases WHERE NAME = '$DBName'"
+$DB_ID = Invoke-Sqlcmd -ServerInstance $ServerName -Username $username -Password "$password" -Query $query -ErrorAction SilentlyContinue
+if (!$db_id)
 {
     Write-Host -ForegroundColor Red "Failed the test to connect to SQL server: $ServerName database: $DBName !"
     Write-Host -ForegroundColor Red "Please make sure: `n`t 1. SQL Server: $ServerName exists;
