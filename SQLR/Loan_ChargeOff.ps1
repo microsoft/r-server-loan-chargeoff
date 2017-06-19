@@ -63,6 +63,8 @@ $scoreTable = "loan_chargeoff_score" + $table_suffix
 $modelTable = "loan_chargeoff_models" + $table_suffix
 $predictionTable = "loan_chargeoff_prediction" + $table_suffix
 $selectedFeaturesTable = "selected_features" + $table_suffix
+$modelNames = @{"logistic_reg" = "Logistic Regression model with rxLogisticRegression";"fast_linear" = "Linear binary classification model with rxFastLinear";"fast_trees" = "Fast Decision Trees model with rxFastTrees";"fast_forest" = "Random Forest with rxFastForest";"neural_net" = "Neural Network with rxNeuralNet"}
+
 ##########################################################################
 # Function wrapper to invoke SQL command
 ##########################################################################
@@ -144,8 +146,6 @@ if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
             bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $username -P "{$password}" -e $error_file
             Write-Host -ForeGroundColor 'magenta'("    Done...Loading {0} to SQL table {1}..." -f $dataFile, $tableName)
         }
-    
-
 
 		# create the views for features and label with training, test and scoring split
 		Write-Host -ForeGroundColor 'magenta'("    Creating features label view and persisting...")
@@ -160,7 +160,6 @@ if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
 	
 		# execute the training
 		Write-Host -ForeGroundColor 'magenta'("    Starting training and evaluation of models...")
-		$modelNames = @{"logistic_reg" = "Logistic Regression model with rxLogisticRegression";"fast_linear" = "Linear binary classification model with rxFastLinear";"fast_trees" = "Fast Decision Trees model with rxFastTrees";"fast_forest" = "Random Forest with rxFastForest";"neural_net" = "Neural Network with rxNeuralNet"}
 		foreach ($modelName in $modelNames.GetEnumerator())
 		{
 			Write-Host -ForeGroundColor 'Cyan' (" Training $($modelName.Value)...")
@@ -297,11 +296,10 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
     ExecuteSQL $script "datasize=$dataSize"
 
     Write-Host -ForeGroundColor 'magenta'("    Starting training and evaluation of models...")
-    $modelNames = 'logistic_reg','fast_linear','fast_trees','fast_forest','neural_net'
-	foreach ($modelName in $modelNames)
+	foreach ($modelName in $modelNames.GetEnumerator())
 	{
-		Write-Host -ForeGroundColor 'Cyan' (" Training $modelName...")
-		$query = "EXEC train_model $trainingTable, $testTable, $evalScoreTable, $modelTable, $modelName, '$connectionString2'"
+		Write-Host -ForeGroundColor 'Cyan' (" Training $($modelName.Value)...")
+		$query = "EXEC train_model $trainingTable, $testTable, $evalScoreTable, $modelTable, $($modelName.Name), '$connectionString2'"
 		ExecuteSQLQuery $query
 	}
 }
