@@ -4,7 +4,27 @@ Script to provide Loan ChargeOff predictions, using SQL Server R Services using 
 .DESCRIPTION
 This script will show the E2E work flow of loan chargeoff prediction machine learning
 templates with Microsoft SQL Server 2016 and SQL Servevr R Services. 
-For the detailed description, please read README.md.
+.PARAMETER ServerName
+SQL Server instance
+
+.PARAMETER DBName
+Name of the database
+
+.PARAMETER username
+Database user name
+
+.PARAMETER password
+Database password
+
+.PARAMETER uninterrupted
+Whether to run the whole workflow uninterrupted or in interactive mode (y/n)
+
+.PARAMETER dataPath
+Folder path with raw csv data files to import into SQL Server database
+
+.PARAMETER datasize
+size of the dataset to use (10k, 100k, 1m)
+
 #>
 [CmdletBinding()]
 param(
@@ -30,12 +50,13 @@ $username ="",
 [String]
 $password ="",
 
-[parameter(Mandatory=$true,ParameterSetName = "CM")]
-[ValidateNotNullOrEmpty()]
-[String]
-$uninterrupted="",
-
 [parameter(Mandatory=$false,ParameterSetName = "CM")]
+[ValidateNotNullOrEmpty()]
+[ValidateSet("y", "n", "yes", "no", IgnoreCase = $false)]
+[String]
+$uninterrupted="y",
+
+[parameter(Mandatory=$true,ParameterSetName = "CM")]
 [ValidateNotNullOrEmpty()]
 [String]
 $dataPath = "",
@@ -53,7 +74,8 @@ $dataFilePath = $dataPath + "\"
 ##########################################################################
 # Script level variables
 ##########################################################################
-
+$yesArray = "y", "yes"
+$noArray = "n", "no"
 $table_suffix = "_" + $dataSize
 
 $trainingTable = "loan_chargeoff_train" + $table_suffix
@@ -121,7 +143,7 @@ Invoke-Sqlcmd -ServerInstance $ServerName -Username $username -Password "$passwo
 $startTime= Get-Date
 Write-Host "Start time is:" $startTime
 
-if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
+if ($uninterrupted -iIn $yesArray)
 {
    try
    {
@@ -195,7 +217,7 @@ if ($uninterrupted -eq 'y' -or $uninterrupted -eq 'Y')
     Write-Host -foregroundcolor 'green'("Loan ChargeOff Workflow Finished Successfully!")
 }
 
-if ($uninterrupted -eq 'n' -or $uninterrupted -eq 'N')
+if ($uninterrupted -iIn $noArray)
 {
 
 ##########################################################################

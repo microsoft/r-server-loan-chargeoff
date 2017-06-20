@@ -18,11 +18,11 @@ GO
  *            @test_set_table - test data table name for model evaluation
  *            @scored_table - table to store scores in when doing model evaluation
  *            @model_table - table to store model in serialized binary format along with evaluation stats
- *            @model_name_param - the algorithm to use for training the model.
- *                                Can be one of 'logistic_reg', 'fast_trees', 'fast_forest', 'fast_linear', 'neural_net'
+ *            @model_alg - the algorithm to use for training the model.
+ *                         Can be one of 'logistic_reg', 'fast_trees', 'fast_forest', 'fast_linear', 'neural_net'
  *            @connectionString - connection string to connect to the database for use in the R script
  */
-CREATE PROCEDURE [train_model] @training_set_table varchar(100), @test_set_table varchar(100), @scored_table varchar(100), @model_table varchar(100), @model_alg varchar(50), @connectionString varchar(300)
+CREATE PROCEDURE [train_model] @training_set_table nvarchar(100), @test_set_table nvarchar(100), @scored_table nvarchar(100), @model_table nvarchar(100), @model_alg nvarchar(50), @connectionString nvarchar(300)
 AS 
 BEGIN
 
@@ -102,7 +102,7 @@ stat_precision <- model_stats[[3]]
 stat_recall <- model_stats[[4]]
 stat_f1score <- model_stats[[5]]
 '
-, @params = N'@model_name varchar(20), @connection_string varchar(300), @train_set varchar(100), @test_set varchar(100), @score_set varchar(100),
+, @params = N'@model_name nvarchar(20), @connection_string nvarchar(300), @train_set nvarchar(100), @test_set nvarchar(100), @score_set nvarchar(100),
 			@modelbin varbinary(max) OUTPUT, @stat_auc real OUTPUT, @stat_accuracy real OUTPUT, @stat_precision real OUTPUT, @stat_recall real OUTPUT, @stat_f1score real OUTPUT'
 , @model_name = @model_alg
 , @connection_string = @connectionString

@@ -20,7 +20,7 @@ GO
  *           @selected_features_table - table to store selected features in
  *           @connectionString - connection string to connect to the database for use in the R script
  */
-CREATE PROCEDURE [select_features] @training_set_table varchar(100), @test_set_table varchar(100), @selected_features_table varchar(100), @connectionString varchar(300)
+CREATE PROCEDURE [select_features] @training_set_table nvarchar(100), @test_set_table nvarchar(100), @selected_features_table nvarchar(100), @connectionString nvarchar(300)
 AS 
 BEGIN
     DECLARE @testing_set_query nvarchar(400), @del_cmd nvarchar(100), @ins_cmd nvarchar(max)
@@ -57,7 +57,7 @@ selected_feature_filtered <- selected_feature_names[!(selected_feature_names %in
 
 selected_features_final <- data.frame(selected_feature_filtered)''
 , @output_data_1_name = N''selected_features_final''
-, @params = N''@connection_string varchar(300), @test_set varchar(100), @train_set varchar(100)''
+, @params = N''@connection_string nvarchar(300), @test_set nvarchar(100), @train_set nvarchar(100)''
 , @connection_string = ''' + @connectionString + '''' +
 ', @train_set = ''' + @training_set_table + '''' +
 ', @test_set = ''' + @test_set_table + ''';'

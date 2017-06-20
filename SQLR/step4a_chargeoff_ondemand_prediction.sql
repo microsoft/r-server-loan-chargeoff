@@ -15,7 +15,7 @@ DROP PROCEDURE IF EXISTS [dbo].[predict_chargeoff_ondemand]
 GO
 
 CREATE PROCEDURE [predict_chargeoff_ondemand]
-	@models_table varchar(100),
+	@models_table nvarchar(100),
 	@loanId int,
 	@payment_date datetime,
 	@payment real,

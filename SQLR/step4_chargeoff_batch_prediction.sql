@@ -17,7 +17,7 @@ GO
  *            @models_table - Table which has serialized binary models stored along with evaluation stats (during training step)
  *            @connectionString - connection string to connect to the database for use in the R script
  */
-CREATE PROCEDURE [predict_chargeoff] @score_table varchar(100), @score_prediction_table varchar(100), @models_table varchar(100), @connectionString varchar(300)
+CREATE PROCEDURE [predict_chargeoff] @score_table nvarchar(100), @score_prediction_table nvarchar(100), @models_table nvarchar(100), @connectionString nvarchar(300)
 
 AS
 BEGIN
@@ -38,7 +38,7 @@ scored_output <- RxSqlServerData(table=score_prediction, connectionString = conn
 print(summary(best_model))
 rxPredict(best_model, scoring_set, outData = scored_output, extraVarsToWrite = c("memberId", "loanId", "payment_date"), overwrite=TRUE)
 '
-, @params = N'@best_model varbinary(max), @score_set varchar(100), @score_prediction varchar(100), @connection_string varchar(300)' 
+, @params = N'@best_model varbinary(max), @score_set nvarchar(100), @score_prediction nvarchar(100), @connection_string nvarchar(300)' 
 , @best_model = @bestmodel 
 , @score_set = @score_table
 , @score_prediction = @score_prediction_table

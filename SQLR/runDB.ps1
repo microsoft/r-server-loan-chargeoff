@@ -1,16 +1,26 @@
-##############################################################################################
-# Script to invoke the LoanChargeOff data science workflow with a smaller dataset of 10,000
-# loans for the first time. 
-# It creates a SQL Server user and stores the password in 'ExporedSqlPassword.txt'. 
-# Users can retrieve the password from the file and decrypt executing GetSQLUserPassword.ps1
-# script.
-# WARNING: This script should only be run once through the template deployment process. It is
-#          not meant to be run by users as it assumes database and users don't already exist.
-# Parameters:
-#            datadir - directory where raw csv data has been downloaded
-#            scriptdir - directory where scripts are checked out from github
-#            datasize - size of the dataset (10k, 100k, 1m)
-##############################################################################################
+<#
+.SYNOPSIS 
+Script to invoke the LoanChargeOff data science workflow
+
+.DESCRIPTION
+This script by default uses a smaller dataset of 10,000 loans for the first time. 
+It creates a SQL Server user and stores the password in 'ExporedSqlPassword.txt' on the desktop. 
+Users can retrieve the password from the file and decrypt executing GetSQLUserPassword.ps1
+script.
+
+.WARNING
+This script should only be run once through the template deployment process. It is
+not meant to be run by users as it assumes database and users don't already exist.
+
+.PARAMETER datadir
+directory where raw csv data has been downloaded
+
+.PARAMETER scriptdir
+directory where scripts are checked out from github
+
+.PARAMETER datasize
+size of the dataset (10k, 100k, 1m)
+#>
 Param([string]$datadir, [string]$scriptdir, [string]$dbname="LoanChargeOff")
 cd $scriptdir
 $desktop = [Environment]::GetFolderPath("Desktop")
@@ -19,6 +29,7 @@ $passwordFile = $desktop + "\ExportedSqlPassword.txt"
 
 # Utility function to generate random alphanumeric password. SQL connection string does not like some of the more 
 # complex passwords with special characters so limiting to alphanumeric.
+
 Function GetRandomSQLPassword([Int]$length=30)
 {
 	$passwordChars = 48..57 + 65..90 + 97..122

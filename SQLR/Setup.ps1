@@ -1,15 +1,25 @@
-################################################################################################
-# Powershell script for setting up the solution template. This script checks out the solution 
-# from github and deploys it to SQL Server on the local Data Science VM (DSVM).
-#
-# WARNING: This script is only meant to be run from the solution template deployment process.
-#
-# Parameters:
-#            serverName - Name of the server with SQL Server with R Services (this is the DSVM server)
-#            baseurl - url from which to download data files
-#            username - login username for the server
-#            password - login password for the server
-################################################################################################
+<#
+.SYNOPSIS
+Powershell script for setting up the solution template. 
+
+.DESCRIPTION
+This script checks out the solution from github and deploys it to SQL Server on the local Data Science VM (DSVM).
+
+.WARNING: This script is only meant to be run from the solution template deployment process.
+
+.PARAMETER serverName
+Name of the server with SQL Server with R Services (this is the DSVM server)
+
+.PARAMETER baseurl
+url from which to download data files
+
+.PARAMETER username
+login username for the server
+
+.PARAMETER password
+login password for the server
+
+#>
 param([string]$serverName,[string]$baseurl,[string]$username,[string]$password)
 
 $startTime= Get-Date
@@ -51,7 +61,7 @@ if (Test-Path $checkoutDir)
 git clone -n https://github.com/Microsoft/r-server-loan-chargeoff $checkoutDir
 cd $checkoutDir
 git config core.sparsecheckout true
-echo "/*`r`n!HDI" | out-file -encoding ascii .git/info/sparse-checkout
+echo "/*`r`n!HDI`r`n!/SQLR/Setup.ps1" | out-file -encoding ascii .git/info/sparse-checkout
 git checkout master
 
 $sqlsolutionCodePath = $solutionTemplateSetupPath + "\" + $checkoutDir + "\SQLR"
