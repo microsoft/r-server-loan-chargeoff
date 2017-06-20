@@ -64,7 +64,7 @@ training_evaluation <- function(HDFSWorkDir,
   ###################################################################
   # get the formula for modeling
   modelFormula <- as.formula(paste(paste("charge_off~"), paste(selectedFeaturesName, collapse = "+")))
-  mlTrans <- list(categorical(vars = c("purpose", "residentialState", "homeOwnership", "yearsEmployment")))
+  mlTrans <- list(categorical(vars = c("purpose", "residentialState", "branch", "homeOwnership", "yearsEmployment")))
   # Train the Random Forest.
   print("Training RF model...")
   forest_model <- rxFastForest(modelFormula, 
@@ -85,6 +85,7 @@ training_evaluation <- function(HDFSWorkDir,
   rxSetComputeContext(sparkContext)
   logistic_model <- rxLogisticRegression(formula = modelFormula,
                                          data = trainingSet,
+                                         mlTransforms = mlTrans,
                                          reportProgress = 0)
   
   # save the fitted model to local edge node.
@@ -99,6 +100,7 @@ training_evaluation <- function(HDFSWorkDir,
   rxSetComputeContext(sparkContext)
   tree_model <- rxFastTrees(formula = modelFormula,
                             data = trainingSet,
+                            mlTransforms = mlTrans,
                             reportProgress = 0)
   
   # save the fitted model to local edge node.
@@ -113,6 +115,7 @@ training_evaluation <- function(HDFSWorkDir,
   rxSetComputeContext(sparkContext)
   linear_model <- rxFastLinear(formula = modelFormula,
                                data = trainingSet,
+                               mlTransforms = mlTrans,
                                reportProgress = 0)
   
   # save the fitted model to local edge node.
@@ -129,6 +132,7 @@ training_evaluation <- function(HDFSWorkDir,
                           data = trainingSet,
                           numIterations = 42,
                           optimizer = adaDeltaSgd(),
+                          mlTransforms = mlTrans,
                           reportProgress = 0)
   
   # save the fitted model to local edge node.

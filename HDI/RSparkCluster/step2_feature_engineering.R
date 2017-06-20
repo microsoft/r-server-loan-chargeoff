@@ -48,7 +48,7 @@ feature_engineer <- function(trainingSet,
     for (i in featuresNum)
     {
       rxSetComputeContext(sparkContext)
-      mlTrans <- list(categorical(vars = c("purpose", "residentialState", "homeOwnership", "yearsEmployment")),
+      mlTrans <- list(categorical(vars = c("purpose", "residentialState", "branch", "homeOwnership", "yearsEmployment")),
                       selectFeatures(modelFormula, mode = mutualInformation(numFeaturesToKeep = i)))
       candinateModel <- rxLogisticRegression(modelFormula, data = trainingSet, mlTransforms = mlTrans)
       predictedScore <- rxPredict(candinateModel, testingSet, extraVarsToWrite = c("charge_off"))
@@ -74,7 +74,7 @@ feature_engineer <- function(trainingSet,
   print("selecting features...")
   rxSetComputeContext(sparkContext)
   modelFormula <- as.formula(paste(paste("charge_off~"), paste(featuresName, collapse = "+")))
-  mlTrans <- list(categorical(vars = c("purpose", "residentialState", "homeOwnership", "yearsEmployment")),
+  mlTrans <- list(categorical(vars = c("purpose", "residentialState", "branch", "homeOwnership", "yearsEmployment")),
                   selectFeatures(modelFormula, mode = mutualInformation(numFeaturesToKeep = numFeaturesToKeep)))
   model <- rxLogisticRegression(modelFormula, data = trainingSet, mlTransforms = mlTrans)
   selectedFeaturesName <- names(summary(model)$summary)
