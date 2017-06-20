@@ -27,23 +27,23 @@ Name of the database to create in SQL Server
 #>
 [CmdletBinding()]
 Param(
-[parameter(Mandatory=$true,ParameterSetName = "LCR")]
+[parameter(Mandatory=$true, Position=1, ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()] 
 [string]$datadir,
 
-[parameter(Mandatory=$true,ParameterSetName = "LCR")]
+[parameter(Mandatory=$true, Position=2, ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()] 
 [string]$scriptdir,
 
-[parameter(Mandatory=$true,ParameterSetName = "LCR")]
+[parameter(Mandatory=$true, Position=3, ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()] 
 [string]$sqlUsername,
 
-[parameter(Mandatory=$true,ParameterSetName = "LCR")]
+[parameter(Mandatory=$true, Position=4, ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()] 
 [string]$sqlPassword,
 
-[parameter(Mandatory=$false,ParameterSetName = "LCR")]
+[parameter(Mandatory=$false, Position=5, ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()] 
 [string]$dbname="LoanChargeOff"
 )

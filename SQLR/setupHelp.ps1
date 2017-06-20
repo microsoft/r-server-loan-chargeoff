@@ -12,11 +12,11 @@ path to the solution folder with data and source.
 #>
 [CmdletBinding()]
 param(
-[parameter(Mandatory=$true,ParameterSetName = "LCR")]
+[parameter(Mandatory=$true, Position=1, ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()] 
 [string]$helpfile,
 
-[parameter(Mandatory=$true,ParameterSetName = "LCR")]
+[parameter(Mandatory=$true, Position=2, ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()] 
 [string]$solutionPath
 )
