@@ -13,9 +13,9 @@
 ##############################################################################################
 Param([string]$datadir, [string]$scriptdir, [string]$dbname="LoanChargeOff")
 cd $scriptdir
-
+$desktop = [Environment]::GetFolderPath("Desktop")
 $dbusername = "rdemo"
-$passwordFile = "ExportedSqlPassword.txt"
+$passwordFile = $desktop + "\ExportedSqlPassword.txt"
 
 # Utility function to generate random alphanumeric password. SQL connection string does not like some of the more 
 # complex passwords with special characters so limiting to alphanumeric.
