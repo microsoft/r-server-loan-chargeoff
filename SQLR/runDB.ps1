@@ -83,4 +83,4 @@ if ($? -eq $false)
 {
 	Write-Host -ForegroundColor Red "Failed to execute sql query to create database."
 }
-.\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName $dbname -username $sqlUsername -password "$sqlPassword" -uninterrupted y -dataPath $datadir
+.\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName $dbname -sqlUsername $sqlUsername -sqlPassword "$sqlPassword" -uninterrupted y -dataPath $datadir
