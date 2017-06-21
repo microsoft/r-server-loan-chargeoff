@@ -17,7 +17,7 @@ GO
  *            @models_table - Table which has serialized binary models stored along with evaluation stats (during training step)
  *            @connectionString - connection string to connect to the database for use in the R script
  */
-CREATE PROCEDURE [predict_chargeoff] @score_table nvarchar(100), @score_prediction_table nvarchar(100), @models_table nvarchar(100), @connectionString nvarchar(300)
+CREATE PROCEDURE [predict_chargeoff] @score_table nvarchar(100), @score_prediction_table nvarchar(100), @models_table nvarchar(100)
 
 AS
 BEGIN
@@ -38,7 +38,7 @@ BEGIN
 library(RevoScaleR)
 library(MicrosoftML)
 # Get best_model.
-best_model <- unserialize(best_model)
+best_model <- unserialize(best_model_raw)
 i <- sapply(InputDataSet, is.factor)
 InputDataSet[i] <- lapply(InputDataSet[i], as.character)
 
@@ -46,12 +46,11 @@ OutputDataSet <- rxPredict(best_model, InputDataSet, extraVarsToWrite = c("loanI
 OutputDataSet$payment_date = as.POSIXct(OutputDataSet$payment_date, origin="1970-01-01")
 ''
 , @input_data_1 = N''' + @inquery + '''' +
-', @params = N''@r_rowsPerRead int, @best_model varbinary(max), @score_set nvarchar(100), @score_prediction nvarchar(100), @connection_string nvarchar(300)'' 
-, @best_model = @p_bestmodel
+', @params = N''@r_rowsPerRead int, @best_model_raw varbinary(max), @score_set nvarchar(100), @score_prediction nvarchar(100)'' 
+, @best_model_raw = @p_bestmodel
 , @r_rowsPerRead = 10000
-, @score_set = ''' + @score_table + '''' +
-', @score_prediction = ''' + @score_prediction_table + '''' +
-', @connection_string = ''' + @connectionString + ''';';
+, @score_set = N''' + @score_table + '''' +
+', @score_prediction = N''' + @score_prediction_table + ''';';
 
 EXEC sp_executeSQL @ins_cmd, @spees_model_param_def, @p_bestmodel = @bestmodel;
 END
