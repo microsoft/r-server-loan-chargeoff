@@ -22,27 +22,37 @@ CREATE PROCEDURE [predict_chargeoff] @score_table nvarchar(100), @score_predicti
 AS
 BEGIN
 
-    DECLARE @best_model_query nvarchar(300), @param_def nvarchar(100)
+    DECLARE @best_model_query nvarchar(300), @param_def nvarchar(100), @spees_model_param_def nvarchar(100)
 	DECLARE @bestmodel varbinary(max)
+	DECLARE @ins_cmd nvarchar(max)
+	DECLARE @inquery nvarchar(max) = N'SELECT * from ' + @score_table
 	SET @best_model_query = 'select top 1 @p_best_model = model from ' + @models_table + ' where f1score in (select max(f1score) from ' + @models_table + ')'
 	SET @param_def = N'@p_best_model varbinary(max) OUTPUT';
+
 	EXEC sp_executesql @best_model_query, @param_def, @p_best_model=@bestmodel OUTPUT;
-    EXEC sp_execute_external_script @language = N'R',
-				    @script = N'
+
+	SET @spees_model_param_def = N'@p_bestmodel varbinary(max)'
+	SET @ins_cmd = 'INSERT INTO ' + @score_prediction_table + ' ([loanId], [payment_date], [PredictedLabel], [Score.1], [Probability.1])
+    EXEC sp_execute_external_script @language = N''R'',
+				    @script = N''
 library(RevoScaleR)
 library(MicrosoftML)
 # Get best_model.
 best_model <- unserialize(best_model)
-scoring_set <- RxSqlServerData(table=score_set, colInfo = (list(charge_off = list(type="integer"))), connectionString = connection_string)
-scored_output <- RxSqlServerData(table=score_prediction, connectionString = connection_string, overwrite=TRUE)
-print(summary(best_model))
-rxPredict(best_model, scoring_set, outData = scored_output, extraVarsToWrite = c("loanId", "payment_date"), overwrite=TRUE)
-'
-, @params = N'@best_model varbinary(max), @score_set nvarchar(100), @score_prediction nvarchar(100), @connection_string nvarchar(300)' 
-, @best_model = @bestmodel 
-, @score_set = @score_table
-, @score_prediction = @score_prediction_table
-, @connection_string = @connectionString    
-;
+i <- sapply(InputDataSet, is.factor)
+InputDataSet[i] <- lapply(InputDataSet[i], as.character)
+
+OutputDataSet <- rxPredict(best_model, InputDataSet, extraVarsToWrite = c("loanId", "payment_date"), overwrite=TRUE)
+OutputDataSet$payment_date = as.POSIXct(OutputDataSet$payment_date, origin="1970-01-01")
+''
+, @input_data_1 = N''' + @inquery + '''' +
+', @params = N''@r_rowsPerRead int, @best_model varbinary(max), @score_set nvarchar(100), @score_prediction nvarchar(100), @connection_string nvarchar(300)'' 
+, @best_model = @p_bestmodel
+, @r_rowsPerRead = 10000
+, @score_set = ''' + @score_table + '''' +
+', @score_prediction = ''' + @score_prediction_table + '''' +
+', @connection_string = ''' + @connectionString + ''';';
+
+EXEC sp_executeSQL @ins_cmd, @spees_model_param_def, @p_bestmodel = @bestmodel;
 END
 GO

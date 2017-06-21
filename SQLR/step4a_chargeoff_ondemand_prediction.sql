@@ -130,6 +130,8 @@ InputDataSet <- cbind(InputDataSet, charge_off=c(as.integer(NA)))
 i <- sapply(InputDataSet, is.factor)
 InputDataSet[i] <- lapply(InputDataSet[i], as.character)
 OutputDataSet <- rxPredict(best_model, InputDataSet, outData = NULL, extraVarsToWrite = c("loanId", "payment_date"))
+# MicrosoftML has a known issue where it converts the date type to numeric which then gets translated as float by SQL Server
+OutputDataSet$payment_date = as.POSIXct(OutputDataSet$payment_date, origin="1970-01-01")
 '
 , @input_data_1 = @inquery
 , @params = N'@best_model varbinary(max), 

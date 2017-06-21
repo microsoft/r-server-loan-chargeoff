@@ -101,7 +101,6 @@ GO
 DROP TABLE IF EXISTS [loan_chargeoff_prediction_$(datasize)]
 
 CREATE TABLE [loan_chargeoff_prediction_$(datasize)](
-	[memberId] [int],
 	[loanId] [int],
 	[payment_date] [date],
 	[prediction_date] [date] default(GETDATE()),
