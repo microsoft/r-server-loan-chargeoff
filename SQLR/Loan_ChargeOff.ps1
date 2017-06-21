@@ -202,7 +202,7 @@ if ($uninterrupted -iIn $yesArray)
 		
 		#score on the data
 		Write-Host -ForeGroundColor 'Cyan' ("Scoring based on best performing model score table = $scoreTable, prediction table = $predictionTable...")
-		$scoring_query = "EXEC predict_chargeoff $scoreTable, $predictionTable, $modelTable, '$connectionString2'"
+		$scoring_query = "EXEC predict_chargeoff $scoreTable, $predictionTable, $modelTable"
 		ExecuteSQLQuery $scoring_query
 		
 		# create the stored procedure for recommendations
@@ -348,7 +348,7 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
 
     # compute loan chargeoff predictions
     Write-Host -ForeGroundColor 'Cyan' ("Scoring based on best performing model score table = $scoreTable, prediction table = $predictionTable...")
-    $query = "EXEC predict_chargeoff $scoreTable, $predictionTable, $modelTable, '$connectionString2'"
+    $query = "EXEC predict_chargeoff $scoreTable, $predictionTable, $modelTable"
     ExecuteSQLQuery $query
 }
 
