@@ -1,9 +1,11 @@
 <#
 .SYNOPSIS
 Script to provide Loan ChargeOff predictions, using SQL Server R Services using MicrosoftML and RevoScaleR packages.
+
 .DESCRIPTION
 This script will show the E2E work flow of loan chargeoff prediction machine learning
-templates with Microsoft SQL Server 2016 and SQL Servevr R Services. 
+templates with Microsoft SQL Server 2016 and SQL Servevr R Services.
+
 .PARAMETER ServerName
 SQL Server instance
 
@@ -25,6 +27,8 @@ Folder path with raw csv data files to import into SQL Server database
 .PARAMETER datasize
 size of the dataset to use (10k, 100k, 1m)
 
+.EXAMPLE
+.\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName LoanChargeOff -sqlUsername sqluser -sqlPassword "MyP#assword1" -uninterrupted y -dataPath ..\..\Data -dataSize "100k"
 #>
 [CmdletBinding()]
 param(
