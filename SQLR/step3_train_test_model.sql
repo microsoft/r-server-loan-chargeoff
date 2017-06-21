@@ -63,7 +63,7 @@ vars_to_remove <- c("memberId", "loanId", "payment_date", "loan_open_date", "cha
 feature_names <- features[!(features %in% vars_to_remove)]
 model_formula <- as.formula(paste(paste("charge_off~"), paste(feature_names, collapse = "+")))
 ml_trans <- list(categorical(vars = c("purpose", "residentialState", "branch", "homeOwnership", "yearsEmployment")),
-				 selectFeatures(model_formula, mode = mutualInformation(numFeaturesToKeep = 41)))
+				 selectFeatures(model_formula, mode = mutualInformation(numFeaturesToKeep = 100)))
 
 if (model_name == "logistic_reg") {
 	model <- rxLogisticRegression(formula = model_formula,
@@ -102,7 +102,7 @@ stat_precision <- model_stats[[3]]
 stat_recall <- model_stats[[4]]
 stat_f1score <- model_stats[[5]]
 '
-, @params = N'@model_name nvarchar(20), @connection_string nvarchar(300), @train_set nvarchar(100), @test_set nvarchar(100), @score_set nvarchar(100),
+, @params = N'@model_name nvarchar(50), @connection_string nvarchar(300), @train_set nvarchar(100), @test_set nvarchar(100), @score_set nvarchar(100),
 			@modelbin varbinary(max) OUTPUT, @stat_auc real OUTPUT, @stat_accuracy real OUTPUT, @stat_precision real OUTPUT, @stat_recall real OUTPUT, @stat_f1score real OUTPUT'
 , @model_name = @model_alg
 , @connection_string = @connectionString
