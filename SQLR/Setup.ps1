@@ -92,7 +92,7 @@ if (Test-Path $checkoutDir)
 git clone -n https://github.com/Microsoft/r-server-loan-chargeoff $checkoutDir
 cd $checkoutDir
 git config core.sparsecheckout true
-echo "/*`r`n!HDI`r`n!/SQLR/Setup.ps1" | out-file -encoding ascii .git/info/sparse-checkout
+echo "/*`r`n!HDI" | out-file -encoding ascii .git/info/sparse-checkout
 git checkout master
 
 $sqlsolutionCodePath = $solutionTemplateSetupPath + "\" + $checkoutDir + "\SQLR"
