@@ -31,6 +31,7 @@ CREATE PROCEDURE [predict_chargeoff_ondemand]
 	@purpose nvarchar(255),
 	@memberId int,
 	@residentialState nvarchar(4),
+	@branch nvarchar(255),
 	@annualIncome real,
 	@yearsEmployment nvarchar(11),
 	@homeOwnership nvarchar(10),
@@ -85,6 +86,7 @@ BEGIN
       ,@p_purpose
       ,@p_memberId
       ,@p_residentialState
+      ,@p_branch
       ,@p_annualIncome
       ,@p_yearsEmployment
       ,@p_homeOwnership
@@ -141,6 +143,7 @@ OutputDataSet <- rxPredict(best_model, InputDataSet, outData = NULL, extraVarsTo
 			  @p_purpose nvarchar(255),
 			  @p_memberId int,
 			  @p_residentialState nvarchar(4),
+			  @p_branch nvarchar(255),
 			  @p_annualIncome real,
 			  @p_yearsEmployment nvarchar(11),
 			  @p_homeOwnership nvarchar(10),
@@ -186,6 +189,7 @@ OutputDataSet <- rxPredict(best_model, InputDataSet, outData = NULL, extraVarsTo
 , @p_purpose=@purpose
 , @p_memberId=@memberId
 , @p_residentialState=@residentialState
+, @p_branch=@branch
 , @p_annualIncome=@annualIncome
 , @p_yearsEmployment=@yearsEmployment
 , @p_homeOwnership=@homeOwnership
