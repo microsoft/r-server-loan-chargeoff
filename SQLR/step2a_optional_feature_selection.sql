@@ -44,7 +44,7 @@ feature_names <- features[!(features %in% variables_to_remove)]
 model_formula <- as.formula(paste(paste("charge_off~"), paste(feature_names, collapse = "+")))
 selected_count <- 0
 features_to_remove <- c("(Bias)")
-ml_trans <- list(categorical(vars = c("purpose", "residentialState", "homeOwnership", "yearsEmployment")),
+ml_trans <- list(categorical(vars = c("purpose", "residentialState", "branch", "homeOwnership", "yearsEmployment")),
                 selectFeatures(model_formula, mode = mutualInformation(numFeaturesToKeep = 41)))
 candidate_model <- rxLogisticRegression(model_formula, data = training_set, mlTransforms = ml_trans)
 predicted_score <- rxPredict(candidate_model, testing_set, extraVarsToWrite = c("charge_off"))

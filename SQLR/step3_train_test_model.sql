@@ -62,7 +62,7 @@ features <- rxGetVarNames(training_set)
 vars_to_remove <- c("memberId", "loanId", "payment_date", "loan_open_date", "charge_off")
 feature_names <- features[!(features %in% vars_to_remove)]
 model_formula <- as.formula(paste(paste("charge_off~"), paste(feature_names, collapse = "+")))
-ml_trans <- list(categorical(vars = c("purpose", "residentialState", "homeOwnership", "yearsEmployment")),
+ml_trans <- list(categorical(vars = c("purpose", "residentialState", "branch", "homeOwnership", "yearsEmployment")),
 				 selectFeatures(model_formula, mode = mutualInformation(numFeaturesToKeep = 41)))
 
 if (model_name == "logistic_reg") {
