@@ -104,7 +104,7 @@ CREATE TABLE [loan_chargeoff_prediction_$(datasize)](
 	[loanId] [int],
 	[payment_date] [date],
 	[prediction_date] [date] default(GETDATE()),
-	[PredictedLabel] [nvarchar](255),
+	[PredictedLabel] int,
 	[Score.1] [float],
 	[Probability.1] [float]
 );
