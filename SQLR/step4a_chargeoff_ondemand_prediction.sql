@@ -227,7 +227,8 @@ OutputDataSet$payment_date = as.POSIXct(OutputDataSet$payment_date, origin="1970
 , @p_remain_balance_3=@remain_balance_3
 , @p_remain_balance_4=@remain_balance_4
 , @p_remain_balance_5=@remain_balance_5
-, @best_model = @bestmodel  
+, @best_model = @bestmodel
+WITH RESULT SETS (("loanId" int not null, "payment_date" date not null, "PredictedLabel" int not null, "Score.1" float not null, "Probability.1" float not null))
 ;
 END
 GO
