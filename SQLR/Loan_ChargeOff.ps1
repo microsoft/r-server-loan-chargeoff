@@ -10,10 +10,10 @@ SQL Server instance
 .PARAMETER DBName
 Name of the database
 
-.PARAMETER username
+.PARAMETER sqlUsername
 Database user name
 
-.PARAMETER password
+.PARAMETER sqlPassword
 Database password
 
 .PARAMETER uninterrupted
