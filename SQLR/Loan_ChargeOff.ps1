@@ -1,19 +1,21 @@
 <#
 .SYNOPSIS
 Script to provide Loan ChargeOff predictions, using SQL Server R Services using MicrosoftML and RevoScaleR packages.
+
 .DESCRIPTION
 This script will show the E2E work flow of loan chargeoff prediction machine learning
-templates with Microsoft SQL Server 2016 and SQL Servevr R Services. 
+templates with Microsoft SQL Server 2016 and SQL Servevr R Services.
+
 .PARAMETER ServerName
 SQL Server instance
 
 .PARAMETER DBName
 Name of the database
 
-.PARAMETER username
+.PARAMETER sqlUsername
 Database user name
 
-.PARAMETER password
+.PARAMETER sqlPassword
 Database password
 
 .PARAMETER uninterrupted
@@ -25,43 +27,45 @@ Folder path with raw csv data files to import into SQL Server database
 .PARAMETER datasize
 size of the dataset to use (10k, 100k, 1m)
 
+.EXAMPLE
+.\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName LoanChargeOff -sqlUsername sqluser -sqlPassword "MyP#assword1" -uninterrupted y -dataPath ..\..\Data -dataSize "100k"
 #>
 [CmdletBinding()]
 param(
 # SQL server address
-[parameter(Mandatory=$true,ParameterSetName = "CM")]
+[parameter(Mandatory=$true,ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()] 
 [String]    
 $ServerName = "",
 
 # SQL server database name
-[parameter(Mandatory=$true,ParameterSetName = "CM")]
+[parameter(Mandatory=$true,ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()]
 [String]
 $DBName = "",
 
-[parameter(Mandatory=$true,ParameterSetName = "CM")]
+[parameter(Mandatory=$true,ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()]
 [String]
-$username ="",
+$sqlUsername ="",
 
-[parameter(Mandatory=$true,ParameterSetName = "CM")]
+[parameter(Mandatory=$true,ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()]
 [String]
-$password ="",
+$sqlPassword ="",
 
-[parameter(Mandatory=$false,ParameterSetName = "CM")]
+[parameter(Mandatory=$false,ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()]
-[ValidateSet("y", "n", "yes", "no", IgnoreCase = $false)]
+[ValidateSet("y", "n", "yes", "no", IgnoreCase = $true)]
 [String]
 $uninterrupted="y",
 
-[parameter(Mandatory=$true,ParameterSetName = "CM")]
+[parameter(Mandatory=$true,ParameterSetName = "LCR")]
 [ValidateNotNullOrEmpty()]
 [String]
 $dataPath = "",
 
-[parameter(Mandatory=$false,ParameterSetName = "CM")]
+[parameter(Mandatory=$false,ParameterSetName = "LCR")]
 [ValidateSet("10k", "100k", "1m")]
 [String]
 $dataSize = "10k"
@@ -98,7 +102,7 @@ $sqlscript,
 [String]
 $VariableArray=""
 )
-    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $username -Password "$password" -InputFile $sqlscript -Variable $VariableArray -QueryTimeout 200000
+    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $sqlUsername -Password "$sqlPassword" -InputFile $sqlscript -Variable $VariableArray -QueryTimeout 200000
 }
 ##########################################################################
 # Function wrapper to invoke SQL query
@@ -109,32 +113,32 @@ param(
 [String]
 $sqlquery
 )
-    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $username -Password "$password" -Query $sqlquery -QueryTimeout 200000
+    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $sqlUsername -Password "$sqlPassword" -Query $sqlquery -QueryTimeout 200000
 }
 
 ##########################################################################
 # Construct the SQL connection strings
 ##########################################################################
-$connectionString = "Driver=SQL Server;Server=$ServerName;Database=$DBName;UID=$username;PWD=$password"
+$connectionString = "Driver=SQL Server;Server=$ServerName;Database=$DBName;UID=$sqlUsername;PWD=$sqlPassword"
 $ServerName2="localhost"
-$connectionString2 = "Driver=SQL Server;Server=$ServerName2;Database=$DBName;UID=$username;PWD=$password"
+$connectionString2 = "Driver=SQL Server;Server=$ServerName2;Database=$DBName;UID=$sqlUsername;PWD=$sqlPassword"
 
 ##########################################################################
 # Check if the SQL server or database exists
 ##########################################################################
 $query = "SELECT database_id FROM sys.databases WHERE NAME = '$DBName'"
-$DB_ID = Invoke-Sqlcmd -ServerInstance $ServerName -Username $username -Password "$password" -Query $query -ErrorAction SilentlyContinue
+$DB_ID = Invoke-Sqlcmd -ServerInstance $ServerName -Username $sqlUsername -Password "$sqlPassword" -Query $query -ErrorAction SilentlyContinue
 if (!$db_id)
 {
     Write-Host -ForegroundColor Red "Failed the test to connect to SQL server: $ServerName database: $DBName !"
     Write-Host -ForegroundColor Red "Please make sure: `n`t 1. SQL Server: $ServerName exists;
                                      `n`t 2. SQL database: $DBName exists;
-                                     `n`t 3. SQL user: $username has the right credential for SQL server access."
+                                     `n`t 3. SQL user: $sqlUsername has the right credential for SQL server access."
     exit
 }
 
 $query = "USE $DBName;"
-Invoke-Sqlcmd -ServerInstance $ServerName -Username $username -Password "$password" -Query $query 
+Invoke-Sqlcmd -ServerInstance $ServerName -Username $sqlUsername -Password "$sqlPassword" -Query $query 
 
 
 ##########################################################################
@@ -163,9 +167,9 @@ if ($uninterrupted -iIn $yesArray)
             Write-Host -ForeGroundColor 'magenta'("    Populate SQL table: {0}... from {1}" -f $dataFile, $destination)
             $tableName = $DBName + ".dbo." + $dataFile + $table_suffix
             $tableSchema = $dataFilePath + $dataFile + $table_suffix + ".xml"
-            bcp $tableName format nul -c -x -f $tableSchema  -U $username -S $ServerName -P "{$password}"  -t ','
+            bcp $tableName format nul -c -x -f $tableSchema  -U $sqlUsername -S $ServerName -P "{$sqlPassword}"  -t '|'
             Write-Host -ForeGroundColor 'magenta'("    Loading {0} to SQL table..." -f $dataFile)
-            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $username -P "{$password}" -e $error_file
+            bcp $tableName in $destination -t '|' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $sqlUsername -P "{$sqlPassword}" -e $error_file
             Write-Host -ForeGroundColor 'magenta'("    Done...Loading {0} to SQL table {1}..." -f $dataFile, $tableName)
         }
 
@@ -249,9 +253,9 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
             Write-Host -ForeGroundColor 'magenta'("    Populate SQL table: {0} from {1}..." -f $dataFile, $destination)
             $tableName = $DBName + ".dbo." + $dataFile + $table_suffix
             $tableSchema = $dataFilePath + $dataFile + $table_suffix + ".xml"
-            bcp $tableName format nul -c -x -f $tableSchema  -U $username -S $ServerName -P "{$password}"  -t ','
+            bcp $tableName format nul -c -x -f $tableSchema  -U $sqlUsername -S $ServerName -P "{$sqlPassword}"  -t '|'
             Write-Host -ForeGroundColor 'magenta'("    Loading {0} to SQL table..." -f $dataFile)
-            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $username -P "{$password}" -e $error_file
+            bcp $tableName in $destination -t '|' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $sqlUsername -P "{$sqlPassword}" -e $error_file
             Write-Host -ForeGroundColor 'magenta'("    Done...Loading {0} to SQL table {1}..." -f $dataFile, $tableName)
         }
     }

@@ -19,6 +19,7 @@ DROP TABLE IF EXISTS member_info_$(datasize)
 CREATE TABLE [member_info_$(datasize)](
 	[memberId] [int],
 	[residentialState] [nvarchar](4),
+	[branch] [nvarchar](255),
 	[annualIncome] [real],
 	[yearsEmployment] [nvarchar](11),
 	[homeOwnership] [nvarchar](10),

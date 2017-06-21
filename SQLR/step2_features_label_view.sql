@@ -12,7 +12,7 @@ create view vw_loan_chargeoff_train_$(datasize)
 as
 select t.loanId, t.payment_date, t.payment, t.past_due, t.remain_balance,
   l.loan_open_date, l.loanAmount,l.interestRate,l.grade,l.term,l.installment,l.isJointApplication,l.purpose,
-  m.memberId,m.residentialState,m.annualIncome,m.yearsEmployment,m.homeOwnership,m.incomeVerified,m.creditScore,m.dtiRatio,m.revolvingBalance,m.revolvingUtilizationRate,m.numDelinquency2Years,m.numDerogatoryRec,m.numInquiries6Mon,m.lengthCreditHistory,m.numOpenCreditLines,m.numTotalCreditLines,m.numChargeoff1year,
+  m.memberId,m.residentialState,m.branch,m.annualIncome,m.yearsEmployment,m.homeOwnership,m.incomeVerified,m.creditScore,m.dtiRatio,m.revolvingBalance,m.revolvingUtilizationRate,m.numDelinquency2Years,m.numDerogatoryRec,m.numInquiries6Mon,m.lengthCreditHistory,m.numOpenCreditLines,m.numTotalCreditLines,m.numChargeoff1year,
   ISNULL(t.payment_1, 0) payment_1,ISNULL(t.payment_2, 0) payment_2,ISNULL(t.payment_3, 0) payment_3,ISNULL(t.payment_4, 0) payment_4,ISNULL(t.payment_5, 0) payment_5, 
   ISNULL(t.past_due_1, 0) past_due_1,ISNULL(t.past_due_2, 0) past_due_2,ISNULL(t.past_due_3, 0) past_due_3,ISNULL(t.past_due_4, 0) past_due_4,ISNULL(t.past_due_5, 0) past_due_5,
   ISNULL(t.remain_balance_1, 0) remain_balance_1,ISNULL(t.remain_balance_2, 0) remain_balance_2,ISNULL(t.remain_balance_3, 0) remain_balance_3,ISNULL(t.remain_balance_4, 0) remain_balance_4,ISNULL(t.remain_balance_5, 0) remain_balance_5, t.charge_off
@@ -46,7 +46,7 @@ create view vw_loan_chargeoff_test_$(datasize)
 as
 select t.loanId, t.payment_date, t.payment, t.past_due, t.remain_balance,
   l.loan_open_date, l.loanAmount,l.interestRate,l.grade,l.term,l.installment,l.isJointApplication,l.purpose,
-  m.memberId,m.residentialState,m.annualIncome,m.yearsEmployment,m.homeOwnership,m.incomeVerified,m.creditScore,m.dtiRatio,m.revolvingBalance,m.revolvingUtilizationRate,m.numDelinquency2Years,m.numDerogatoryRec,m.numInquiries6Mon,m.lengthCreditHistory,m.numOpenCreditLines,m.numTotalCreditLines,m.numChargeoff1year,
+  m.memberId,m.residentialState,m.branch,m.annualIncome,m.yearsEmployment,m.homeOwnership,m.incomeVerified,m.creditScore,m.dtiRatio,m.revolvingBalance,m.revolvingUtilizationRate,m.numDelinquency2Years,m.numDerogatoryRec,m.numInquiries6Mon,m.lengthCreditHistory,m.numOpenCreditLines,m.numTotalCreditLines,m.numChargeoff1year,
   ISNULL(t.payment_1, 0) payment_1,ISNULL(t.payment_2, 0) payment_2,ISNULL(t.payment_3, 0) payment_3,ISNULL(t.payment_4, 0) payment_4,ISNULL(t.payment_5, 0) payment_5, 
   ISNULL(t.past_due_1, 0) past_due_1,ISNULL(t.past_due_2, 0) past_due_2,ISNULL(t.past_due_3, 0) past_due_3,ISNULL(t.past_due_4, 0) past_due_4,ISNULL(t.past_due_5, 0) past_due_5,
   ISNULL(t.remain_balance_1, 0) remain_balance_1,ISNULL(t.remain_balance_2, 0) remain_balance_2,ISNULL(t.remain_balance_3, 0) remain_balance_3,ISNULL(t.remain_balance_4, 0) remain_balance_4,ISNULL(t.remain_balance_5, 0) remain_balance_5, t.charge_off
@@ -80,7 +80,7 @@ create view vw_loan_chargeoff_score_$(datasize)
 as
 select t.loanId, t.payment_date, t.payment, t.past_due, t.remain_balance,
   l.loan_open_date, l.loanAmount,l.interestRate,l.grade,l.term,l.installment,l.isJointApplication,l.purpose,
-  m.memberId,m.residentialState,m.annualIncome,m.yearsEmployment,m.homeOwnership,m.incomeVerified,m.creditScore,m.dtiRatio,m.revolvingBalance,m.revolvingUtilizationRate,m.numDelinquency2Years,m.numDerogatoryRec,m.numInquiries6Mon,m.lengthCreditHistory,m.numOpenCreditLines,m.numTotalCreditLines,m.numChargeoff1year,
+  m.memberId,m.residentialState,m.branch,m.annualIncome,m.yearsEmployment,m.homeOwnership,m.incomeVerified,m.creditScore,m.dtiRatio,m.revolvingBalance,m.revolvingUtilizationRate,m.numDelinquency2Years,m.numDerogatoryRec,m.numInquiries6Mon,m.lengthCreditHistory,m.numOpenCreditLines,m.numTotalCreditLines,m.numChargeoff1year,
   ISNULL(t.payment_1, 0) payment_1,ISNULL(t.payment_2, 0) payment_2,ISNULL(t.payment_3, 0) payment_3,ISNULL(t.payment_4, 0) payment_4,ISNULL(t.payment_5, 0) payment_5, 
   ISNULL(t.past_due_1, 0) past_due_1,ISNULL(t.past_due_2, 0) past_due_2,ISNULL(t.past_due_3, 0) past_due_3,ISNULL(t.past_due_4, 0) past_due_4,ISNULL(t.past_due_5, 0) past_due_5,
   ISNULL(t.remain_balance_1, 0) remain_balance_1,ISNULL(t.remain_balance_2, 0) remain_balance_2,ISNULL(t.remain_balance_3, 0) remain_balance_3,ISNULL(t.remain_balance_4, 0) remain_balance_4,ISNULL(t.remain_balance_5, 0) remain_balance_5, t.charge_off

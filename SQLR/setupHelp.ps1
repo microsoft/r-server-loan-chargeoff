@@ -10,7 +10,16 @@
 path to the solution folder with data and source.
 
 #>
-param( [string]$helpfile, [string]$solutionPath)
+[CmdletBinding()]
+param(
+[parameter(Mandatory=$true, Position=1, ParameterSetName = "LCR")]
+[ValidateNotNullOrEmpty()] 
+[string]$helpfile,
+
+[parameter(Mandatory=$true, Position=2, ParameterSetName = "LCR")]
+[ValidateNotNullOrEmpty()] 
+[string]$solutionPath
+)
 
 #git clone 
 $desktop = [Environment]::GetFolderPath("Desktop")

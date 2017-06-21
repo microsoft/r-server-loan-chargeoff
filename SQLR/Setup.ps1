@@ -19,8 +19,39 @@ login username for the server
 .PARAMETER password
 login password for the server
 
+.PARAMETER sqlUsername
+User to create in SQL Server
+
+.PARAMETER sqlPassword
+Password for the SQL User
+
 #>
-param([string]$serverName,[string]$baseurl,[string]$username,[string]$password)
+[CmdletBinding()]
+param(
+[parameter(Mandatory=$true, Position=1, ParameterSetName = "LCR")]
+[ValidateNotNullOrEmpty()] 
+[string]$serverName,
+
+[parameter(Mandatory=$true, Position=2, ParameterSetName = "LCR")]
+[ValidateNotNullOrEmpty()] 
+[string]$baseurl,
+
+[parameter(Mandatory=$true, Position=3, ParameterSetName = "LCR")]
+[ValidateNotNullOrEmpty()] 
+[string]$username,
+
+[parameter(Mandatory=$true, Position=4, ParameterSetName = "LCR")]
+[ValidateNotNullOrEmpty()] 
+[string]$password,
+
+[parameter(Mandatory=$true, Position=5, ParameterSetName = "LCR")]
+[ValidateNotNullOrEmpty()] 
+[string]$sqlUsername,
+
+[parameter(Mandatory=$true, Position=6, ParameterSetName = "LCR")]
+[ValidateNotNullOrEmpty()] 
+[string]$sqlPassword
+)
 
 $startTime= Get-Date
 Write-Host "Start time for setup is:" $startTime
@@ -91,7 +122,7 @@ $command1 = "runDB.ps1"
 $command2 ="setupHelp.ps1"
 
 Enable-PSRemoting -Force
-Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command1 -ArgumentList $dataDirPath, $sqlsolutionCodePath
+Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command1 -ArgumentList $dataDirPath, $sqlsolutionCodePath, $sqlUsername, $sqlPassword
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command2 -ArgumentList $helpShortCutFilePath, $solutionTemplateSetupPath
 Disable-PSRemoting -Force
 
