@@ -35,7 +35,10 @@ prepare_newdata <- function(HDFSDataDir,
                     remain_balance_3 = list(type = "numeric"),
                     remain_balance_4 = list(type = "numeric"),
                     remain_balance_5 = list(type = "numeric"))
-    dataDS <- RxTextData(file = file.path(HDFSDataDir, Loan_Data), missingValueString = "M", colInfo = colInfo, fileSystem = hdfsFS)
+    dataDS <- RxTextData(file = file.path(HDFSDataDir, Loan_Data), missingValueString = "M", 
+                         colInfo = colInfo, 
+                         quotedDelimiters = TRUE,
+                         fileSystem = hdfsFS)
   } else if (is(Loan_Data)[1] == "data.frame"){
     dataDS <- Loan_Data
   } else {
