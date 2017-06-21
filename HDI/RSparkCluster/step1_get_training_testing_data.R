@@ -45,7 +45,7 @@ prepare_training_testing <- function(HDFSDataDir,
                   remain_balance_4 = list(type = "numeric"),
                   remain_balance_5 = list(type = "numeric"))
   
-  dataDS <- RxTextData(file = dataSet, missingValueString = "M", colInfo = colInfo, fileSystem = hdfsFS)
+  dataDS <- RxTextData(file = dataSet, missingValueString = "M", colInfo = colInfo, quotedDelimiters = TRUE, fileSystem = hdfsFS)
   
   ## extract training pieces based on process date 
   print("making training data on HDFS...")
