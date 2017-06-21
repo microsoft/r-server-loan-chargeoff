@@ -33,10 +33,10 @@ library(RevoScaleR)
 library(MicrosoftML)
 # Get best_model.
 best_model <- unserialize(best_model)
-scoring_set <- RxSqlServerData(table=score_set, connectionString = connection_string)
+scoring_set <- RxSqlServerData(table=score_set, colInfo = (list(charge_off = list(type="integer"))), connectionString = connection_string)
 scored_output <- RxSqlServerData(table=score_prediction, connectionString = connection_string, overwrite=TRUE)
 print(summary(best_model))
-rxPredict(best_model, scoring_set, outData = scored_output, extraVarsToWrite = c("memberId", "loanId", "payment_date"), overwrite=TRUE)
+rxPredict(best_model, scoring_set, outData = scored_output, extraVarsToWrite = c("loanId", "payment_date"), overwrite=TRUE)
 '
 , @params = N'@best_model varbinary(max), @score_set nvarchar(100), @score_prediction nvarchar(100), @connection_string nvarchar(300)' 
 , @best_model = @bestmodel 

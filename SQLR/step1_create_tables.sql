@@ -45,7 +45,7 @@ DROP TABLE IF EXISTS loan_info_$(datasize)
 
 CREATE TABLE [loan_info_$(datasize)](
 	[loanId] [int],
-	[loan_open_date] [datetime],
+	[loan_open_date] [date],
 	[memberId] [int],
 	[loanAmount] [real],
 	[interestRate] [real],
@@ -64,7 +64,7 @@ DROP TABLE IF EXISTS payments_info_$(datasize)
 
 CREATE TABLE [payments_info_$(datasize)](
 	[loanId] [int],
-	[payment_date] [datetime],
+	[payment_date] [date],
 	[payment] [real],
 	[past_due] [real],
 	[remain_balance] [real],

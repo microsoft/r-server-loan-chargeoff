@@ -90,7 +90,7 @@ if (model_name == "logistic_reg") {
 }
 print("Done training.")
 # evaluate model
-rxPredict(model, testing_set, outData = scoring_set, extraVarsToWrite = c("memberId", "loanId", "charge_off"), overwrite=TRUE)
+rxPredict(model, testing_set, outData = scoring_set, extraVarsToWrite = c("loanId", "payment_date", "charge_off"), overwrite=TRUE)
 print("Done writing predictions for evaluation of model.")
 model_stats <- model_eval_stats(scoring_set)
 print(model_stats)
