@@ -64,14 +64,12 @@ training_evaluation <- function(HDFSWorkDir,
   ###################################################################
   # get the formula for modeling
   modelFormula <- as.formula(paste(paste("charge_off~"), paste(selectedFeaturesName, collapse = "+")))
-  mlTrans <- list(categorical(vars = c("purpose", "residentialState", "branch", "homeOwnership", "yearsEmployment")))
   # Train the Random Forest.
   print("Training RF model...")
   forest_model <- rxFastForest(modelFormula, 
                                data = trainingSet, 
                                numTrees = 100, 
-                               numLeaves = 100, 
-                               mlTransforms = mlTrans)
+                               numLeaves = 100)
   
   # save the fitted model to local edge node.
   rxSetComputeContext('local')
@@ -85,7 +83,6 @@ training_evaluation <- function(HDFSWorkDir,
   rxSetComputeContext(sparkContext)
   logistic_model <- rxLogisticRegression(formula = modelFormula,
                                          data = trainingSet,
-                                         mlTransforms = mlTrans,
                                          reportProgress = 0)
   
   # save the fitted model to local edge node.
@@ -100,7 +97,6 @@ training_evaluation <- function(HDFSWorkDir,
   rxSetComputeContext(sparkContext)
   tree_model <- rxFastTrees(formula = modelFormula,
                             data = trainingSet,
-                            mlTransforms = mlTrans,
                             reportProgress = 0)
   
   # save the fitted model to local edge node.
@@ -115,7 +111,6 @@ training_evaluation <- function(HDFSWorkDir,
   rxSetComputeContext(sparkContext)
   linear_model <- rxFastLinear(formula = modelFormula,
                                data = trainingSet,
-                               mlTransforms = mlTrans,
                                reportProgress = 0)
   
   # save the fitted model to local edge node.
@@ -130,9 +125,8 @@ training_evaluation <- function(HDFSWorkDir,
   rxSetComputeContext(sparkContext)
   NN_model <- rxNeuralNet(formula = modelFormula,
                           data = trainingSet,
-                          numIterations = 42,
+                          numIterations = 6,
                           optimizer = adaDeltaSgd(),
-                          mlTransforms = mlTrans,
                           reportProgress = 0)
   
   # save the fitted model to local edge node.
@@ -151,7 +145,7 @@ training_evaluation <- function(HDFSWorkDir,
   rxSetComputeContext(sparkContext)
   Prediction_Table_RF <- RxXdfData(file = paste(HDFSIntermediateDir, "/PredictionTableRFXdf", sep=""),fileSystem = hdfsFS)
   fitScores <- rxPredict(forest_model, testingSet, suffix = ".rxFastForest",
-                         extraVarsToWrite = c("memberId", "loanId", selectedFeaturesName, "charge_off"),
+                         extraVarsToWrite = names(testingSet),
                          outData = Prediction_Table_RF, overwrite = TRUE)
   
   print("Predicting on Logistic regression model...")
