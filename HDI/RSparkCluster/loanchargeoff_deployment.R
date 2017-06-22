@@ -137,6 +137,7 @@ result_string <- api_string$loan_web_scoring(
   userName = Sys.info()[["user"]],
   Stage = "Web")
 
+rxSetComputeContext("local")
 Loan_Data_df <- rxImport(RxTextData(file = file.path(HDFSDataDir, Loan_Data), 
                                     missingValueString = "M", 
                                     quotedDelimiters = TRUE,
