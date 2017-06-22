@@ -219,8 +219,8 @@ function ScoreData
     Write-Host -ForeGroundColor 'magenta'("    Done creating batch scoring stored proc...")
 
     #score on the data
-    $best_model = ExecuteSQLQuery "select top 1 model from $modelTable where f1score in (select max(f1score) from $modelTable)"
-    Write-Host -ForeGroundColor 'Cyan' ("Scoring based on best performing model $($modelNames.Get_Item($best_model.model)) score table = $scoreTable, prediction table = $predictionTable...")
+    $best_model = ExecuteSQLQuery "select top 1 model_name from $modelTable where f1score in (select max(f1score) from $modelTable)"
+    Write-Host -ForeGroundColor 'Cyan' ("Scoring based on best performing model '$($modelNames.Get_Item($best_model.model_name))' score table = $scoreTable, prediction table = $predictionTable...")
     $scoring_query = "EXEC predict_chargeoff $scoreTable, $predictionTable, $modelTable"
     $scoringStart = Get-Date
     ExecuteSQLQuery $scoring_query
