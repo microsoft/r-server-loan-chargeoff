@@ -26,10 +26,10 @@ CREATE PROCEDURE [train_model] @training_set_table nvarchar(100), @test_set_tabl
 AS 
 BEGIN
 
-	DECLARE @payload varbinary(max), @auc real, @accuracy real, @precision real, @recall real, @f1score real;
-	DECLARE @del_cmd nvarchar(300), @ins_cmd nvarchar(300), @param_def nvarchar(300);
-	EXECUTE sp_execute_external_script @language = N'R',
-					   @script = N' 
+    DECLARE @payload varbinary(max), @selected_features nvarchar(1000), @auc real, @accuracy real, @precision real, @recall real, @f1score real;
+    DECLARE @del_cmd nvarchar(300), @ins_cmd nvarchar(300), @param_def nvarchar(300);
+    EXECUTE sp_execute_external_script @language = N'R',
+                       @script = N' 
 library(RevoScaleR)
 library(MicrosoftML)
 # model evaluation functions
@@ -63,32 +63,40 @@ vars_to_remove <- c("memberId", "loanId", "payment_date", "loan_open_date", "cha
 feature_names <- features[!(features %in% vars_to_remove)]
 model_formula <- as.formula(paste(paste("charge_off~"), paste(feature_names, collapse = "+")))
 ml_trans <- list(categorical(vars = c("purpose", "residentialState", "branch", "homeOwnership", "yearsEmployment")),
-				 selectFeatures(model_formula, mode = mutualInformation(numFeaturesToKeep = 100)))
+                 selectFeatures(model_formula, mode = mutualInformation(numFeaturesToKeep = 100)))
 
 if (model_name == "logistic_reg") {
-	model <- rxLogisticRegression(formula = model_formula,
-	 			     data = training_set,
-				     mlTransforms = ml_trans)
+    model <- rxLogisticRegression(formula = model_formula,
+                      data = training_set,
+                     mlTransforms = ml_trans)
 } else if (model_name == "fast_trees") {
-	model <- rxFastTrees(formula = model_formula,
-	 			     data = training_set,
-				     mlTransforms = ml_trans)
+    model <- rxFastTrees(formula = model_formula,
+                      data = training_set,
+                     mlTransforms = ml_trans)
 } else if (model_name == "fast_forest") {
-	model <- rxFastForest(formula = model_formula,
-	 			     data = training_set,
-				     mlTransforms = ml_trans)
+    model <- rxFastForest(formula = model_formula,
+                      data = training_set,
+                     mlTransforms = ml_trans)
 } else if (model_name == "fast_linear") {
-	model <- rxFastLinear(formula = model_formula,
-	 			     data = training_set,
-				     mlTransforms = ml_trans)
+    model <- rxFastLinear(formula = model_formula,
+                      data = training_set,
+                     mlTransforms = ml_trans)
 } else if (model_name == "neural_net") {
-	model <- rxNeuralNet(formula = model_formula,
-	 			     data = training_set,
-					 numIterations = 42,
+    model <- rxNeuralNet(formula = model_formula,
+                      data = training_set,
+                     numIterations = 42,
                      optimizer = adaDeltaSgd(),
-				     mlTransforms = ml_trans)
+                     mlTransforms = ml_trans)
 }
 print("Done training.")
+
+# selected features
+features_to_remove <- c("(Bias)")
+selected_features <- rxGetVarInfo(summary(model)$summary)
+selected_feature_names <- names(selected_features)
+selected_feature_filtered <- selected_feature_names[!(selected_feature_names %in% features_to_remove)]
+selected_features_str <- paste(selected_feature_filtered, collapse=",")
+
 # evaluate model
 rxPredict(model, testing_set, outData = scoring_set, extraVarsToWrite = c("loanId", "payment_date", "charge_off"), overwrite=TRUE)
 print("Done writing predictions for evaluation of model.")
@@ -103,13 +111,14 @@ stat_recall <- model_stats[[4]]
 stat_f1score <- model_stats[[5]]
 '
 , @params = N'@model_name nvarchar(50), @connection_string nvarchar(300), @train_set nvarchar(100), @test_set nvarchar(100), @score_set nvarchar(100),
-			@modelbin varbinary(max) OUTPUT, @stat_auc real OUTPUT, @stat_accuracy real OUTPUT, @stat_precision real OUTPUT, @stat_recall real OUTPUT, @stat_f1score real OUTPUT'
+            @modelbin varbinary(max) OUTPUT, @selected_features_str nvarchar(1000) OUTPUT, @stat_auc real OUTPUT, @stat_accuracy real OUTPUT, @stat_precision real OUTPUT, @stat_recall real OUTPUT, @stat_f1score real OUTPUT'
 , @model_name = @model_alg
 , @connection_string = @connectionString
 , @train_set = @training_set_table
 , @test_set = @test_set_table
 , @score_set = @scored_table
 , @modelbin = @payload OUTPUT
+, @selected_features_str = @selected_features OUTPUT
 , @stat_auc = @auc OUTPUT
 , @stat_accuracy = @accuracy OUTPUT
 , @stat_precision = @precision OUTPUT
@@ -118,20 +127,22 @@ stat_f1score <- model_stats[[5]]
 
 SET @del_cmd = N'DELETE FROM ' + @model_table + N' WHERE model_name = ''' + @model_alg + ''''
 EXEC sp_executesql @del_cmd;
-SET @ins_cmd = N'INSERT INTO ' + @model_table + N' (model_name, model, auc, accuracy, precision, recall, f1score) VALUES (''' + @model_alg + ''', @p_payload, @p_auc, @p_accuracy, @p_precision, @p_recall, @p_f1score)'
+SET @ins_cmd = N'INSERT INTO ' + @model_table + N' (model_name, model, selected_features, auc, accuracy, precision, recall, f1score) VALUES (''' + @model_alg + ''', @p_payload, @p_selected_features, @p_auc, @p_accuracy, @p_precision, @p_recall, @p_f1score)'
 SET @param_def = N'@p_payload varbinary(max),
-				   @p_auc real,
-				   @p_accuracy real,
-				   @p_precision real,
-				   @p_recall real,
-				   @p_f1score real'
+                   @p_selected_features nvarchar(1000),
+                   @p_auc real,
+                   @p_accuracy real,
+                   @p_precision real,
+                   @p_recall real,
+                   @p_f1score real'
 EXEC sp_executesql @ins_cmd, @param_def, 
-								@p_payload=@payload,
-								@p_auc=@auc,
-								@p_accuracy=@accuracy,
-								@p_precision=@precision,
-								@p_recall=@recall,
-								@p_f1score=@f1score;
+                                @p_payload=@payload,
+                                @p_selected_features=@selected_features,
+                                @p_auc=@auc,
+                                @p_accuracy=@accuracy,
+                                @p_precision=@precision,
+                                @p_recall=@recall,
+                                @p_f1score=@f1score;
 
 ;
 END

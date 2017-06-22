@@ -86,7 +86,7 @@ cd $solutionTemplateSetupPath
 
 if (Test-Path $checkoutDir)
 {
-	Remove-Item $checkoutDir -Force -Recurse
+    Remove-Item $checkoutDir -Force -Recurse
 }
 
 git clone -n https://github.com/Microsoft/r-server-loan-chargeoff $checkoutDir
@@ -103,13 +103,13 @@ cd $sqlsolutionCodePath
 Write-Host -ForeGroundColor 'magenta' "Checking integrity of downloaded files..."
 foreach ($dataFile in $dataList)
 {
-	$dataFileHash = Get-FileHash ($dataDirPath + "\" + $dataFile + $dataExtn) -Algorithm SHA512
-	$storedHash = Get-Content ($dataFile + $hashExtn)
-	if ($dataFileHash.Hash -ne $storedHash)
-	{
-		Write-Error "Data file has been corrupted. Please try again."
-		throw
-	}
+    $dataFileHash = Get-FileHash ($dataDirPath + "\" + $dataFile + $dataExtn) -Algorithm SHA512
+    $storedHash = Get-Content ($dataFile + $hashExtn)
+    if ($dataFileHash.Hash -ne $storedHash)
+    {
+        Write-Error "Data file has been corrupted. Please try again."
+        throw
+    }
 }
 Write-Host -ForeGroundColor 'magenta' "File integrity check successful."
 

@@ -58,21 +58,21 @@ $sqlcmdvars = @{"username" = "$sqlUsername"; "password" = "$sqlPassword"}
 $old_env = @{}
 
 foreach ($var in $sqlcmdvars.GetEnumerator()) {
-	# Save Environment
-	$old_env.Add($var.Name, [Environment]::GetEnvironmentVariable($var.Value, "User"))
-	[Environment]::SetEnvironmentVariable($var.Name, $var.Value)
+    # Save Environment
+    $old_env.Add($var.Name, [Environment]::GetEnvironmentVariable($var.Value, "User"))
+    [Environment]::SetEnvironmentVariable($var.Name, $var.Value)
 }
 try {
-	#sqlcmd -S $env:COMPUTERNAME -b -i .\createuser.sql
-	Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile .\createuser.sql
+    #sqlcmd -S $env:COMPUTERNAME -b -i .\createuser.sql
+    Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile .\createuser.sql
 } catch {
-	Write-Host -ForegroundColor 'Yellow' "Error creating database user, see error message output"
-	Write-Host -ForegroundColor 'Red' $Error[0].Exception 
+    Write-Host -ForegroundColor 'Yellow' "Error creating database user, see error message output"
+    Write-Host -ForegroundColor 'Red' $Error[0].Exception 
 } finally {
-	# Restore Environment
-	foreach ($var in $old_env.GetEnumerator()) {
-		[Environment]::SetEnvironmentVariable($var.Name, $var.Value)
-	}
+    # Restore Environment
+    foreach ($var in $old_env.GetEnumerator()) {
+        [Environment]::SetEnvironmentVariable($var.Name, $var.Value)
+    }
 }
 Write-Host -ForegroundColor 'Cyan' "Done creating database user"
 
@@ -81,6 +81,6 @@ $query = "IF NOT EXISTS(SELECT * FROM sys.databases WHERE NAME = '$dbname') CREA
 Invoke-Sqlcmd -ServerInstance $ServerName -Username $sqlUsername -Password "$sqlPassword" -Query $query -ErrorAction SilentlyContinue
 if ($? -eq $false)
 {
-	Write-Host -ForegroundColor Red "Failed to execute sql query to create database."
+    Write-Host -ForegroundColor Red "Failed to execute sql query to create database."
 }
 .\Loan_ChargeOff.ps1 -ServerName $env:COMPUTERNAME -DBName $dbname -sqlUsername $sqlUsername -sqlPassword "$sqlPassword" -uninterrupted y -dataPath $datadir

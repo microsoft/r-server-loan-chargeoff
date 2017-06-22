@@ -8,14 +8,14 @@ USE [master]
 GO
 IF EXISTS (SELECT name  FROM sys.database_principals WHERE name = '$(username)')
 BEGIN
-	PRINT 'Deleting old $(username) user from master'
+    PRINT 'Deleting old $(username) user from master'
     DROP USER [$(username)]
 END
 GO
 IF EXISTS (SELECT name  FROM master.sys.server_principals WHERE name = '$(username)')
 BEGIN
-	PRINT 'Deleting old $(username) login from master'
-	DROP LOGIN [$(username)]
+    PRINT 'Deleting old $(username) login from master'
+    DROP LOGIN [$(username)]
 END
 GO
 --

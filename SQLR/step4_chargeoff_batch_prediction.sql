@@ -23,18 +23,18 @@ AS
 BEGIN
 
     DECLARE @best_model_query nvarchar(300), @param_def nvarchar(100), @spees_model_param_def nvarchar(100)
-	DECLARE @bestmodel varbinary(max)
-	DECLARE @ins_cmd nvarchar(max)
-	DECLARE @inquery nvarchar(max) = N'SELECT * from ' + @score_table
-	SET @best_model_query = 'select top 1 @p_best_model = model from ' + @models_table + ' where f1score in (select max(f1score) from ' + @models_table + ')'
-	SET @param_def = N'@p_best_model varbinary(max) OUTPUT';
+    DECLARE @bestmodel varbinary(max)
+    DECLARE @ins_cmd nvarchar(max)
+    DECLARE @inquery nvarchar(max) = N'SELECT * from ' + @score_table
+    SET @best_model_query = 'select top 1 @p_best_model = model from ' + @models_table + ' where f1score in (select max(f1score) from ' + @models_table + ')'
+    SET @param_def = N'@p_best_model varbinary(max) OUTPUT';
 
-	EXEC sp_executesql @best_model_query, @param_def, @p_best_model=@bestmodel OUTPUT;
+    EXEC sp_executesql @best_model_query, @param_def, @p_best_model=@bestmodel OUTPUT;
 
-	SET @spees_model_param_def = N'@p_bestmodel varbinary(max)'
-	SET @ins_cmd = 'INSERT INTO ' + @score_prediction_table + ' ([loanId], [payment_date], [PredictedLabel], [Score.1], [Probability.1])
+    SET @spees_model_param_def = N'@p_bestmodel varbinary(max)'
+    SET @ins_cmd = 'INSERT INTO ' + @score_prediction_table + ' ([loanId], [payment_date], [PredictedLabel], [Score.1], [Probability.1])
     EXEC sp_execute_external_script @language = N''R'',
-				    @script = N''
+                    @script = N''
 library(RevoScaleR)
 library(MicrosoftML)
 # Get best_model.
