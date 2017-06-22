@@ -119,6 +119,15 @@ go
 create clustered columnstore index [cci_loan_chargeoff_train_$(datasize)] on [loan_chargeoff_train_$(datasize)]
 go
 
+/* helper view for Power BI visualization */
+drop view if exists [vw_loan_chargeoff_train]
+go
+
+create view [vw_loan_chargeoff_train]
+as
+select * from [loan_chargeoff_train_$(datasize)]
+go
+
 drop table if exists [loan_chargeoff_test_$(datasize)]
 go
 
@@ -139,4 +148,13 @@ from [vw_loan_chargeoff_score_$(datasize)]
 go
 
 create clustered columnstore index [cci_loan_chargeoff_score_$(datasize)] on [loan_chargeoff_score_$(datasize)]
+go
+
+/* helper view for Power BI visualization */
+drop view if exists [vw_loan_chargeoff_score]
+go
+
+create view [vw_loan_chargeoff_score]
+as
+select * from [loan_chargeoff_score_$(datasize)]
 go

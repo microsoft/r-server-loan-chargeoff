@@ -111,3 +111,11 @@ CREATE TABLE [loan_chargeoff_prediction_$(datasize)](
 
 GO
 
+/* helper view for Power BI visualization */
+drop view if exists [vw_loan_chargeoff_prediction]
+go
+
+create view [vw_loan_chargeoff_prediction]
+as
+select * from [loan_chargeoff_prediction_$(datasize)]
+go
