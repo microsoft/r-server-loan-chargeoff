@@ -168,16 +168,27 @@ if ($uninterrupted -iIn $yesArray)
             $tableName = $DBName + ".dbo." + $dataFile + $table_suffix
             $tableSchema = $dataFilePath + $dataFile + $table_suffix + ".xml"
             bcp $tableName format nul -c -x -f $tableSchema  -U $sqlUsername -S $ServerName -P "{$sqlPassword}"  -t '|'
-            Write-Host -ForeGroundColor 'magenta'("    Loading {0} to SQL table..." -f $dataFile)
-            bcp $tableName in $destination -t '|' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $sqlUsername -P "{$sqlPassword}" -e $error_file
-            Write-Host -ForeGroundColor 'magenta'("    Done...Loading {0} to SQL table {1}..." -f $dataFile, $tableName)
+			Write-Host -ForeGroundColor 'magenta'("    Loading {0} to SQL table..." -f $dataFile)
+			$bcpStart = Get-Date
+			bcp $tableName in $destination -t '|' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $sqlUsername -P "{$sqlPassword}" -e $error_file
+			if (!$?)
+			{
+				Write-Host -ForegroundColor Red "Error in BCP. Check any SQL error messages."
+				throw
+			}
+			$bcpEnd = Get-Date
+			$bcpTotal = ($bcpEnd - $bcpStart).ToString()
+			Write-Host -ForeGroundColor 'magenta'("    Done...Loading {0} to SQL table {1} Total time: {2}" -f $dataFile, $tableName, $bcpTotal)
         }
 
 		# create the views for features and label with training, test and scoring split
 		Write-Host -ForeGroundColor 'magenta'("    Creating features label view and persisting...")
 		$script = $filepath + "step2_features_label_view.sql"
+		$persistStart = Get-Date
 		ExecuteSQL $script "datasize=$dataSize"
-		Write-Host -ForeGroundColor 'magenta'("    Done creating features label view and persisting...")
+		$persistEnd = Get-Date
+		$persistTime = ($persistEnd - $persistStart).ToString()
+		Write-Host -ForeGroundColor 'magenta'("    Done creating features label view and persisting. Total time: {0}" -f $persistTime)
 	
 		# create the stored procedure for training
 		$script = $filepath + "step3_train_test_model.sql"
@@ -190,7 +201,11 @@ if ($uninterrupted -iIn $yesArray)
 		{
 			Write-Host -ForeGroundColor 'Cyan' (" Training $($modelName.Value)...")
 			$query = "EXEC train_model $trainingTable, $testTable, $evalScoreTable, $modelTable, $($modelName.Name), '$connectionString2'"
+			$startModelling = Get-Date
 			ExecuteSQLQuery $query
+			$endModelling = Get-Date
+			$totalModellingTime = ($endModelling-$startModelling).ToString()
+			Write-Host -ForeGroundColor 'Cyan' (" Finished Training $($modelName.Value) Total time: {0}..." -f $totalModellingTime)
 		}
 		
 		Write-Host -ForeGroundColor 'Cyan' (" Done with training and evaluation of models. Evaluation stats stored in $modelTable...")
@@ -203,7 +218,11 @@ if ($uninterrupted -iIn $yesArray)
 		#score on the data
 		Write-Host -ForeGroundColor 'Cyan' ("Scoring based on best performing model score table = $scoreTable, prediction table = $predictionTable...")
 		$scoring_query = "EXEC predict_chargeoff $scoreTable, $predictionTable, $modelTable"
+		$scoringStart = Get-Date
 		ExecuteSQLQuery $scoring_query
+		$scoringEnd = Get-Date
+		$scoringTotal = ($scoringEnd - $scoringStart).ToString()
+		Write-Host -ForeGroundColor 'Cyan' ("Done batch scoring. Total time: {0}" -f $scoringTotal)
 		
 		# create the stored procedure for recommendations
 		$script = $filepath + "step4a_chargeoff_ondemand_prediction.sql"
@@ -255,8 +274,16 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
             $tableSchema = $dataFilePath + $dataFile + $table_suffix + ".xml"
             bcp $tableName format nul -c -x -f $tableSchema  -U $sqlUsername -S $ServerName -P "{$sqlPassword}"  -t '|'
             Write-Host -ForeGroundColor 'magenta'("    Loading {0} to SQL table..." -f $dataFile)
+			$bcpStart = Get-Date
             bcp $tableName in $destination -t '|' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -U $sqlUsername -P "{$sqlPassword}" -e $error_file
-            Write-Host -ForeGroundColor 'magenta'("    Done...Loading {0} to SQL table {1}..." -f $dataFile, $tableName)
+			if (!$?)
+			{
+				Write-Host -ForegroundColor Red "Error in BCP. Check any SQL error messages."
+				throw
+			}
+			$bcpEnd = Get-Date
+			$bcpTotal = ($bcpEnd - $bcpStart).ToString()
+            Write-Host -ForeGroundColor 'magenta'("    Done...Loading {0} to SQL table {1} Total time: {2}" -f $dataFile, $tableName, $bcpTotal)
         }
     }
     catch
@@ -280,8 +307,12 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
 {
     # create features, labels view
 	Write-Host -ForeGroundColor 'Cyan' (" Creating feature/label views...")
+	$persistStart = Get-Date
     $script = $filepath + "step2_features_label_view.sql"
     ExecuteSQL $script "datasize = $dataSize"
+	$persistEnd = Get-Date
+	$persistTime = ($persistEnd - $persistStart).ToString()
+	Write-Host -ForeGroundColor 'magenta'("    Done creating features label view and persisting. Total time: {0}" -f $persistTime)
 }
 
 ##########################################################################
@@ -326,7 +357,11 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
 	{
 		Write-Host -ForeGroundColor 'Cyan' (" Training $($modelName.Value)...")
 		$query = "EXEC train_model $trainingTable, $testTable, $evalScoreTable, $modelTable, $($modelName.Name), '$connectionString2'"
+		$startModelling = Get-Date
 		ExecuteSQLQuery $query
+		$endModelling = Get-Date
+		$totalModellingTime = ($endModelling-$startModelling).ToString()
+		Write-Host -ForeGroundColor 'Cyan' (" Finished Training $($modelName.Value) Total time: {0}..." -f $totalModellingTime)
 	}
 }
 
@@ -344,12 +379,17 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
 {
     # create the stored procedure for recommendations
     $script = $filepath + "step4_chargeoff_batch_prediction.sql"
+
     ExecuteSQL $script "datasize=$dataSize"
 
     # compute loan chargeoff predictions
-    Write-Host -ForeGroundColor 'Cyan' ("Scoring based on best performing model score table = $scoreTable, prediction table = $predictionTable...")
+    Write-Host -ForeGroundColor 'Cyan' ("Scoring based on best performing model completed. score table = $scoreTable, prediction table = $predictionTable...")
     $query = "EXEC predict_chargeoff $scoreTable, $predictionTable, $modelTable"
-    ExecuteSQLQuery $query
+    $scoringStart = Get-Date
+	ExecuteSQLQuery $query
+	$scoringEnd = Get-Date
+	$scoringTotal = ($scoringEnd - $scoringStart).ToString()
+	Write-Host -ForeGroundColor 'Cyan' ("Done batch scoring. Total time: {0}" -f $scoringTotal)
 }
 
 Write-Host -foregroundcolor 'green' ("Step 4a: Create on demand ChargeOff prediction stored proc")
