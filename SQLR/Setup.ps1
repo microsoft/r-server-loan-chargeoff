@@ -120,10 +120,12 @@ $passwords = $password | ConvertTo-SecureString -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential("$serverName\$username", $passwords)
 $command1 = "runDB.ps1"
 $command2 ="setupHelp.ps1"
+$command3 = "powerBI.ps1"
 
 Enable-PSRemoting -Force
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command1 -ArgumentList $dataDirPath, $sqlsolutionCodePath, $sqlUsername, $sqlPassword
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command2 -ArgumentList $helpShortCutFilePath, $solutionTemplateSetupPath
+Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command3
 Disable-PSRemoting -Force
 
 cd $originalLocation.Path
