@@ -1,3 +1,5 @@
+<img src="./../Resources/Images/hdi.png" align="right">
+
 # Loan ChargeOff Risk - Predicting probability of loans getting charged off
 ## Implemented on R Server for HDInsight Cluster
 
