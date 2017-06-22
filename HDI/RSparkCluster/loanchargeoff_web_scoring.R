@@ -87,7 +87,8 @@ HDFSDataDir <- "/LoanChargeOff/Data"
 HDFSWorkDir <- "/LoanChargeOff/web"
 
 # input data 
-Loan_Data_df <- read.csv("https://raw.githubusercontent.com/Microsoft/r-server-loan-chargeoff/master/HDI/Data/Loan_Data1000.csv")
+download.file("https://raw.githubusercontent.com/Microsoft/r-server-loan-chargeoff/master/HDI/Data/Loan_Data1000.csv", destfile = Loan_Data)
+Loan_Data_df <- read.csv(Loan_Data)
 
 # Call the web service
 result_string <- api_frame$loan_web_scoring(

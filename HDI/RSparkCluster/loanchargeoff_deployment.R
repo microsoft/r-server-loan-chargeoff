@@ -137,7 +137,11 @@ result_string <- api_string$loan_web_scoring(
   userName = Sys.info()[["user"]],
   Stage = "Web")
 
-Loan_Data_df <- rxImport(RxTextData(file = file.path(HDFSDataDir, Loan_Data), fileSystem = RxHdfsFileSystem()))
+Loan_Data_df <- rxImport(RxTextData(file = file.path(HDFSDataDir, Loan_Data), 
+                                    missingValueString = "M", 
+                                    quotedDelimiters = TRUE,
+                                    fileSystem = RxHdfsFileSystem()))
+                                    
 # Verify the data frame input case
 result_string <- api_frame$loan_web_scoring(
   Loan_Data = Loan_Data_df,

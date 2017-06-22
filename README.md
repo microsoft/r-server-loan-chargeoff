@@ -1,3 +1,5 @@
+<img src="Resources/Images/management.jpg" align="right">
+
 # Loan ChargeOff Risk - Predicting probability of loans getting charged off
 ## Implemented on SQL Server 2016 R Services and R Server for HDInsight Cluster
 
