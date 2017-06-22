@@ -61,16 +61,21 @@ $solutionTemplateSetupDir = "LoanChargeOffSolution"
 $solutionTemplateSetupPath = "D:\" + $solutionTemplateSetupDir
 $dataDir = "Data"
 $dataDirPath = $solutionTemplateSetupPath + "\" + $dataDir
-$checkoutDir = "Source"
+$reportsDir = "Reports"
+$reportsDirPath = $solutionTemplateSetupPath + "\" + $reportsDir
+
 New-Item -Path "D:\" -Name $solutionTemplateSetupDir -ItemType directory -force
 New-Item -Path $solutionTemplateSetupPath -Name $dataDir -ItemType directory -force
+New-Item -Path $solutionTemplateSetupPath -Name $reportsDir -ItemType directory -force
+
+$checkoutDir = "Source"
 
 $setupLog = $solutionTemplateSetupPath + "\setup_log.txt"
 Start-Transcript -Path $setupLog -Append
 
 cd $dataDirPath
 
-# List of files to be downloaded
+# List of data files to be downloaded
 $dataList = "loan_info_10k", "member_info_10k", "payments_info_10k", "loan_info_100k", "member_info_100k", "payments_info_100k", "loan_info_1m", "member_info_1m", "payments_info_1m"
 $dataExtn = ".csv"
 $hashExtn = ".hash"
@@ -81,9 +86,18 @@ foreach ($dataFile in $dataList)
     Start-BitsTransfer -Source $down  
 }
 
+# Download Power BI Reports
+cd $reportsDirPath
+$reportsList = "Landscape.pbix", "Portrait.pbix"
+foreach ($report in $reportsList)
+{
+    $down = $baseurl + "/dashboards/TryItNow/" + $report
+    Write-Host -ForeGroundColor 'magenta' "Downloading report $down..."
+    Start-BitsTransfer -Source $down -Destination $report
+}
+
 #checkout setup scripts/code from github
 cd $solutionTemplateSetupPath
-
 if (Test-Path $checkoutDir)
 {
     Remove-Item $checkoutDir -Force -Recurse
@@ -107,10 +121,22 @@ foreach ($dataFile in $dataList)
     $storedHash = Get-Content ($dataFile + $hashExtn)
     if ($dataFileHash.Hash -ne $storedHash)
     {
-        Write-Error "Data file has been corrupted. Please try again."
+        Write-Error "Data file $dataFile has been corrupted. Please try again."
         throw
     }
 }
+
+foreach ($report in $reportsList)
+{
+    $fileHash = Get-FileHash ($reportsDirPath + "\" + $report) -Algorithm SHA512
+    $storedHash = Get-Content ($report + $hashExtn)
+    if ($fileHash.Hash -ne $storedHash)
+    {
+        Write-Error "Report file $report has been corrupted. Please try again."
+        throw
+    }
+}
+
 Write-Host -ForeGroundColor 'magenta' "File integrity check successful."
 
 # Start the script for DB creation. Due to privilege issues with SYSTEM user (the user that runs the 
@@ -125,9 +151,18 @@ $command3 = "powerBI.ps1"
 Enable-PSRemoting -Force
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command1 -ArgumentList $dataDirPath, $sqlsolutionCodePath, $sqlUsername, $sqlPassword
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command2 -ArgumentList $helpShortCutFilePath, $solutionTemplateSetupPath
-Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $command3
 Disable-PSRemoting -Force
 
+# Download PowerBI Desktop installer
+Start-BitsTransfer -Source "https://go.microsoft.com/fwlink/?LinkId=521662&clcid=0x409" -Destination powerbi-desktop.msi
+
+# Silently install PowerBI Desktop
+msiexec.exe /i powerbi-desktop.msi /qn /norestart  ACCEPT_EULA=1
+
+if (!$?)
+{
+    Write-Host -ForeGroundColor Red "Error installing Power BI Desktop. Please install latest Power BI manually."
+}
 cd $originalLocation.Path
 $endTime= Get-Date
 $totalTime = $endTime - $startTime
