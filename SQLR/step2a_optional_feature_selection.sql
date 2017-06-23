@@ -42,9 +42,6 @@ BEGIN
                        @script = N''
 library(RevoScaleR)
 library(MicrosoftML)
-##########################################################################################################################################
-##    Set the compute context to SQL for faster training
-##########################################################################################################################################
 testing_set <- RxSqlServerData(table=test_set, connectionString = connection_string)
 training_set <- RxSqlServerData(table=train_set, connectionString = connection_string)
 
