@@ -3,8 +3,8 @@
 #usage - ./InstallRPackages <package1> <package2> <package3> ...
 #example - ./InstallRPackages useCRAN bitops stringr arules
 
-sed "s;CXX1X =;CXX1X = gcc -std=c++0x;g" Makeconf
-sed "s;CXX1XSTD =;CXX1XSTD = -std=c++0x -fPIC;g" Makeconf
+sed -i "s;CXX1X =;CXX1X = gcc -std=c++0x;g" /usr/lib64/microsoft-r/3.3/lib64/R/etc/Makeconf
+sed -i "s;CXX1XSTD =;CXX1XSTD = -std=c++0x -fPIC;g" /usr/lib64/microsoft-r/3.3/lib64/R/etc/Makeconf
 
 echo "Sample action script to install R packages..."
 
@@ -33,9 +33,9 @@ then
 
         if [ -z $REPO ]
         then
-                R --no-save -q -e "install.packages(c($name))"
+                R --no-save -q -e "install.packages(c($name), dependencies=TRUE)"
         else
-                R --no-save -q -e "install.packages(c($name), repos='$REPO')"
+                R --no-save -q -e "install.packages(c($name), dependencies=TRUE, repos='$REPO')"
         fi
 
 else
@@ -44,4 +44,3 @@ else
 fi
 
 echo "Finished"
-
