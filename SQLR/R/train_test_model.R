@@ -29,22 +29,23 @@ model_eval_stats <- function(scored_data, label="charge_off", predicted_prob="Pr
 # as well as categorical transform.
 # 
 # Parameters:
-#                * connection_string - substitute appropriate username and password along with database name and server if needed
 #                * model_name - name of the model to train_set
 #                * train_set - table name of training set (usually the prefix of 10k/100k/1m will only change based on data set size)
 #                * test_set - table name of testing set
 #                * score_set - table name to be used for scoring the test_set table for evaluation
+#                * connection_string - substitute appropriate username and password along with database name and server if needed
 #
 # Pre-Requisites:
 #                Make sure Loan_ChargeOff.ps1 has been run for your appropriate size data set so the required tables have already been 
 #                created and dataset imported (it's already been run for 10k loans data set)
 #                   
 ###########################################################################################################################################
-train_model <- function(connection_string = "Driver=SQL Server;Server=.;Database=LoanChargeOff;UID=<sql username>;PWD=<sql password>",
-                        model_name = "logistic_regression",
+train_model <- function(model_name = "logistic_regression",
                         train_set = "loan_chargeoff_train_10k",
                         test_set = "loan_chargeoff_test_10k",
-                        score_set = "loan_chargeoff_eval_score_10k")
+                        score_set = "loan_chargeoff_eval_score_10k",
+                        connection_string = "Driver=SQL Server;Server=.;Database=LoanChargeOff;UID=<sql username>;PWD=<sql password>"
+                        )
 {
 
     cc <- RxInSqlServer(connectionString = connection_string)
@@ -62,6 +63,7 @@ train_model <- function(connection_string = "Driver=SQL Server;Server=.;Database
     ml_trans <- list(categorical(vars = c("purpose", "residentialState", "branch", "homeOwnership", "yearsEmployment")),
                     selectFeatures(model_formula, mode = mutualInformation(numFeaturesToKeep = 100)))
     
+    print(paste("Starting to train with", model_name))
     if (model_name == "logistic_reg") {
         model <- rxLogisticRegression(formula = model_formula,
                         data = training_set,
@@ -96,12 +98,15 @@ train_model <- function(connection_string = "Driver=SQL Server;Server=.;Database
     # evaluate model
     rxPredict(model, testing_set, outData = scoring_set, extraVarsToWrite = c("loanId", "payment_date", "charge_off"), overwrite=TRUE)
     print("Done writing predictions for evaluation of model.")
-    model_eval_stats(scoring_set)
-    
-    
+    list(model_name = model_name, model = model, stats = model_eval_stats(scoring_set))
 }
 
-model_stats <- train_model()
-model_stats
+# train on MicrosoftML algorithms
+ml_algs <- c("logistic_reg", "fast_trees", "fast_forest", "fast_linear", "neural_net")
+model_stats <- lapply(ml_algs, train_model)
 
-# Get best model based on model_stats
+# find the best model based on f1score
+best_model <- model_stats[[which.max(sapply(model_stats, function(stat) stat$stats$f1score))]]
+# save to file for use during scoring
+save(best_model, file="loan_chargeoff_best_model_10k.rdata")
+best_model

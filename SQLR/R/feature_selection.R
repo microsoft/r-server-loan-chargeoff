@@ -32,6 +32,8 @@ select_features <- function(connection_string = "Driver=SQL Server;Server=.;Data
                     selectFeatures(model_formula, mode = mutualInformation(numFeaturesToKeep = 100)))
     candidate_model <- rxLogisticRegression(model_formula, data = training_set, mlTransforms = ml_trans)
     predicted_score <- rxPredict(candidate_model, testing_set, extraVarsToWrite = c("charge_off"))
+    # set compute context to local otherwise need to store prediction in RxSqlServerData data source for RxInSqlServer compute context
+    rxSetComputeContext("local")
     predicted_roc <- rxRoc("charge_off", grep("Probability", names(predicted_score), value = T), predicted_score)
     auc <- rxAuc(predicted_roc)
     

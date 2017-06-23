@@ -5,7 +5,7 @@ library(MicrosoftML)
 # 
 # Parameters:
 #                * connection_string - substitute appropriate username and password along with database name and server if needed
-#                * models_table - table where model binary is stored
+#                * best_models_file - file where best_model object from training/testing step is stored
 #                * score_set - table name of for scoring data (usually the prefix of 10k/100k/1m will only change based on data set size)
 #                * score_prediction - table name where to store prediction results
 #
@@ -16,19 +16,22 @@ library(MicrosoftML)
 #                   
 ###########################################################################################################################################
 batch_score <- function (connection_string = "Driver=SQL Server;Server=.;Database=LoanChargeOff;UID=<sql username>;PWD=<sql password>",
-                         best_models_file = "loan_chargeoff_models_10k.rds",
+                         best_models_file = "loan_chargeoff_best_model_10k.rdata",
                          score_set = "loan_chargeoff_score_10k",
                          score_prediction = "loan_chargeoff_prediction_10k")
 {
-    best_model <- load(best_models_file)
+    load(best_models_file)
+    if (!exists("best_model"))
+    {
+      stop("best_models_file does not contain best_model object, make sure you saved it properly during training step.")
+    }
     cc <- RxInSqlServer(connectionString = connection_string)
     rxSetComputeContext(cc)
-    scoring_data <- RxSqlServevrData(table = score_set, connectionString = connection_string)
-    prediction_data <- RxSqlServevrData(table = score_prediction, connectionString = connection_string)
+    scoring_data <- RxSqlServerData(table = score_set, connectionString = connection_string)
+    prediction_data <- RxSqlServerData(table = score_prediction, connectionString = connection_string)
     
     # Warning: this will drop and recreate the prediction table
-    rxPredict(best_model, scoring_data, outData = extraVarsToWrite = c("loanId", "payment_date"), overwrite=TRUE)
-
+    rxPredict(best_model$model, scoring_data, outData = prediction_data, extraVarsToWrite = c("loanId", "payment_date"), overwrite=TRUE)
 }
 
 batch_score()
