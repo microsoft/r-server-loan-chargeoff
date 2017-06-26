@@ -48,6 +48,27 @@ Param(
 [string]$dbname="LoanChargeOff"
 )
 
+# Change SQL Server to mixed mode authentication
+### Check and see if SQL Service is Running , if not start it 
+
+$ServiceName = 'MSSQLSERVER'
+$arrService = Get-Service -Name $ServiceName
+if ($arrService.Status -ne "Running"){
+    Start-Service $ServiceName}
+
+### Change Authentication From Windows Auth to Mixed Mode 
+Invoke-Sqlcmd -Query "EXEC xp_instance_regwrite N'HKEY_LOCAL_MACHINE', N'Software\Microsoft\MSSQLServer\MSSQLServer', N'LoginMode', REG_DWORD, 2;" -ServerInstance "LocalHost" 
+
+### Stop the SQL Service 
+Stop-Service -Force $ServiceName
+
+### Start the SQL Service 
+Start-Service $ServiceName
+
+### Start SQL Launch Pad and SQL Server Agent as this is Dependent on the SQL Service and is stopped with -force
+Start-Service MSSQLLaunchpad
+Start-Service SQLSERVERAGENT
+
 cd $scriptdir
 # create the database user
 Write-Host -ForegroundColor 'Cyan' "Creating database user"
