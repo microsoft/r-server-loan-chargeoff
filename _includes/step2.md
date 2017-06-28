@@ -22,7 +22,7 @@ The input to this script defaults to 10,000 loans to be scored with the model in
 <a href="https://microsoft.github.io/r-server-loan-chargeoff/dba.html#workflow-automation"> SQL Workflow Automation </a> 
 </div>
 
-<div class=" hdi" >
+<div class="hdi">
 Below is a summary of the individual steps used for this solution. 
 <ul>
 <li>  <strong>step1_get_training_testing_data.R</strong>: Read input data which contains all the history information for all the loans from HDFS. Extract training/testing data based on process date (paydate) from the input data. Save training/testing data in HDFS working directory </li>
@@ -35,7 +35,7 @@ Below is a summary of the individual steps used for this solution.
 You can run these scripts if you wish, but you may also skip them if you want to get right to the modeling.  The data that these scripts create already exists in the SQL database.
 <p/>
 </div>
-<div class=" hdi" >
+<div class="hdi" >
 To run all the scripts described above as well as those in the next few steps, open and execute the file <strong>loanchargeoff_main.R.</strong>
 <p/>
 </div>
