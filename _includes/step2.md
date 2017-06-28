@@ -21,7 +21,7 @@ The input to this script defaults to 10,000 loans to be scored with the model in
 
 Below is a summary of the individual steps used for this solution. 
 <ol>
-<li class="sql">  <a href="https://microsoft.github.io/r-server-loan-chargeoff/dba.html#workflow-automation"> SQL Workflow Automation </li>
+<li class="sql">  <a href="https://microsoft.github.io/r-server-loan-chargeoff/dba.html#workflow-automation"> SQL Workflow Automation </a> </li>
 
 <li>
 The first few steps prepare the data for training.

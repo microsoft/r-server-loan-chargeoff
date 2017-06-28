@@ -145,12 +145,12 @@ Now that Debra's environment is set up, she  opens her IDE and creates a Project
 
 Debra can follow the steps listed in For the Database Analyst. To understand each of the steps, Debra should execute each of the steps including the optional step in feature selection.
 
-* Step 1: Creating Tables
-* Step 2: Creating Views with Features and Labels
-* Step 2a: Demonstrate feature selection using MicrosoftML package 
-* Step 3: Training and Testing Model
-* Step 4: Chargeoff Prediction (batch)
-* Step 4a:  Chargeoff Prediction (OnDemand)
+*   Step 1: Creating Tables
+*   Step 2: Creating Views with Features and Labels
+*   Step 2a: Demonstrate feature selection using MicrosoftML package 
+*   Step 3: Training and Testing Model
+*   Step 4: Chargeoff Prediction (batch)
+*   Step 4a:  Chargeoff Prediction (OnDemand)
 
 </div>
 
