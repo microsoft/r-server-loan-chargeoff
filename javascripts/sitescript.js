@@ -6,14 +6,16 @@ $(document).ready( function(){
 // or dropdown list choice. 
 
 // Get the cookie.  If no cookie, default to CIG and set the cookie.
-    if (Cookies.get('platform')) {
-        platform = (Cookies.get('platform'));
+// XXX change the -sitename for each new website so the cookies don't overlap sites!
+// there are 7 occurrences of Cookies.get or .set in this script - change them all.
+    if (Cookies.get('platform-chargeoff')) {
+        platform = (Cookies.get('platform-chargeoff'));
         console.log('got the cookie '+ platform )
     } else {
         platform = 'cig';
-        Cookies.set('platform', platform );       
+        Cookies.set('platform-chargeoff', platform );       
     }
-    if (Cookies.get('platform') != platform) {
+    if (Cookies.get('platform-chargeoff') != platform) {
         // if cookies don't work, show the dropdown instead on pages which need it.
         $('.choose').css("display","inline");
     }
@@ -25,7 +27,7 @@ if ( window.location.search.split('=')[1]) {
     console.log (" Argument is " + platform )
     // make sure the argument is a valid value  
     if ($.inArray( platform, [ "cig","onp", "hdi" ] ) > -1 ) {
-        Cookies.set('platform', platform ); 
+        Cookies.set('platform-chargeoff', platform ); 
     }
 }
 
@@ -40,14 +42,14 @@ if ( window.location.search.split('=')[1]) {
     $('.ch-platform').change(function () {
         var newval = $('.ch-platform option:selected').val();
         changeVis ( newval );
-        Cookies.set ('platform', newval )
+        Cookies.set ('platform-chargeoff', newval )
         setRb ( newval );
     });
 
     //changing the radiobutton changes visibility, cookie, and dl
     $('input[type=radio][name=optradio]').change(function(){
         changeVis( this.value );
-        Cookies.set('platform', this.value );
+        Cookies.set('platform-chargeoff', this.value );
         setDl ( this.value );
     });
 
