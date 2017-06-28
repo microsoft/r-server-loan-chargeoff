@@ -10,6 +10,6 @@ cig_text: SQL Server 2016 on Azure
 onp_text: SQL Server 2016 On-Prem 
 hdi_text: HDInsight Spark 
 
-pbix_hdidownload_url: "https://github.com/Microsoft/r-server-campaign-optimization/blob/master/Campaign%20Optimization%20Dashboard%20HDI.pbix"
-pbix_sqldownload_url: "https://github.com/Microsoft/r-server-campaign-optimization/blob/master/Campaign%20Optimization%20Dashboard.pbix"
-pbix_view_url: "https://pcsadwebapp.azurewebsites.net/Solutions/Byod?solutionId=campaignoptimization"
+pbix_hdidownload_url: "https://github.com/Microsoft/r-server-loan-chargeoff/blob/master/HDI/LoanChargeOffPredictionDashboardHDI.pbix"
+pbix_sqldownload_url: "https://github.com/Microsoft/r-server-loan-chargeoff/blob/master/SQLR/LoanChargeOffPredictionDashboardSQL.pbix"
+pbix_view_url: "https://pcsadwebapp.azurewebsites.net/Solutions/Byod?solutionId=loanchargeoffsql"
