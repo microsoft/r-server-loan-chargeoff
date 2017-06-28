@@ -15,10 +15,10 @@ solution.
 
 ## Set up Connection between SQL Server and PowerBI  
 <div class="sql">
-Follow the instructions below to set up a connection between your SQL Server database and PowerBI.  Perform these steps after you have created the <code>Campaign</code> database.
+Follow the instructions below to set up a connection between your SQL Server database and PowerBI.  Perform these steps after you have created the <code>LoanChargeOff</code> database.
 </div>
 <div class="hdi">
-Follow the instructions below to set up a connection between your Hive table and PowerBI.  Perform these steps after you have <a href="Typical.html">created the <code>recommendations</code> table by executiong the <strong>campaign_main.R</strong> and <strong>campaign_scoring</strong> </a> scripts.
+Follow the instructions below to set up a connection between your Hive table and PowerBI.  Perform these steps after you have <a href="Typical.html">created the <code>recommendations</code> table by executiong the <strong>LoanChargeOff_main.R</strong> and <strong>LoanChargeOff_scoring</strong> </a> scripts.
 </div>
 <ol>
 <li class="hdi">Download and install the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=49883">Spark ODBC driver.</a></li>
@@ -44,12 +44,12 @@ Select <code>Microsoft Spark ODBC Driver</code> and click <code>Finish</code><sp
 <img src="images/odbcs2.png" width="50%" >
 </li>
 <li class="sql">	
-Under Name, Enter <code>Campaign</code>. Under Server enter the MachineName from the SQL Server logins set up section. Press <code>Next</code>.
+Under Name, Enter <code>LoanChargeOff</code>. Under Server enter the MachineName from the SQL Server logins set up section. Press <code>Next</code>.
    <br/>
 <img src="images/odbc3.png" width="50%" >
 </li>
 <li class="hdi">
-Under Name, Enter <code>Campaign</code>. Add the Host name (of the form <i>myclustername.azurehdinsight.net</i>).  For username, enter <code>admin</code>.  Enter the password you chose when you created the cluster.
+Under Name, Enter <code>LoanChargeOff</code>. Add the Host name (of the form <i>myclustername.azurehdinsight.net</i>).  For username, enter <code>admin</code>.  Enter the password you chose when you created the cluster.
 <br/>
 <img src="images/odbcs3.png" width="50%" >
 </li>
@@ -61,7 +61,7 @@ Select <code>SQL Server authentication</code> and enter the credentials you crea
 
  
  <div class="sql">
-<li>	Check the box for <code>Change the default database to</code> and enter <code>Campaign</code>. Press 
+<li>	Check the box for <code>Change the default database to</code> and enter <code>LoanChargeOff</code>. Press 
 <code>Next</code>.
    <br/>
 <img src="images/odbc5.png" width="50%" >

@@ -163,7 +163,8 @@ Follow <a href="deployr.html">instructions here</a> to connect to the edge node 
 The final step of this solution visualizes these recommendations.
 </div>
 
-<img  src="images/visualize.png">
+<img  src="images/visualize1.png">
+<img  src="images/visualize2.png">
 
 {% include pbix.md %}
 

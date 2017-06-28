@@ -32,8 +32,8 @@ The final predictions are saved to a Hive table containing loan chargeoff predic
 </div>
 
 
-![Visualize](images/visualize.png?raw=true)
-
+![Visualize](images/visualize1.png?raw=true)
+![Visualize](images/visualize2.png?raw=true)
 
 {% include pbix.md %}
 

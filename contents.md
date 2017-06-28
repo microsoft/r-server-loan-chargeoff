@@ -8,11 +8,10 @@ title: Template Contents
 
 The following is the directory structure for this template:
 
-- [**Data**](#copy-of-input-datasets)  This contains the copy of the simulated input data with 100K unique customers. 
-- [**R**](#model-development-in-r)  This contains the R code to simulate the input datasets, pre-process them, create the analytical datasets, train the models, identify the champion model and provide recommendations.
-- [**Resources**](#resources-for-the-solution-packet) This directory contains other resources for the solution package.
-- [**SQLR**](#operationalize-in-sql-2016) This contains T-SQL code to pre-process the datasets, train the models, identify the champion model and provide recommendations. It also contains a PowerShell script to automate the entire process, including loading the data into the database (not included in the T-SQL code).
-- [**RSparkCluster**](#hdinsight-solution-on-spark-cluster) This contains the R code to pre-process the datasets, train the models, identify the champion model and provide recommendations on a Spark cluster. 
+- [**Data**](#copy-of-input-datasets)  This contains the copy of the simulated input data with 100K unique customers.
+- [**R**](#model-development-in-r)  This contains the R code to simulate the input datasets, pre-process them, create the analytical datasets, train the models, identify the champion model and provide predictions.
+- [**SQLR**](#operationalize-in-sql-2016) This contains T-SQL code to pre-process the datasets, train the models, identify the champion model and provide predictions. It also contains a PowerShell script to automate the entire process, including loading the data into the database (not included in the T-SQL code).
+- [**HDI**](#hdinsight-solution-on-spark-cluster) This contains the R code to pre-process the datasets, train the models, identify the champion model and provide predictions on a Spark cluster. 
 
 In this template with SQL Server R Services, two versions of the SQL implementation and another version for HDInsight implementation:
 
@@ -24,21 +23,56 @@ In this template with SQL Server R Services, two versions of the SQL implementat
 ### Copy of Input Datasets
 ----------------------------
 
-{% include data.md %}
+<div class="sql">
+<table class="table table-compressed table-striped">
+  <tr>
+    <th>File</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>loan_info.csv</td>
+    <td>Raw data about each loan of a lending institution</td>
+  </tr>
+  <tr>
+    <td>member_info.csv</td>
+    <td>Raw data about each member of a lending institution</td>
+  </tr>
+  <tr>
+    <td>payments_info.csv</td>
+    <td>Raw data about loan payment history</td>
+  </tr>
+</table>
+</div>
+
+<div class="hdi">
+<table class="table table-compressed table-striped">
+  <tr>
+    <th>File</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Loan_Data1000.csv</td>
+    <td>Raw data about loan payment history for 1000 members</td>
+  </tr>
+  <tr>
+    <td>Loan_Data10000.csv</td>
+    <td>Raw data about loan payment history for 10000 members</td>
+  </tr>
+  <tr>
+    <td>Loan_Data100000.csv</td>
+    <td>Raw data about loan payment history for 100000 members</td>
+  </tr>
+</table>
+</div>
 
 ###  Model Development in R
 -------------------------
-These files  in the **R** directory for the SQL solution.  
+These files  in the **SQLR* directory for the SQL solution.  
 
 <table class="table table-striped table-condensed">
 <tr><th> File </th><th> Description </th></tr>
-<tr><td>Campaign Optimization R Notebook.ipynb  </td><td> Contains the Jupyter Notebook file that runs all the .R scripts </td></tr>
-<tr><td>sql_connection.R </td><td> Contains details of connection to SQL Server used in all other scripts </td></tr>
-<tr><td>step0_data_generation.R </td><td> Simulates the 4 input datasets, not needed unless you wish to regenerate data </td></tr>
-<tr><td>step1_data_processing.R </td><td> Uploads .csv files to SQL and performs data preprocessing steps such as inner joins and missing value treatment  </td></tr>
-<tr><td>step2_feature_engineering.R </td><td> Performs Feature Engineering and creates the Analytical Dataset </td></tr>
-<tr><td>step3_training_evaluation.R </td><td> Builds the Random Forest &amp; Gradient Boosting models, identifies the champion model </td></tr>
-<tr><td>step4_campaign_recommendations.R </td><td>Builds final recommendations from scoring 63 combinations per lead and selecting combo with highest conversion probability  </td></tr>
+<tr><td>step2a_optional_feature_selection.sql </td><td>R script that performs feature selection</td></tr>
+<tr><td>step3_train_test_model.sql</td><td>R script that performs data training using 5 different models and select the best performant model and do testing using the model</td></tr>
 </table>
 
 * See [For the Data Scientist](data-scientist.html?path=cig) for more details about these files.
@@ -51,16 +85,9 @@ These files are in the **SQLR** directory.
 
 <table class="table table-striped table-condensed">
 <tr><th> File </th><th> Description </th></tr>
-<tr><td> step0_create_tables.sql </td><td> SQL Script to create empty tables in SQL. PowerShell script should be used to load the input data</td></tr>
-<tr><td> step1_data_processing.sql  </td><td> Replaces Missing values in dataset with the modes </td></tr>
-<tr><td> step2_feature_engineering.sql </td><td> Performs Feature Engineering and creates the Analytical Dataset</td></tr>
-<tr><td> step3a_splitting.sql </td><td> Splits the analytical dataset into Train and Test</td></tr>
-<tr><td> step3b_train_model.sql</td><td> Trains either RF or GBT model, depending on input parameter</td></tr>
-<tr><td> step3c_test_evaluate_models.sql </td><td> Tests both RF and GBT models</td></tr>
-<tr><td> step4_campaign_recommendations.sql </td><td> Scores data with best model and outputs recommendations </td></tr>
-<tr><td> execute_yourself.sql  </td><td> Executes every stored procedure after running all the other .sql files </td></tr>
-<tr><td> Campaign_Optimization.ps1 </td><td> Loads the input data into the SQL server and automates the running of all .sql files  </td></tr>
-<tr><td> Readme.md  </td><td> Describes the stored procedures in more detail  </td></tr>
+<tr><td> step4_chargeoff_batch_prediction.sql  </td><td>R script that performs scoring using best model on the data split created in Step 2 and store the predictions in [dbo].[loan_chargeoff_prediction_10k]  table.</td></tr>
+<tr><td> step4a_chargeoff_ondemand_prediction.sql   </td><td> chargeoff_ondemand_prediction stored procedure is created for ad-hoc scoring wherein it can be called with a single record and a single prediction result is returned to the caller. </td></tr>
+<tr><td> Loan_chargeoff.ps1  </td><td> Loads the input data into the SQL server and automates the running of all .sql files </td></tr>
 </table>
 
 * See [ For the Database Analyst](dba.html?path=cig) for more information about these files.
@@ -69,40 +96,26 @@ These files are in the **SQLR** directory.
 
 ### HDInsight Solution on Spark Cluster
 ------------------------------------
-These files are in the **RSparkCluster** directory.
+These files are in the **HDI/RSparkCluster** directory.
 
 <table class="table table-striped table-condensed">
 <tr><th> File </th><th> Description </th></tr>
 <tr><td>Copy_Dev2Prod.R </td><td> Copies a model from the <strong>dev</strong> folder to the <strong>prod</strong> folder for production use </td></tr>
-<tr><td>Create_LeadDemo_MarketTouch.R </td><td> Generates Lead_Demography and Market_touchdown tables, used from step0.  Not needed unless you wish to regenerate data </td></tr>
-<tr><td>campaign_deployment.R </td><td> Publishes the scoring function as an analytic web service </td></tr>
-<tr><td>campaign_main.R </td><td> Runs all steps of the solution </td></tr>
-<tr><td>campaign_scoring.R </td><td> Scores new data using a model developed from <strong>campaign_main.R</strong> </td></tr>
-<tr><td>campaign_web_scoring.R </td><td> Uses the scoring funtion created by <strong>campaign_deployment.R</strong>. </td></tr>
-<tr><td>step0_data_generation.R </td><td> Simulates the 4 input datasets, not needed unless you wish to regenerate data </td></tr>
-<tr><td>step1_data_processing.R </td><td> Uploads .csv files to SQL and performs data preprocessing steps such as inner joins and missing value treatment </td></tr>
-<tr><td>step2_feature_engineering.R </td><td> Performs Feature Engineering and creates the Analytical Dataset </td></tr>
-<tr><td>step3_training_evaluation.R </td><td> Builds the Random Forest &amp; Gradient Boosting models, identifies the champion model</td></tr>
-<tr><td>step4_campaign_recommendations.R </td><td>Builds final recommendations from scoring 63 combinations per lead and selecting combo with highest conversion probability</td></tr>
-<tr><td>step5_create_hive_table.R </td><td>Stores recommendations in a Hive table for use in PowerBI</td></tr>
+<tr><td>loanchargeoff_main.R </td><td> is used to define the data and directories and then run all of the steps to process data, perform feature engineering, training, and scoring. </td></tr>
+<tr><td>loanchargeoff_scoring.R</td><td>uses the previously trained model and invokes the steps to process data, perform feature engineering and scoring.</td></tr>
+<tr><td>loanchargeoff_deployment.R </td><td> create a web service and test it on the edge node </td></tr>
+<tr><td>loanchargeoff_web_scoring.R </td><td> access the web service on any computer with Microsoft R Server 9.1.0 installed</td></tr>
+<tr><td>loan_main.R</td><td> Main R script that executes the rest of the R scripts </td></tr>
+<tr><td>loan_scoring.R </td><td> Perform loan scoring using the model with the best performance  </td></tr>
+<tr><td>step1_get_training_testing_data.R  </td><td> Read input data which contains all the history information for all the loans from HDFS. Extract training/testing data based on process date (paydate) from the input data. </td></tr>
+<tr><td>step2_feature_engineering.R </td><td> Use MicrosoftML to do feature selection. Code can be added in this file to create some new features based on existing features. Open source package such as Caret can also be used to do feature selection here. Best features are selected using AUC.  </td></tr>
+<tr><td>step3_training_evaluation.R </td><td> This script trains five different models and evaluate each. </td></tr>
+<tr><td>step4_prepare_new_data.R </td><td>This script creates a new data which contains all the opened loans on a pay date which we do not know the status in next three month, the loans in this new data are not included in the training and testing dataset and have the same features as the loans used in training/testing dataset. </td></tr>
+<tr><td>step5_loan_prediction.R </td><td>This script takes the new data created in the step4 and the champion model created in step3, output the predicted label and probability to be charge-off for each loan in next three months.</td></tr>
 </table>
 
 * See [For the Data Scientist](data-scientist.html?path=hdi) for more details about these files.
 * See [Typical Workflow](Typical.html?path=hdi)  for more information about executing these scripts.
-
-
-### Resources for the Solution Package
-------------------------------------
-
-<table class="table table-striped table-condensed">
-<tr><th> File </th><th> Description </th></tr>
-
-<tr><td> createuser.sql </td><td> Used during initial SQL Server setup to create the user and password and grant permissions</td></tr>
-<tr><td> Campaign_Data_Dictionnary.xlsx  </td><td> Schema and description of the 4 input tables and variables</td></tr>
-<tr><td> Images </td><td> Directory of images used for the  Readme.md  in this package </td></tr>
-</table>
-
-
 
 
 [&lt; Home](index.html)

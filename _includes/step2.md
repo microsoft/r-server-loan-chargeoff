@@ -21,7 +21,7 @@ The input to this script defaults to 10,000 loans to be scored with the model in
 
 Below is a summary of the individual steps used for this solution. 
 <ol>
-<li class="sql">  <strong>SQLR_connection.R</strong>: configures the compute context used in all the rest of the scripts. The connection string is pre-poplulated with the default values created for a VM from the Cortana Intelligence Gallery.  You must  change the values accordingly for your implementation if you are not using the default server (<code>localhost</code> represents a server on the same machine as the R code),  user (<code>rdemo</code>), and password (<code>D@tascience</code>).  If you are connecting to an Azure VM from a different machine, the server name can be found in the Azure Portal under the "Network interfaces" section - use the Public IP Address as the server name. The user and the password can be modified from the script <strong>createuser.sql</strong> </li>
+<li class="sql">  <a href="https://microsoft.github.io/r-server-loan-chargeoff/dba.html#workflow-automation"> SQL Workflow Automation </li>
 
 <li>
 The first few steps prepare the data for training.
@@ -51,40 +51,6 @@ In <span class="sql">both Visual Studio and</span> RStudio, there are multiple w
 
 </div>
 
-<li class="sql"> If you are following along and you have modified any of the default values created by this solution package you will need to replace the connection string in the <strong>.R</strong> file with details of your login and database name.  
-   
- <pre class="highlight"> 
-connection_string <- "Driver=SQL Server;Server=localhost;Database=Campaign;UID=rdemo;PWD=D@tascience"
-  </pre>      
-
-<div class="alert alert-info sql" role="alert">
-    Make sure there are no spaces around the "=" in the connection string - it will not work correctly when spaces are present
-<p>
-    If you are creating a new database by using these scripts, you must first create the database name in SSMS.  Once it exists it can be referenced in the connection string.  (Log into SSMS using the same username/password you supply in the connection string, or <code>rdemo</code>, <code>D@tascience</code> if you haven't changed the default values.)
-    </p>
-    </div>
-
-    This connection string contains all the information necessary to connect to the SQL Server from inside the R session. As you can see in the script, this information is then used in the <code>RxInSqlServer()</code> command to setup a <code>sql</code> string.  The <code>sql</code> string is in turn used in the <code>rxSetComputeContext()</code> to execute code directly in-database.  You can see this in the <strong>sql_connection.R</strong> file:
-
-<pre class="highlight">
-connection_string <- "Driver=SQL Server;Server=localhost;Database=Campaign;UID=rdemo;PWD=D@tascience"
-sql <- RxInSqlServer(connectionString = connection_string)
-rxSetComputeContext(sql)
- </pre>     
-
- </li>   
- <li class="sql">  After running the step1 and step2 scripts, Debra goes to SQL Server Management Studio to log in and view the results of feature engineering by running the following query:
-        
-<pre class="highlight">
-SELECT TOP 1000 [Lead_Id]
-    ,[Sms_Count]
-    ,[Email_Count]
-    ,[Call_Count]
-    ,[Previous_Channel]
-FROM [Campaign].[dbo].[CM_AD]
-</pre>
-</li>
-
 <li>  Now she is ready for training the models, using <strong>step3_training_evaluation.R</strong>.  This step will train two different models and evaluate each.  
 <p></p>
    
@@ -109,7 +75,8 @@ After creating the model, Debra runs <strong>Copy_Dev2Prod.R</strong> to copy th
 {% include pbix.md %}
 
 She uses an ODBC connection to connect to the data, so that it will always show the most recently modeled and scored data.
-  <img src="images/visualize.png"> 
+  <img src="images/visualize1.png"> 
+  <img src="images/visualize2.png"> 
   <div class="alert alert-info" role="alert">
   If you want to refresh data in your PowerBI Dashboard, make sure to <a href="Visualize_Results.html">follow these instructions</a> to setup and use an ODBC connection to the dashboard.
   </div>
