@@ -85,6 +85,7 @@ Press <code>Test</code>.
 <br/>
 <img src="images/odbc7.png" width="50%" >
 </span>
+
 <span class="hdi">   
 <br/>
 <img src="images/odbcs7.png" width="50%" >

@@ -65,7 +65,7 @@ You can perform these steps in your environment by using the instructions  <a hr
 
 <div class="hdi">
 <p/><p>
-The cluster has been created and data loaded for you when you used the <code>Deploy</code> button in the <a href="https://aka.ms/campaign-hdi">Cortana Intelligence Gallery</a>. <strong>Once you complete the walkthrough, you will want to delete this cluster as it incurs expense whether it is in use or not - see <a href="hdinsight">HDInsight Cluster Maintenance</a> for more details.</strong>
+The cluster has been created and data loaded for you when you used the Deploy button in the <a href="https://aka.ms/loanchargeoffhdi">Cortana Intelligence Gallery</a>. <strong>Once you complete the walkthrough, you will want to delete this cluster as it incurs expense whether it is in use or not - see <a href="https://microsoft.github.io/r-server-loan-chargeoff/hdinsight">HDInsight Cluster Maintenance</a> for more details.</strong>
 </p>
 </div>
 
@@ -75,9 +75,9 @@ The cluster has been created and data loaded for you when you used the <code>Dep
 ## Step 2: Data Prep and Modeling with Debra the Data Scientist
 -----------------------------------------------------------------
 
-Now let's meet Debra, the Data Scientist. Debra's job is to use historical data to predict a model for future campaigns. <span class="sql">Debra's preferred language for developing the models is using R and SQL. She uses Microsoft R Services with SQL Server 2016 as it provides the capability to run large datasets and also is not constrained by memory restrictions of Open Source R.</span><span class="hdi">Debra will develop these models using <a href="https://azure.microsoft.com/en-us/services/hdinsight/">HDInsight</a>, the managed cloud Hadoop solution with integration to Microsoft R Server.</span>  
+Now let’s meet Debra, the Data Scientist. Debra’s job is to use loan payment data to predict loan chargeoff risk. <span class="sql">Debra’s preferred language for developing the models is using R and SQL. She uses Microsoft R Services with SQL Server 2016 as it provides the capability to run large datasets and also is not constrained by memory restrictions of Open Source R.</span><span class="hdi">Debra will develop these models using <a href="https://azure.microsoft.com/en-us/services/hdinsight/">HDInsight</a>, the managed cloud Hadoop solution with integration to Microsoft R Server.</span>  
 
-After analyzing the data she opted to create multiple models and choose the best one.  She will create two machine learning models and compare them, then use the one she likes best to compute a prediction for each combination of day, time, and channel for each lead, and then select the combination with the highest probability of conversion - this will be the recommendation for that lead.  
+After analyzing the data she opted to create multiple models and choose the best one.  She will create five machine learning models and compare them, then use the one she likes best to compute a prediction for each loan, and then select the loan with the highest probability of chargeoff.  
 
 <div class="sql">
 Debra will work on her own machine, using  <a href = "https://msdn.microsoft.com/en-us/microsoft-r/install-r-client-windows">R Client</a> to execute these R scripts. <span class="cig">R Client is already installed on the VM.</span>  She will also use an IDE to run R.  
@@ -93,7 +93,7 @@ On your VM, R Tools for Visual Studio is installed.  You will however have to ei
 <p/>
 <a name="rstudiologin"></a>
 
-Debra will develop her R scripts in  the Open Source Edition of RStudio Server, installed on her cluster's edge node.  You can follow along on <a href="https://aka.ms/campaign-hdi">your own cluster deployed by Cortana Analytics Gallery</a>.  Access RStudio by using the url of the form: <br/> <code>http://CLUSTERNAME.azurehdinsight.net/rstudio</code>. 
+Debra will develop her R scripts in the Open Source Edition of RStudio Server, installed on her cluster's edge node.  You can follow along on <a href="https://aka.ms/loanchargeoffhdi">your own cluster deployed by Cortana Analytics Gallery</a>.  Access RStudio by using the url of the form: <br/> <code>http://CLUSTERNAME.azurehdinsight.net/rstudio</code>. 
 <p/>
 <div class="alert alert-info" role="alert">
 When you first visit the url to access RStudio, you will see two different logins.  Use the username and  password you created when you deployed the HDInsight solution for both of these prompts.
@@ -105,25 +105,22 @@ After logging in to RStudio, you will need to upload the files that are used in 
 <pre class="highlight">
 
 library(RevoScaleR)
+library(MicrosoftML)
+library(xgboost)
+
 # spark cc object
-myHadoopCluster <- RxSpark()
+sparkContext <- rxSparkConnect(consoleOutput = TRUE, reset = TRUE)
+  
 # set compute context to local
 rxSetComputeContext('local')
 
-LocalDir <- "~/"
-RemoteFiles <- "/Campaign/RSparkCluster/*.R"
-
-rxHadoopCopyToLocal(source = RemoteFiles, dest = LocalDir)
-
-LocalDir <- paste("/var/RevoShare/", Sys.info()[["user"]], "/Campaign/dev/model/", sep="" )
+# Copy model rds files to local dev folder from HDFS
+LocalDir <- paste("/var/RevoShare/", Sys.info()[["user"]], "/LoanChargeOff/dev/model/", sep="" )
 if(!dir.exists(LocalDir)){
-system(paste("mkdir -p -m 777 ", LocalDir, sep="")) # create a new directory
+   system(paste("mkdir -p -m 777 ", LocalDir, sep="")) # create a new directory
 }
-RemoteFiles <- "/Campaign/model/*.rds"
+RemoteFiles <- "/LoanChargeOff/model/*.rds"
 rxHadoopCopyToLocal(source = RemoteFiles, dest = LocalDir)
-
-# set up Web Server for Deployment
-source("SetUpWebServer.R")
 
 # clean up 
 rm(list = ls())
@@ -144,15 +141,16 @@ You can use your favorite IDE to follow along.  If you use Visual Studio, you ca
 
 <div class="sql">
 <p/>
-Now that Debra's environment is set up, she  opens her IDE and creates a Project.  To follow along with her, open the <strong>Campaign/R</strong> directory on <span class="cig">the VM desktop </span> <span class="onp">your computer</span>.  
+Now that Debra's environment is set up, she  opens her IDE and creates a Project.  To follow along with her, open the <strong>D:\LoanChargeOff\R</strong> directory on <span class="cig">the VM desktop </span> <span class="onp">your computer</span>.  
 
-There you will see three files with the name <code>CampaignOptimization</code>:
-<img src="images/project.png">
+Debra can follow the steps listed in For the Database Analyst. To understand each of the steps, Debra should execute each of the steps including the optional step in feature selection.
+Step 1: Creating Tables
+Step 2: Creating Views with Features and Labels
+Step 2a: Demonstrate feature selection using MicrosoftML package 
+Step 3: Training and Testing Model
+Step 4: Chargeoff Prediction (batch)
+Step 4a:  Chargeoff Prediction (OnDemand)
 
-<ul>
-<li>If you use Visual Studio, double click on the Visual Studio SLN file (the third one in the image above).</li>
-<li>If you use RStudio, double click on the "R Project" file (the first one in the image above)</li>
-</ul>
 </div>
 
 

@@ -22,14 +22,14 @@ solution.
         </div>
     </div>
     <div class="col-md-6">
-      As businesses are starting to acknowledge the power of data, leveraging machine learning techniques to grow has become a must. In particular, customer-oriented businesses can learn patterns from their data to intelligently design acquisition campaigns and convert the highest possible number of customers. 
+      As lending institutions are starting to acknowledge the power of data, leveraging machine learning techniques to grow has become a must. In particular, lending institutions can learn payment patterns from their data to intelligently predict loan charge off risk.
           </div>
 </div>
 <p>
-Among the key variables to learn from data are the best communication channel (e.g. SMS, Email, Call), the day of the week and the time of the day through which/ during which a given potential customer is targeted by a marketing campaign. This template provides a customer-oriented business with an analytics tool that helps determine the best combination of these three variables for each customer, based (among others) on financial and demographic data.
+Among the key variables to learn from data are the loan payments, past due and remaining balance through which a given loan can be predicted as a potential charge off. This template provides a lending institution with an analytics tool that helps predict the likelihood of loans getting charged off and run a report on the analytics result stored in HDFS and hive tables. 
 </p>
 
-While this solution demonstrates the code with 100,000 leads for developing the model, using HDInsight Spark clusters makes it simple to extend to large data, both for training and scoring.  The only thing that changes is the size of the data and the number of clusters; the code remains exactly the same.
+While this solution demonstrates the code with 100,000 loans for developing the model, using HDInsight Spark clusters makes it simple to extend to large data, both for training and scoring. The only thing that changes is the size of the data and the number of clusters; the code remains exactly the same.
 
 ## System Requirements
 -----------------------
@@ -47,19 +47,31 @@ HDInsight Spark cluster billing starts once a cluster is created and stops when 
 
 ## Workflow Automation
 -------------------
-Access RStudio on the cluster edge node by using the url of the form `http://CLUSTERNAME.azurehdinsight.net/rstudio`  Run the script **campain_main.R** to perform all the steps of the solution.
+Access RStudio on the cluster edge node by using the url of the form `http://CLUSTERNAME.azurehdinsight.net/rstudio`  Run the script **loanchargeoff_main.R** to perform all the steps of the solution.
 
  
 <a name="step0">
-
 ## Data Files
 --------------
 
+The following data files are available in the **LoanChargeOff/Data** directory in the storage account associated with the cluster:
 
-The following data files are available in the **Campaign/Data** directory in the storage account associated with the cluster:
-
- {% include data.md %}
-
+ <table class="table table-compressed table-striped">
+  <tr>
+    <th>File</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Loan_Data1000.csv</td>
+    <td>Raw data about loan payments for 1000 members</td>
+  </tr>
+  <tr>
+    <td>Loan_Data10000.csv</td>
+    <td>Raw data about loan payments for 10000 members</td>
+  </tr>
+  <tr>
+    <td>Loan_Data100000.csv</td>
+    <td>Raw data about loan payments for 100000 members</td>
+  </tr>
+</table>
 <a name="step1">
-
-

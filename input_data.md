@@ -7,84 +7,67 @@ title: Input Data
 ## CSV File Description
 --------------------------
 
-There are four input files used in this solution. They are:
+There are three input files used in this solution. They are:
 
-* [Campaign_Detail.csv](#campaign-detail)
-* [Lead_Demography.csv](#lead-demography)
-* [Market_Touchdown.csv](#market-touchdown)
-* [Product.csv](#product)
+* [loan_info.csv](#loan-info)
+* [member_info.csv](#member-info)
+* [payment_info.csv](#payment-info)
 
 See each section below for a description of the data fields for each file.
 
-<h3 id="campaign-detail">Campaign_Detail.csv</h3>
+<h3 id="loan-info">loan_info.csv</h3>
 			
-This file contains  ata about each marketing campaign that occurred.
+This file contains data about each loan that occurred in the past three years
+
 <table class="table table-striped table-condensed">
-<tr><th>Index</th><th>Data Field</th><th>Type</th><th>Description</th></tr>
-<tr><td>1</td><td>	Campaign_Id</td><td>String</td><td>Unique Id of the campaign </td></tr>
-<tr><td>2</td><td>	Campaign_Name</td><td>String</td><td>Name given to the campaign e.g., Above all in Service</td></tr>
-<tr><td>3</td><td>	Category</td><td>String</td><td>Category of the campaign e.g., Acquisition</td></tr>
-<tr><td>4</td><td>	Launch_Date</td><td>String</td><td>Launch date of the campaign e.g., 01/01/14</td></tr>
-<tr><td>5</td><td>	Sub_Category</td><td>String</td><td>Sub-category of the campaign e.g., Seasonal</td></tr>
-<tr><td>6</td><td>	Campaign_Drivers</td><td>String</td><td>Drivers of the campaign e.g. Discount Offer</td></tr>
-<tr><td>7</td><td>	Product_Id</td><td>String</td><td>Unique Id of the product</td></tr>
-<tr><td>8</td><td>	Call_For_Action</td><td>String</td><td>Objective of the campaign e.g. 1,2 </td></tr>
-<tr><td>9</td><td>	Focused_Geography</td><td>String</td><td>Area of focus of the campaign e.g. Nation Wide</td></tr>
-<tr><td>10</td><td>	Tenure_Of_Campaign</td><td>String</td><td>Tenure of the campaign e.g., 1,2</td></tr>
+<tr><th>Index</th><th>Data Field</th><th>Description</th></tr>
+<tr><td>1</td><td>	loanId</td><td>Unique Id of the loan </td></tr>
+<tr><td>2</td><td>	loan_open_date</td><td>Date when the loan is opened</td></tr>
+<tr><td>3</td><td>	memberId</td><td>Unique Id of member of the banking institution</td></tr>
+<tr><td>4</td><td>	loanAmount</td><td>Amount of loan</td></tr>
+<tr><td>5</td><td>	interestRate</td><td>Interest rate that applies to the loan</td></tr>
+<tr><td>6</td><td>	grade</td><td>Quality of the asset associated in the loan e.g. 1,2,3. The higher the number, the higher quality of the asset</td></tr>
+<tr><td>7</td><td>	term</td><td>Time period of the loan</td></tr>
+<tr><td>8</td><td>	installment</td><td>Installment amount for the loan</td></tr>
+<tr><td>9</td><td>	isJointApplication</td><td>Is this a jointed loan application. 0 is No, 1 is Yes</td></tr>
+<tr><td>10</td><td>	purpose</td><td>Loan type or loan purpose e.g. auto, debt consolidation, business etc</td></tr>
 </table>
 
-<h3 id="lead-demography">Lead_Demography.csv	</h3>
+<h3 id="member-info">member_info.csv	</h3>
 
 This file contains demographics and financial data about each customer.
 <table class="table table-striped table-condensed">
-<tr><th>Index</th><th>Data Field</th><th>Type</th><th>Description</th></tr>
-<tr><td>1</td><td>	Lead_Id</td><td>String</td><td>	Unique Id of the customer </td></tr>
-<tr><td>2</td><td>	Age	</td><td> String</td><td>Age of the customer e.g., Young, Middle Age, Senior Citizen</td></tr>
-<tr><td>3</td><td>	Phone_No</td><td>String</td><td>Phone number of the customer.  Format: 000-000-0000</td></tr>
-<tr><td>4</td><td>	Annual_Income_Bucket</td><td>String</td><td>Annual income range of the customer e.g., 60k-120k</td></tr>
-<tr><td>5</td><td> Credit_Score</td><td>String</td><td>Credit score range of the customer e.g., > 700</td></tr>
-<tr><td>6</td><td> Country</td><td>String</td><td>Country of residence of the customer</td></tr>
-<tr><td>7</td><td>	State</td><td>String</td><td>State of residence of the customer in the US e.g., MA</td></tr>
-<tr><td>8</td><td>	No_Of_Dependents</td><td>Integer</td><td>Number of dependents the customer has</td></tr>
-<tr><td>9</td><td>	Highest_Education</td><td>String</td><td>Highest level of education received by the customer e.g., High School</td></tr>
-<tr><td>10</td><td>	Ethnicity</td><td>String</td><td>Ethnicity of the customer e.g., Hispanic</td></tr>
-<tr><td>11</td><td>	No_Of_Children</td><td>Integer</td><td>Number of children the customer has</td></tr>
-<tr><td>12</td><td>	Household_Size</td><td>Integer</td><td>Number of people in the household of the customer</td></tr>
-<tr><td>13</td><td>	Gender</td><td> String</td><td>	Gender of the customer.  Values taken: M or F</td></tr>
-<tr><td>14</td><td>	Marital_Status</td><td>String</td><td>Marital status of the customer.  Values taken:  S, M, D, W (Single, Married, Divorced, Widowed)</td></tr>
+<tr><th>Index</th><th>Data Field</th><th>Description</th></tr>
+<tr><td>1</td><td>	memberId</td><td>Unique Id of the member of the lending institution</td></tr>
+<tr><td>2</td><td>	residentialState</td><td>State of the member where he/she resides in</td></tr>
+<tr><td>3</td><td>	Branch</td><td>Lending institution branch</td></tr>
+<tr><td>4</td><td>	annualIncome</td><td>Average annual income of the member</td></tr>
+<tr><td>5</td><td>  yearsEmployment</td><td>Number of years the member is employed</td></tr>
+<tr><td>6</td><td>  homeOwnership</td><td>Type of home ownership e.g. own, mortgage, rent</td></tr>
+<tr><td>7</td><td>	incomeVerified</td><td>Has the debt holder income been verified by the lending institution e.g. 0 is No, 1 is Yes</td></tr>
+<tr><td>8</td><td>	creditScore</td><td>Average credit score of the debt holder</td></tr>
+<tr><td>9</td><td>	dtiRatio</td><td>Debt to income ratio</td></tr>
+<tr><td>10</td><td>	revolvingBalance</td><td>Portion of the debt that is unpaid</td></tr>
+<tr><td>11</td><td>	revolvingUtilizationRate</td><td>Measures the amount of revolving credit limits that debt holder is using</td></tr>
+<tr><td>12</td><td>	numDelinquency2Years</td><td>Number of times that loan payment is late in the last 2 years</td></tr>
+<tr><td>13</td><td>	numDerogatoryRec</td><td>Public records that are often result from an unpaid bill or financial obligation</td></tr>
+<tr><td>14</td><td>	numInquiries6Mon</td><td>Number of loan history inquiries in the last 6 months</td></tr>
+<tr><td>15</td><td>	lengthCreditHistory</td><td>Number of months with the current credit score</td></tr>
+<tr><td>16</td><td>	numOpenCreditLines</td><td>Number of line of credits that the debt holder has</td></tr>
+<tr><td>17</td><td>	numChargeoff1year</td><td>Number of chargeoff by bank on the loan owned by this member</td></tr>
 </table>
 
-<h3 id="market-touchdown">Market_Touchdown.csv</h3>
+<h3 id="payment-info">payment_info.csv</h3>
 
-This file contains channel-day-time data used for every customer of Lead_Demography in every campaign he was targeted.
+This file contains data about payment and payment history of a loan
+
 <table class="table table-striped table-condensed">
-<tr><th>Index</th><th>Data Field</th><th>Type</th><th>Description</th></tr>
-<tr><td>1</td><td>Lead_Id</td><td>String</td><td>Id of the customer</td></tr>
-<tr><td>2</td><td>Channel</td><td>String</td><td>Channel used to contact the customer in a given campaign. Values taken:  SMS, Email, and Cold Calling</td></tr>
-<tr><td>3</td><td>Time_Of_Day</td><td>String</td><td>Time of the day when the customer was contacted  in a given campaign.  Values taken:  Morning, Afternoon, and Evening</td></tr>
-<tr><td>4</td><td>Day_Of_Week</td><td>String</td><td>Day of the week when the customer was contacted  in a given campaign. Values taken: 1,2,…,7</td></tr>
-<tr><td>5</td><td>Campaign_Id</td><td>String</td><td>Id of the campaign during which the customer was contacted</td></tr>
-<tr><td>6</td><td>	Conversion_Flag</td><td>String</td><td>	Binary variable indicating the success of a purchase or conversion (dependent variable).  Values taken: 0 (No conversion), or 1 (Conversion)</td></tr>
-<tr><td>7</td><td>Source</td><td>String</td><td>	Source from which the data row came into the database
-e.g., Previous Campaign</td></tr>
-<tr><td>8</td><td>Time_Stamp</td><td>String</td><td>Date when the customer was contacted
-e.g. 05/12/14</td></tr>
-<tr><td>9</td><td>Comm_Id</td><td>Integer</td><td>Rank of communications for each unique customer, from the oldest to the most recent e.g., 1 is the first time a customer was contacted</td></tr>
-</table>
-
-<h3 id="product">	Product.csv		</h3>
-
-This file contains data about the product marketed in each campaign.
-<table class="table table-striped table-condensed">
-<tr><th>Index</th><th>Data Field</th><th>Type</th><th>Description</th></tr>
-<tr><td>1</td><td>	Product_Id</td><td>	String</td><td>Unique Id of the product</td></tr>
-<tr><td>2</td><td>	Product</td><td>String</td><td>Name of the product e.g., Live Free</td></tr>
-<tr><td>3</td><td>	Category</td><td>String</td><td>Category of the product e.g., Health</td></tr>
-<tr><td>4</td><td>	Term</td><td>Integer</td><td>Number of months of coverage (if business is an insurance company)</td></tr>
-<tr><td>5</td><td>	No_Of_People_Covered</td><td>Integer</td><td>Number of people covered in the policy (if business is an insurance company)</td></tr>
-<tr><td>6</td><td>	Premium</td><td>Integer</td><td>Price to be paid by the customer (Premium if business is an insurance company)</td></tr>
-<tr><td>7</td><td>	Payment_Frequency</td><td>String</td><td>Payment frequency of the product (if business is an insurance company) e.g., Monthly</td></tr>
-<tr><td>8</td><td>	Net_Amt_Insured</td><td>Integer</td><td>Net amount insured (if business is an insurance company)</td></tr>
-<tr><td>9</td><td>	Amt_on_Maturity</td><td> Integer</td><td>Dollar amount on maturity (if business is an insurance company)</td></tr>
-<tr><td>10</td><td>	Amt_on_Maturity_Bin</td><td>String</td><td>Bucketed dollar amount on maturity (if business is an insurance company) e.g., &lt; 400000 </td></tr>
+<tr><th>Index</th><th>Data Field</th><th>Description</th></tr>
+<tr><td>1</td><td>loanId</td><td>Unique Id of the loan</td></tr>
+<tr><td>2</td><td>date</td><td>Date when the payment is made</td></tr>
+<tr><td>3</td><td>Payment</td><td>Payment amount</td></tr>
+<tr><td>4</td><td>Past_due</td><td>If the payment is past due e.g. 0 is No, 1 is Yes</td></tr>
+<tr><td>5</td><td>Remain_balance</td><td>Remaining of the loan balance</td></tr>
+<tr><td>6</td><td>Closed</td><td>If the loan is closed (paid off) e.g. 0 is No, 1 is Yes</td></tr>
+<tr><td>7</td><td>Charged_off</td><td>If the loan is chargeoff e.g. 0 is No, 1 is Yes</td></tr>
 </table>

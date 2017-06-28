@@ -23,7 +23,7 @@ solution.
     <div class="col-md-6">
         The instructions on this page will help you to add this solution to your on premises SQL Server 2016.  
         <p>
-        If you instead would like to try this solution out on a virtual machine, visit the <a href="http://aka.ms/campaignoptimization">Cortana Intelligence Gallery</a> and use the Deploy button.  All the configuration described below will be done for you, as well as the initial deployment of the solution. </p>
+        If you instead would like to try this solution out on a virtual machine, visit the <a href="http://aka.ms/loanchargeoffsql">Cortana Intelligence Gallery</a> and use the Deploy button.  All the configuration described below will be done for you, as well as the initial deployment of the solution. </p>
     </div>
 </div>
 
@@ -41,30 +41,11 @@ Complete the steps in the Set up SQL Server R Services (In-Database) Instruction
 ### Set up logins in SQL Server
 If you are administering your own server and want to add a user to run the code of this solution, use the steps below.
 
-1.	In SSMS, connect to the Server with your admin account.
-2.	Create a new user: Right click on <code>Security</code> and select <code>New &gt; Login.</code> <br/>
-    <br/>
-    <img src="images/newuser.png" >
-
- 
-3.	If you haven’t already done so, create a new Windows authentication user with the Login name <code>&lt;machinename&gt;/SQLRUserGroup</code>. 
-    
-    To find your computer name - Click the <code>Start</code> button, right-click <code>Computer</code>, and then click <code>Properties</code>. Under Computer name, domain, and workgroup settings, you can find your computer name and full computer name if your computer is on a domain.
-    <br/>
-    <img src="images/sqluser.png"  >
- 
-4. Create the "rdemo" user  by double clicking on the <code>Resources/createuser.sql</code> file and executing it. (This user login will be used to install data and procedures).  NOTE: the user is set up with a default password of "D@tascience" in this file - you may want to change that to your own password before executing the commands.
-
-5. 	Check to make sure you have set your Server Authentication mode to SQL Server and Windows Authentication mode. 
-    *	In SQL Server Management Studio Object Explorer, right-click the server, and then click <code>Properties</code>.
-    *	On the Security page, under Server authentication, select <code>SQL Server and Windows Authentication mode</code> if it is not already selected.
-    <br/>
-    <img src="images/authmode.png"  >
-    *	In the SQL Server Management Studio dialog box, click OK.  If you changed the mode in the previous step, you will need to also acknowledge the requirement to restart SQL Server.
-    * If you changed the mode, restart the server.  In the Object Explorer, right-click your server, and then click <code>Restart</code>. If SQL Server Agent is running, it must also be restarted.
-
-6.	Now, click on <code>File</code> on the top left corner of the SQL Server window and select <code>Connect Object Explorer…</code> verify that you can connect to the server with this username(<code>rdemo</code>) and password(<code>D@tascience</code>) using the SQL Server Authentication.
-
+1. Complete SQL Server 2016 R Services instruction in https://msdn.microsoft.com/en-us/library/mt696069.aspx
+2. Check out code from Github - https://github.com/Microsoft/r-server-loan-chargeoff 
+3. Create a user login - refer to createuser.sql from code in github
+4. Login as created user and create a database
+5. Run power shell script named Loan_ChargeOff.ps1 from SQLR folder from github
 
 ### Ready to Run Code 
 ---------------------

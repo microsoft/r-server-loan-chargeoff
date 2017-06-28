@@ -24,7 +24,7 @@ For instructions on how to use the terminal to connect to your HDInsight Spark c
 <a href="http://go.microsoft.com/fwlink/p/?LinkID=619886">Azure documentation</a>.  The edge node address is of the form <code>sshuser@CLUSTERNAME-ed-ssh.azurehdinsight.net</code>
 </li>
 <li>
-<strong>All platforms:</strong> Your login name and password are the ones you created when you deployed this solution from the <a href="http://aka.ms/campaign-hdi">Cortana Intelligence Gallery</a>  
+<strong>All platforms:</strong> Your login name and password are the ones you created when you deployed this solution from the <a href="http://aka.ms/loanchargeoffhdi">Cortana Intelligence Gallery</a>  
 </li>
 </ul>
 
@@ -33,10 +33,10 @@ For instructions on how to use the terminal to connect to your HDInsight Spark c
 * Once you have connected to the edge node you can access the Administration Utilities for the web server with:
 
 ```
-sudo dotnet /usr/lib64/microsoft-deployr/9.0.1/Microsoft.DeployR.Utils.AdminUtil/Microsoft.DeployR.Utils.AdminUtil.dll
+sudo dotnet /usr/lib64/microsoft-r/rserver/o16n/9.1.0/Microsoft.RServer.Utils.AdminUtil/Microsoft.RServer.Utils.AdminUtil.dll
 ```
 
-Your server has been configuered with a password of  `D@tascience2017` for the  `admin` user.  You can use this utitlity to change the password if you wish. (If you do so, you will need to change the password in the  <strong>campaign_deployment.R</strong> script.)
+Your server has been configured with username admin and HDInsight Cluster Login Password (the password that you have provided during deployment). You can use this utitlity to change the password if you wish. (If you do so, you will need to change the password in the  <strong>loanchargeoff_deployment.R</strong> and <strong>loanchargeoff_web_scoring.R</strong> script.)
 
 You can also use this utility to check on the status of the web server. 
 
@@ -47,7 +47,7 @@ You can also use this utility to check on the status of the web server.
 * Now press `e` followed by ‘8’ to exit this tool
 
 <div class="alert alert-info">
-Do <strong>not</strong> close the terminal window - it should remain open when you execute <strong>campaign_web_scoring.R</strong> to try the web API on your local computer, after it is created with <strong>campaign_deployment.R</strong> from RStudio the cluster.
+Do <strong>not</strong> close the terminal window - it should remain open when you execute <strong>loanchargeoff_web_scoring.R</strong> to try the web API on your local computer, after it is created with <strong>loanchargeoff_deployment.R</strong> from RStudio the cluster.
 </div>
 
 

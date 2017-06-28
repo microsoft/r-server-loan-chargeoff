@@ -15,7 +15,7 @@ title: Site Map
     * [SQL: Setup for Local Code Execution](local.html)
     * [SQL: Using a Jupyter Notebook](jupyter.html)
     * [SQL: Using RStudio with R Server](rstudio.html)
-    * [HDI: Using an HDInsight Spark cluster for Campaign Optimization](hdinsight.html)
+    * [HDI: Using an HDInsight Spark cluster for Loan ChargeOff Prediction](hdinsight.html)
     * [HDI: Configuring Operationalization with R Server](deployr.html)
 * [Quick Start](START_HERE.html)
     * [On-Prem: Setup SQL Server 2016 ](SetupSQL.html)

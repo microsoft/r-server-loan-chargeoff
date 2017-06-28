@@ -15,20 +15,21 @@ solution.
 ## For the Business Manager
 ------------------------------
 
-This solution template uses (simulated) historical data to predict **how** and **when** to contact leads for your campaign. The recommendations include the **best channel** to contact a lead (in our example, Email, SMS, or Cold Call), the **best day of the week** and the **best time of day** during which to make the contact.  
+This loan chargeoff prediction uses a simulated loan history data to predict probability of loan chargeoff in the immediate future (next three months). The higher the score, the higher is the probability of the loan getting charged-off in the future. To simplify data analysis, the loan chargeoff probability scores are grouped into High, Medium and Low categories so that loan managers can make actionable decision to offer personalized incentive to loan holders.
+
+Loan manager is also presented with the trends and analysis of the chargeoff loans by branch locations. Characteristics of the loans that are highly probable of getting chargedoff have lower credit score for example will help loan managers to make a business plan for loan offering in that geographical area.   
 
 <div class="sql"> 
-SQL Server R Services takes advantage of the power of SQL Server 2016 and ScaleR (Microsoft R Server package) by allowing R to run on the same server as the database. It includes a database service that runs outside the SQL Server process and communicates securely with the R runtime. 
+SQL Server R Services brings the compute to the data by allowing R to run on the same computer as the database. It includes a database service that runs outside the SQL Server process and communicates securely with the R runtime.
 
-This solution package shows how to create and refine data, train R models, and perform predictions in-database. The final table in the SQL Server database provides recommendations for **how** and **when** to contact each lead. This data is then visualized in Power BI. 
-
+This solution template walks through how to create and clean up a set of simulated data, use various algorithms to train the R models, select the best performant model and perform chargeoff predictions and save the prediction results back to SQL Server. A PowerBI report connects to the prediction result table and show interactive reports with the user on the predictive analytics.
 </div>
+
 <div class="hdi">
-Microsoft R Server on HDInsight Spark clusters provides distributed and scalable machine learning capabilities for big data, leveraging the combined power of R Server and Apache Spark. This solution demonstrates how to develop machine learning models for marketing campaign optimization (including data processing, feature engineering, training and evaluating models), deploy the models as a web service (on the edge node) and consume the web service remotely with Microsoft R Server on Azure HDInsight Spark clusters. 
+Microsoft R Server on HDInsight Spark clusters provides distributed and scalable machine learning capabilities for big data, leveraging the combined power of R Server and Apache Spark. This solution demonstrates how to develop machine learning models for Loan ChargeOff Prediction (including data processing, feature engineering, training and evaluating models), deploy the models as a web service (on the edge node) and consume the web service remotely with Microsoft R Server on Azure HDInsight Spark clusters.
 
-The final predictions and recommendation table are saved to a Hive table containing recommendations for how and when to contact each lead. This data is then visualized in Power BI.
+The final predictions are saved to a Hive table containing loan chargeoff predictions. This data is then visualized in Power BI.
 </div>
-
 
 
 ![Visualize](images/visualize.png?raw=true)
@@ -36,13 +37,12 @@ The final predictions and recommendation table are saved to a Hive table contain
 
 {% include pbix.md %}
 
-The Recommendations tab of this dashboard shows the recommendations based on a prediction model. At the top is a table of individual leads for our new deployment. This includes fields for the Lead ID (unique customer ID), campaign and product, populated with leads on which our business rules are to be applied. This is followed by the optimal channel and time to contact each one, and then the estimated probabilities that the leads will buy our product using these recommendations. These probabilities can be used to increase the efficiency of the campaign by limiting the number of leads contacted to the subset most likely to buy.
+There are two tabs in the PowerBI report: (1) Loan summary tab which shows the overall loan information across different states and branches in U.S. and (2) Chargeoff risk which shows chargeoff probability in loans for loan officer to take action on.
 
-Also on the Recommendations tab are various summaries of recommendations versus demographic information on the leads. 
+For this specific lending institution, the loan summary tab shows the loan profiles which include information like loan types, number of loans, loan amount and charged off count. Report user can use the location map to further drill down to state and branch level and the time slider to analyze historical loan profiles. 
 
-The Campaign Summary tab of the dashboard shows summaries of the historical data used to create the prediction model. While this tab also shows values of Day of Week, Time of Day, and Channel, these values are actual past observations, not to be confused with the recommendations shown on the Recommendations tab.   
+The charge off forecast tab displays the probability of loan getting charge off in the next three months. Loan officer can further drill down into each state and branch locations to evaluate loans which have highest probability of getting charged off and their respective probability scores. High level loan holder information is also available in the report. Information like loan interest rate, loan amount, debt to income ratio, and number of delinquent payments. Loan officer can further formulate action plan to prevent loan from charging off by looking up detailed loan profile in their business application and offer personalized incentive plan to the borrower.
 
 To understand more about the entire process of modeling and deploying this example, see [For the Data Scientist](data-scientist.html).
  
-
 [&lt; Home](index.html)

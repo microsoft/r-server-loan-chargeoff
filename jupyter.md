@@ -26,7 +26,7 @@ Once the server is running, open the Mozilla Firefox web browser.  Type the foll
 
 You will get a security warning, hit the "Advanced" button and add this to your exceptions to access the Jupyter session.
 
- There are a number of samples available on the VM server.  You can add the **Campaign Optimization R Notebook** by moving or copying it from **Desktop/Campaign/R** into **C:/`machinename`/notebook** (for example, if your machinename is "dsvm" the path is **C:/dsvm/notebook**).  You will also need to copy the 4 .csv files from the **Desktop/Campaign/Data** folder into the notebook folder.
+ There are a number of samples available on the VM server.  You can add the **Loan ChargeOff Prediction R Notebook** by moving or copying it from **D:/LoanChargeOffSolution/Source/SQLR/R/LoanChargeOff.ipynb** into **C:/`machinename`/notebook** (for example, if your machinename is "dsvm" the path is **C:/dsvm/notebook**).  You will also need to copy the 3 .csv files from the **D:/LoanChargeOffSolution/Data** folder into the notebook folder.
 
  Once the Jupyter server is running on your VM, you can also connect to it from another computer by using the Public IP address in the url:
 

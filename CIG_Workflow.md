@@ -1,3 +1,3 @@
 ---
-redirect_to: "https://microsoft.github.io/r-server-campaign-optimization/Typical.html?path=cig"
+redirect_to: "https://microsoft.github.io/r-server-loan-chargeoff/Typical.html?path=cig"
 ---

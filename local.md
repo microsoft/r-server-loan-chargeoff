@@ -22,9 +22,9 @@ You must open the Windows firewall on the VM to allow a connection to the SQL Se
 
     netsh advfirewall firewall add rule name="SQLServer" dir=in action=allow protocol=tcp localport=1433 
 
-SQL Server on the VM has been set up with a user `rdemo` and a default password of `D@tascience`.  Once you open the firewall, you may also want to also change the password, as anyone who knows the IP address can now access the server.  To do so, log into SSMS with Windows Authentication and execute the following query:
+SQL Server on the VM has been set up with username/password provided during deployment.  Once you open the firewall, you may also want to also change the password, as anyone who knows the IP address can now access the server.  To do so, log into SSMS with Windows Authentication and execute the following query:
     
-        ALTER LOGIN rdemo WITH PASSWORD = 'newpassword';  
+        ALTER LOGIN <sql username> WITH PASSWORD = '<sql password>';  
        
 ## On your local computer:  Install R Client and Obtain Code
 
@@ -34,11 +34,11 @@ If you use your local computer you will need to have a copy of R Client on your 
 
 Also, on your local computer you will need a copy of the solution code.  Open a PowerShell window, navigate to the directory of your choice, and execute the following command:  
 
-    git clone https://github.com/Microsoft/r-server-campaign-optimization.git campaign
+    git clone https://github.com/Microsoft/r-server-loan-chargeoff.git loanchargeoff
 
-This will create a folder **campaign** containing the full solution package.
+This will create a folder **loanchargeoff** containing the full solution package.
 
-Finally, in the **sql_connection.R** file, replace  `localhost` in the connection_string with the DNS of the VM followed by ",1433".
+Finally, in the **chargeoff_batch_prediction.R** file, replace  `Server=.` in the connection_string with the DNS of the VM followed by ",1433".
 
 
 <a href="CIG_Workflow.html#step2">Return to Typical Workflow for Cortana Intelligence Gallery Deployment<a>

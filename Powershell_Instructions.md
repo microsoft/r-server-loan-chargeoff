@@ -28,7 +28,7 @@ solution.
     </div>
     <div class="col-md-6">
         If you have deployed a VM through the  
-        <a href="http://aka.ms/campaignoptimization">Cortana Intelligence Gallery</a>, all the steps below have already been performed and your database on that machine has all the resulting tables and stored procedures.  Skip to the <a href="Typical.html?platform=cig">Typical Workflow</a> for a description of how these files were first created in R by a Data Scientist and then deployed to SQL stored procedures.
+        <a href="http://aka.ms/loanchargeoffsql">Cortana Intelligence Gallery</a>, all the steps below have already been performed and your database on that machine has all the resulting tables and stored procedures.  Skip to the <a href="Typical.html?platform=cig">Typical Workflow</a> for a description of how these files were first created in R by a Data Scientist and then deployed to SQL stored procedures.
     </div>
 </div>
 
@@ -42,7 +42,7 @@ First, make sure you have set up your SQL Server by following <a href="SetupSQL.
 ## Execute PowerShell Script
 ----------------------------
 
-Running this PowerShell script will create stored procedures for the operationalization of this solution.  It will also execute these procedures to create full database with results of the steps  – dataset creation, modeling, and scoring as described  [here](dba.html).
+Running this PowerShell script will run the full Data Science workflow (the database user and database should already be created) from importing data, processing of data (create views and tables with feature and label columns), training and evaluation of models and scoring a subset of raw data as a batch. It also creates a stored procedure for ad-hoc scoring which can be used for operationalizing the models.
 
 
 
@@ -60,51 +60,46 @@ Running this PowerShell script will create stored procedures for the operational
 3. Create a directory on your computer where you will put this solution.  CD to the directory and then clone the repository into it:
     
     ```
-    git clone https://github.com/Microsoft/r-server-campaign-optimization Campaign
+    git clone https://github.com/Microsoft/r-server-loan-chargeoff LoanChargeOff
     ```
 
-4.  Now CD to the **Campaign/SQLR** directory and run one of the two following commands, inserting your server name (or "." if you are on the same machine as the SQL server), database name, username, and password.
+4.  Now CD to the **LoanChargeOff/SQLR** directory and run one of the two following commands, inserting your server name (or "." if you are on the same machine as the SQL server), database name, username, and password.
 
     * Run with no prompts:
     
         ```
-        .\Campaign_Optimization.ps1 -ServerName "Server Name" -DBName "Database Name" -username "" -password "" -uninterrupted "Y"  
+        .\Loan_ChargeOff.ps1 -ServerName "Server Name" -DBName "Database Name" -sqlUsername "" -sqlPassword "" -uninterrupted "Y"  -dataPath <path to csv raw data file>
         ```
     * Run with prompts:
 
         ```
-        .\Campaign_Optimization.ps1 -ServerName "Server Name" -DBName "Database Name" -username "" -password "" -uninterrupted "N"  
-        ```
-
-    * For example, uninterrupted mode for the rdemo user created by the createuser.sql script on your local machine, the command would be: 
-
-        ```
-        .\Campaign_Optimization.ps1 -ServerName "." -DBName "Campaign" -username "rdemo" -password "D@tascience" -uninterrupted "Y"  
+        .\Loan_ChargeOff.ps1 -ServerName "Server Name" -DBName "Database Name" -sqlUsername "" -sqlPassword "" -uninterrupted "N" 
+         -dataPath  <path to csv raw data file>
         ```
 
 5.  If running with prompts (`-uninterrupted "N"`), you cannot complete a step until the previous step has been completed, so only skip steps that have previously been executed.
 
-6.  You can also optionally add the parameter -dataPath "your path\to\csv files".  If you omit this, it defaults to the Data folder in the current directory.
+6.  The data files are downloaded as part of setting up a solution template.
 
 
 ## Review Data
 --------------
 
-Once the PowerShell script has completed successfully, log into the SQL Server Management Studio to view all the datasets that have been created in the `Campaign` database.  
+Once the PowerShell script has completed successfully, log into the SQL Server Management Studio to view all the datasets that have been created in the `LoanChargeOff` database.  
 Hit `Refresh` if necessary.
 <br/>
 <img src="images/alltables.png" >
 
 [Click here](tables.html) to view more information about each of these tables.
 
-Right click on `dbo.Recommendations` and select `View Top 1000 Rows` to preview the scored data.
+Right click on `dbo.vw_loan_chargeoff_prediction` and select `View Top 1000 Rows` to preview the scored data.
 
 [Click here](tables.html) to view the details all tables created in this solution.
 
 ## Visualizing Results 
 ---------------------
 
-You've now  created and processed data, created models, picked the best one and used the model to recommend a combination of Channel/Time/Day as described  [here](data-scientist.html). This PowerShell script also created the stored procedures that can be used to score new data for the next campaign.  
+You've now  created and processed data, created models, picked the best one and used the model to predict loan chargeoff as described  [here](data-scientist.html). This PowerShell script also created the stored procedures that can be used to score new data for the new loans.  
 
 Let's look at our current results. Proceed to <a href="Visualize_Results.html">Visualizing Results with PowerBI</a>.
 

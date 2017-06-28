@@ -3,19 +3,19 @@ Now you're ready to follow along with Debra as she creates the scripts needed fo
 
 <div class="hdi">The steps described below each create a function to perform their task.  The individual steps are described in more detail below.  The following scripts are then used to execute the steps.  
 <ul><li>
-<strong>campaign_main.R</strong> is used to define the data and directories and then run all of the steps to process data, perform feature engineering, training, and scoring.  
+<strong>loanchargeoff_main.R</strong> is used to define the data and directories and then run all of the steps to process data, perform feature engineering, training, and scoring.  
 <p></p>
-The default input for this script uses 100,000 leads for training models, and will split this into train and test data.  After running this script you will see data files in the <strong>/Campaign/dev/temp</strong> directory on your storage account.  Models are stored in the <strong>/Campaign/dev/model</strong> directory on your storage account. The Hive table <code>recommendations</code> contains the 100,000 records with recommendations (<code>recommended_day</code>, <code>recommended_time</code> and <code>recommended_channel</code>) created from the best model.
+The default input for this script uses 100,000 loans for training models, and will split this into train and test data.  After running this script you will see data files in the <strong>/LoanChargeOff/dev/temp</strong> directory on your storage account.  Models are stored in the <strong>/LoanChargeOff/dev/model</strong> directory on your storage account. The Hive table <code>loanchargeoff_predictions</code> contains the 100,000 records with predictions (<code>Score</code>, <code>Probability</code>) created from the best model.
 </li>
 <li>
-<strong>Copy_Dev2Prod.R</strong> copies the model information from the <strong>dev</strong> folder to the <strong>prod</strong> folder to be used for production.  This script must be executed once after <strong>campaign_main.R</strong> completes, before running <strong>campaign_scoring.R</strong>.  It can then be used again as desired to update the production model. 
+<strong>Copy_Dev2Prod.R</strong> copies the model information from the <strong>dev</strong> folder to the <strong>prod</strong> folder to be used for production.  This script must be executed once after <strong>loanchargeoff_main.R</strong> completes, before running <strong>loanchargeoff_scoring.R</strong>.  It can then be used again as desired to update the production model. 
 <p></p>
-After running this script models created during <strong>campaign_main.R</strong> are copied into the <strong>/var/RevoShare/sshuser/Campaign/prod/model</strong> directory.
+After running this script models created during <strong>loanchargeoff_main.R</strong> are copied into the <strong>/var/RevoShare/<user>/LoanChargeOff/prod/model</strong> directory.
 </li>
 <li>
-<strong>campaign_scoring.R</strong> uses the previously trained model and invokes the steps to process data, perform feature engineering and scoring.  Use this script after first executing <strong>campaign_main.R</strong> and <strong>Copy_Dev2Prod.R</strong>.
+<strong>loanchargeoff_scoring.R</strong> uses the previously trained model and invokes the steps to process data, perform feature engineering and scoring.  Use this script after first executing <strong>loanchargeoff_main.R</strong> and <strong>Copy_Dev2Prod.R</strong>.
 <p></p>
-The input to this script defaults to 30,000 leads to be scored with the model in the <strong>prod</strong> directory. After running this script the Hive table <code>recommendations</code> now contains the recommended values for these 30,000 leads.  
+The input to this script defaults to 10,000 loans to be scored with the model in the <strong>prod</strong> directory. After running this script the Hive table <code>loanchargeoff_predictions</code> now contains the predictions.  
 </li></ul>
 </div>
 
@@ -28,9 +28,9 @@ The first few steps prepare the data for training.
 </li>
 
 <ul>
-<li>  <strong>step0_data_generation.R</strong>:  This file was used to generate data for the current solution - in a real setting it would not be present.  It is left here in case you'd like to generate additional data.  For now simply ignore this file.</li>
+<li>  <strong>step1_get_training_testing_data.R</strong>: Read input data which contains all the history information for all the loans from HDFS. Extract training/testing data based on process date (paydate) from the input data. Save training/testing data in HDFS working directory </li>
 
-<li>	<strong>step1_data_processing.R</strong>:  Uploads data and performs preprocessing steps -- merging of the <a href="input_data.html">input data sets</a> and missing value treatment.  </li>
+<li>  <strong>step2_feature_engineering.R</strong>:  Here we use MicrosoftML to do feature selection. Code can be added in this file to create some new features based on existing features. Open source package such as Caret can also be used to do feature selection here. Best features are selected using AUC. </li>
 
 <li>	<strong>step2_feature_engineering.R</strong>:  Performs Feature Engineering and creates the Analytical Dataset. Feature Engineering consists of creating new variables in the cleaned dataset.  <code>SMS_Count</code>, <code>Email_Count</code> and <code>Call_Count</code> are computed: they correspond to the number of times every customer was contacted through these three channels. It also computes <code>Previous_Channel</code>: for each communication with the <code>Lead</code>, it corresponds to the <code>Channel</code> that was used in the communication that preceded it (a NULL value is attributed to the first record of each Lead). Finally, an aggregation is performed at the Lead Level by keeping the latest record for each one. </li>
 </ul>
@@ -44,7 +44,7 @@ You can run these scripts if you wish, but you may also skip them if you want to
 <p/>
 </div>
 <div class=" hdi" >
-To run all the scripts described above as well as those in the next few steps, open and execute the file <strong>campaign_main.R.</strong>  You may get a warning message just after starting Step2, complaining about a file or directory missing.  You can safely ignore this warning.
+To run all the scripts described above as well as those in the next few steps, open and execute the file <strong>loanchargeoff_main.R.</strong>
 <p/>
 </div>
 In <span class="sql">both Visual Studio and</span> RStudio, there are multiple ways to execute the code from the R Script window.  The fastest way <span class="sql">for both IDEs</span> is to use Ctrl-Enter on a single line or a selection.  Learn more about  <span class="sql"><a href="http://microsoft.github.io/RTVS-docs/">R Tools for Visual Studio</a> or</span> <a href="https://www.rstudio.com/products/rstudio/features/">RStudio</a>.
@@ -95,14 +95,14 @@ FROM [Campaign].[dbo].[CM_AD]
    Debra will use the AUC to select the champion model to use in the next step.
 </p></li>
 
-<li> Finally  <strong>step4_campaign_recommendations.R</strong> scores data for leads to be used in a new campaign. The code uses the champion model to score each lead multiple times - for each combination of day of week, time of day, and channel - and selects the combination with the highest probability to convert for each lead.  This becomes the recommendation for that lead.  The scored datatable shows the best way to contact each lead for the next campaign. The recommendations table (<code>Recommendations</code>) is used for the next campaign the company wants to deploy.
-<p>
-<div class="alert alert-info sql" role="alert">
-   This step may take 1-2 minutes to complete.  Feel free to skip it if you wish, the data already exists in the SQL database.
-   </div></p>
+<li> <strong>step4_prepare_new_data.R</strong> creates a new data which contains all the opened loans on a pay date which we do not know the status in next three month, the loans in this new data are not included in the training and testing dataset and have the same features as the loans used in training/testing dataset.
 </li>
+
+<li> <strong>step5_loan_prediction.R</strong> takes the new data created in the step4 and the champion model created in step3, output the predicted label and probability to be charge-off for each loan in next three months.
+</li>
+
 <li class="hdi">
-After creating the model, Debra runs <strong>Copy_Dev2Prod.R</strong> to copy the model information from the <strong>dev</strong> folder to the <strong>prod</strong> folder, then runs <strong>campaign_scoring.R</strong> to create recommendations for her new data. 
+After creating the model, Debra runs <strong>Copy_Dev2Prod.R</strong> to copy the model information from the <strong>dev</strong> folder to the <strong>prod</strong> folder, then runs <strong>loanchargeoff_scoring.R</strong> to create predictions for her new data. 
 </li>
 <li> Once all the above code has been executed, Debra will use PowerBI to visualize the recommendations created from her model. 
 

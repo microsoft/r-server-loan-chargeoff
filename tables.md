@@ -23,75 +23,43 @@ Below are the different data sets that you will find in your database after depl
     <th>Description</th>
   </tr>
   <tr>
-    <td>Campaign_Detail</td>
-    <td>Raw data about each marketing campaign that occurred</td>
+    <td>Loan_chargeoff_eval_score_10k</td>
+    <td>Table that stores the model score and prediction probability</td>
   </tr>
   <tr>
-    <td>Lead_Demography </td>
-    <td>Raw demographics and financial data about each customer</td>
+    <td>Loan_chargeoff_models_10k</td>
+    <td>Outlines various models and their respective performance scores</td>
   </tr>
   <tr>
-    <td>Market_Touchdown</td>
-    <td>Raw channel-day-time data used for every customer of Lead_Demography in every campaign he was targeted</td>
+    <td>Loan_chargeoff_prediction_10k</td>
+    <td>table that stores the prediction score and probability from scoring result</td>
   </tr>
   <tr>
-    <td>Product</td>
-    <td>Raw data about the product marketed in each campaign</td>
+    <td>Loan_chargeoff_score</td>
+    <td>Table that stores the loan information and prediction result from the scoring exercise</td>
   </tr>
     <tr>
-    <td>CM_AD0</td>
-    <td>Merged data with missing values replaced by the mode</td>
+    <td>Loan_chargeoff_test</td>
+    <td>Table that stores the loan and prediction result from testing exercise</td>
   </tr>
     <tr>
-    <td>CM_AD</td>
-    <td>Analytical data set: aggregated cleaned data set with new features</td>
+    <td>Loan_chargeoff_train</td>
+    <td>Table that stores the loan and prediction result from training exercise</td>
   </tr>
     <tr>
-    <td>CM_AD_N</td>
-    <td>Normalized version of CM_AD</td>
+    <td>Loan_info_10k</td>
+    <td>Raw data about loan information</td>
   </tr>
     <tr>
-    <td>All tables with the _N (e.g. Age_N)</td>
-    <td>Table holding the normalization correspondance between the factors of each variable and the assigned integer</td>
+    <td>Member_info_10k</td>
+    <td>Raw data about member information</td>
   </tr>
     <tr>
-    <td>Train_Id</td>
-    <td>Lead_Id that will go to the training set</td>
+    <td>Payments_info_10k</td>
+    <td>Raw data about payments information</td>
   </tr>
     <tr>
-    <td>CM_AD_Train</td>
-    <td>Training set</td>
-  </tr>
-    <tr>
-    <td>CM_AD_Test</td>
-    <td>Testing set</td>
-  </tr>
-    <tr>
-    <td>Campaign_Models</td>
-    <td>Table storing the trained models</td>
-  </tr>
-    <tr>
-    <td>Forest_Prediction</td>
-    <td>Prediction results for testing step with Random Forest</td>
-  </tr>
-    <tr>
-    <td>Boosted_Prediction</td>
-    <td>Prediction results for testing step with GBT</td>
-  </tr>
-    <tr>
-    <td>Campaign_Metrics</td>
-    <td>Performance metrics of the models tested</td>
-  </tr>
-    <tr>
-    <td>Best_Model</td>
-    <td>Table with the name of the best model based on AUC</td>
-  </tr>
-      <tr>
-    <td>Prob_Id</td>
-    <td>Table with the scoring results on the full table with the best model</td>
-  </tr>
-      <tr>
-    <td>Recommendations</td>
-    <td>Table with the recommendations for each customer</td>
-  </tr>
+    <td>Selected_features_10k</td>
+    <td>Table that stores the features ran in feature selection step</td>
+  </tr>    
 </table>

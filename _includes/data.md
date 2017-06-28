@@ -4,19 +4,15 @@
     <th>Description</th>
   </tr>
   <tr>
-    <td>Campaign_Detail.csv</td>
-    <td>Raw data about each marketing campaign that occurred</td>
+    <td>loan_info_10k.csv</td>
+    <td>Raw data about loan and loan details</td>
   </tr>
   <tr>
-    <td>Lead_Demography.csv</td>
+    <td>member_info_10k.csv</td>
     <td>Raw demographics and financial data about each customer</td>
   </tr>
   <tr>
-    <td>Market_Touchdown.csv</td>
-    <td>Raw channel-day-time data used for every customer of Lead_Demography in every campaign he was targeted</td>
-  </tr>
-  <tr>
-    <td>Product.csv</td>
-    <td>Raw data about the product marketed in each campaign</td>
+    <td>payments_info_10k.csv</td>
+    <td>Raw data about loan payment history</td>
   </tr>
 </table>

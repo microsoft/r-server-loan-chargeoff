@@ -21,7 +21,7 @@ The second way is not currently being used, but if this code were to be added to
 The third way to configure the  website is through a parameter on the url:
 
 ```
-    https://microsoft.github.io/r-server-campaign-optimization?path=hdi
+    https://microsoft.github.io/r-server-loan-chargeoff?path=hdi
 ```
 The three values that can be specified are: `cig` (Cortana Intelligence Gallery), `onp` (On-Prem), `hdi` (HDInsight).  Any other values are ignored, which means the site stays in its current configuration.
 

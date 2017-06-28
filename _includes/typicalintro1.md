@@ -1,1 +1,1 @@
-This solution package shows how to use a prediction model to increase the response rate to a campaign by recommending  <strong>how to contact</strong> (for example, Email, SMS, or Cold Call) as well as <strong>when to contact</strong> (day of week and time of day) each lead identified for use in a new campaign.
+This solution template demonstrates a solution end to end to run predictive analytics on loan data and produce scoring on chargeoff probability. A PowerBI report will also walk through the analysis and trend of credit loans and prediction of chargeoff probability.

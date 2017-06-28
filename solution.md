@@ -12,4 +12,4 @@ solution.
 
 ## HDInsight Spark Deployment from Cortana Intelligence Gallery 
 
- [Click here](https://aka.ms/campaign-hdi) to access the HDInsight Spark Deployment - if it comes back to this page, this version of the solution has not yet been published in the Cortana Intelligence Gallery.
+ [Click here](https://aka.ms/loanchargeoffhdi) to access the HDInsight Spark Deployment - if it comes back to this page, this version of the solution has not yet been published in the Cortana Intelligence Gallery.

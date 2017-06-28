@@ -1,7 +1,7 @@
 author:
         name: Microsoft
 
-description: Use SQL Server 2016 + R Services to build and deploy a machine learning model which recommends actions to maximize the purchase rate of leads targeted by a campaign.
+description: Use SQL Server 2016 + R Services to build and deploy a machine learning model which predicts whether a loan will charge off in the next three months.
 
 gems:
   - jekyll-redirect-from
