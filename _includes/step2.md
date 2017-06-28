@@ -10,7 +10,7 @@ The default input for this script uses 100,000 loans for training models, and wi
 <li>
 <strong>Copy_Dev2Prod.R</strong> copies the model information from the <strong>dev</strong> folder to the <strong>prod</strong> folder to be used for production.  This script must be executed once after <strong>loanchargeoff_main.R</strong> completes, before running <strong>loanchargeoff_scoring.R</strong>.  It can then be used again as desired to update the production model. 
 <p></p>
-After running this script models created during <strong>loanchargeoff_main.R</strong> are copied into the <strong>/var/RevoShare/<user>/LoanChargeOff/prod/model</strong> directory.
+After running this script models created during <strong>loanchargeoff_main.R</strong> are copied into the <strong>/var/RevoShare/user/LoanChargeOff/prod/model</strong> directory.
 </li>
 <li>
 <strong>loanchargeoff_scoring.R</strong> uses the previously trained model and invokes the steps to process data, perform feature engineering and scoring.  Use this script after first executing <strong>loanchargeoff_main.R</strong> and <strong>Copy_Dev2Prod.R</strong>.
@@ -32,11 +32,6 @@ The first few steps prepare the data for training.
 
 <li>  <strong>step2_feature_engineering.R</strong>:  Here we use MicrosoftML to do feature selection. Code can be added in this file to create some new features based on existing features. Open source package such as Caret can also be used to do feature selection here. Best features are selected using AUC. </li>
 
-<li>	<strong>step2_feature_engineering.R</strong>:  Performs Feature Engineering and creates the Analytical Dataset. Feature Engineering consists of creating new variables in the cleaned dataset.  <code>SMS_Count</code>, <code>Email_Count</code> and <code>Call_Count</code> are computed: they correspond to the number of times every customer was contacted through these three channels. It also computes <code>Previous_Channel</code>: for each communication with the <code>Lead</code>, it corresponds to the <code>Channel</code> that was used in the communication that preceded it (a NULL value is attributed to the first record of each Lead). Finally, an aggregation is performed at the Lead Level by keeping the latest record for each one. </li>
-</ul>
-
-
-
     
 <div class="alert alert-info" role="alert">
 <div class="cig">
@@ -52,14 +47,16 @@ In <span class="sql">both Visual Studio and</span> RStudio, there are multiple w
 </div>
 
 <li>  Now she is ready for training the models, using <strong>step3_training_evaluation.R</strong>.  This step will train two different models and evaluate each.  
-<p></p>
-   
+<p> 
    The R script draws the ROC or Receiver Operating Characteristic for each prediction model. It shows the performance of the model in terms of true positive rate and false positive rate, when the decision threshold varies. 
-</p><p>
+</p>
+<p>
    The AUC is a number between 0 and 1.  It corresponds to the area under the ROC curve. It is a performance metric related to how good the model is at separating the two classes (converted clients vs. not converted), with a good choice of decision threshold separating between the predicted probabilities.  The closer the AUC is to 1, and the better the model is. Given that we are not looking for that optimal decision threshold, the AUC is more representative of the prediction performance than the Accuracy (which depends on the threshold). 
-</p><p> 
+</p>
+<p> 
    Debra will use the AUC to select the champion model to use in the next step.
-</p></li>
+</p>
+</li>
 
 <li> <strong>step4_prepare_new_data.R</strong> creates a new data which contains all the opened loans on a pay date which we do not know the status in next three month, the loans in this new data are not included in the training and testing dataset and have the same features as the loans used in training/testing dataset.
 </li>

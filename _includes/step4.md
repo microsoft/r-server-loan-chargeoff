@@ -1,6 +1,6 @@
 
 <h2> Step 4: Deploy and Visualize with Bernie the Business Analyst </h2>
-----------------------------------------------------------------
+<hr />
 
 Now that the predictions are created and saved, we will meet our last persona - Bernie, the Business Analyst. Bernie will use the Power BI Dashboard to learn more about the loan chargeoff predictions (second tab). He will also review summaries of the loan data used to create the model (first tab).  
 
