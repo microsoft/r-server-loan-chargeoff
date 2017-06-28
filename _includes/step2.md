@@ -18,15 +18,11 @@ After running this script models created during <strong>loanchargeoff_main.R</st
 The input to this script defaults to 10,000 loans to be scored with the model in the <strong>prod</strong> directory. After running this script the Hive table <code>loanchargeoff_predictions</code> now contains the predictions.  
 </li></ul>
 </div>
+<div class="sql">
+<a href="https://microsoft.github.io/r-server-loan-chargeoff/dba.html#workflow-automation"> SQL Workflow Automation </a> 
+</div>
 
 Below is a summary of the individual steps used for this solution. 
-<ol>
-<li class="sql">  <a href="https://microsoft.github.io/r-server-loan-chargeoff/dba.html#workflow-automation"> SQL Workflow Automation </a> </li>
-
-<li>
-The first few steps prepare the data for training.
-</li>
-
 <ul>
 <li>  <strong>step1_get_training_testing_data.R</strong>: Read input data which contains all the history information for all the loans from HDFS. Extract training/testing data based on process date (paydate) from the input data. Save training/testing data in HDFS working directory </li>
 
@@ -80,4 +76,3 @@ She uses an ODBC connection to connect to the data, so that it will always show 
 </li>
 <li>A summary of this process and all the files involved is described <a href="data-scientist.html">in more detail here</a>.
 </li>
-</ol>
