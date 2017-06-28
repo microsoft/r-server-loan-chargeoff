@@ -35,12 +35,9 @@ Below is a summary of the individual steps used for this solution.
 You can run these scripts if you wish, but you may also skip them if you want to get right to the modeling.  The data that these scripts create already exists in the SQL database.
 <p/>
 </div>
-<div class="hdi" >
 To run all the scripts described above as well as those in the next few steps, open and execute the file <strong>loanchargeoff_main.R.</strong>
 <p/>
-</div>
 In <span class="sql">both Visual Studio and</span> RStudio, there are multiple ways to execute the code from the R Script window.  The fastest way <span class="sql">for both IDEs</span> is to use Ctrl-Enter on a single line or a selection.  Learn more about  <span class="sql"><a href="http://microsoft.github.io/RTVS-docs/">R Tools for Visual Studio</a> or</span> <a href="https://www.rstudio.com/products/rstudio/features/">RStudio</a>.
-
 </div>
 
 <li>  Now she is ready for training the models, using <strong>step3_training_evaluation.R</strong>.  This step will train two different models and evaluate each.  
