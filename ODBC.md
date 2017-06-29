@@ -18,7 +18,7 @@ solution.
 Follow the instructions below to set up a connection between your SQL Server database and PowerBI.  Perform these steps after you have created the <code>LoanChargeOff</code> database.
 </div>
 <div class="hdi">
-Follow the instructions below to set up a connection between your Hive table and PowerBI.  Perform these steps after you have <a href="Typical.html">created the <code>recommendations</code> table by executiong the <strong>LoanChargeOff_main.R</strong> and <strong>LoanChargeOff_scoring</strong> </a> scripts.
+Follow the instructions below to set up a connection between your Hive table and PowerBI.  Perform these steps after you have <a href="Typical.html">created the <code>loanchargeoff_predictions</code> table by executiong the <strong>LoanChargeOff_main.R</strong> and <strong>LoanChargeOff_scoring</strong> </a> scripts.
 </div>
 <ol>
 <li class="hdi">Download and install the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=49883">Spark ODBC driver.</a></li>
