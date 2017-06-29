@@ -1,4 +1,23 @@
 
+<div class="sql">
+<p/>
+Now that Debra's environment is set up, she  opens her IDE and creates a Project.  To follow along with her, open the <strong>D:\LoanChargeOff\R</strong> directory on <span class="cig">the VM desktop </span> <span class="onp">your computer</span>.  
+
+Debra can follow the steps listed in For the Database Analyst. To understand each of the steps, Debra should execute each of the steps including the optional step in feature selection.
+
+* Step 1: Creating Tables
+* Step 2: Creating Views with Features and Labels
+* Step 2a: Demonstrate feature selection using MicrosoftML package 
+* Step 3: Training and Testing Model
+* Step 4: Chargeoff Prediction (batch)
+* Step 4a:  Chargeoff Prediction (OnDemand)
+
+<span>
+Details of above steps : <a href="https://microsoft.github.io/r-server-loan-chargeoff/dba.html#workflow-automation"> SQL Workflow Automation </a> 
+</span>
+
+</div>
+
 Now you're ready to follow along with Debra as she creates the scripts needed for this solution. <span class="sql"> If you are using Visual Studio, you will see these file in the <code>Solution Explorer</code> tab on the right. In RStudio, the files can be found in the <code>Files</code> tab, also on the right. </span> 
 
 <div class="hdi">The steps described below each create a function to perform their task.  The individual steps are described in more detail below.  The following scripts are then used to execute the steps.  
@@ -75,5 +94,5 @@ She uses an ODBC connection to connect to the data, so that it will always show 
   </div>
 </li>
 <li>A summary of this process and all the files involved is described <a href="data-scientist.html">in more detail here</a>.
-</li>
+</li></ul>
 </div>
