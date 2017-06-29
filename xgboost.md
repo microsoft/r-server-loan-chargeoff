@@ -20,7 +20,7 @@ The XGBoost Model for the Solution Template will do the following:
 5.	Evaluate model performance
 6.	Output results (AUC, TPR, TNR)
 
-The XGBoost Model for the Solution Template can be found in the script “step6_xgboost_model.R.” The function to run the script is xgboost_model(). It can take in optional input parameters which specify the HDFS working and data directories, the local working directory, and the loan data. The input parameters are as follows:
+The XGBoost Model for the Solution Template can be found in the script `loanchargeoff_xgboost.R`. The function to run the script is xgboost_model(). It can take in optional input parameters which specify the HDFS working and data directories, the local working directory, and the loan data. The input parameters are as follows:
 
 Input Parameters for xgboost_model(): HDFSWorkDir, HDFSDataDir,	LocalWorkDir, Loan_Data
 
