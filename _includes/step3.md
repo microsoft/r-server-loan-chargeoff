@@ -2,9 +2,9 @@
 <h2> Step 3: Operationalize with Debra <span class="sql">and Danny</span></h2>
 <hr />
 <p/>
-Debra has completed her tasks.  <span class="sql">She has connected to the SQL database, executed code from her R IDE that pushed (in part) execution to the SQL machine to clean the data, create new features, train two models and select the champion model.</span><span class="hdi">She has executed code from RStudio that pushed (in part) execution to Hadoop to clean the data, create new features, train two models and select the champion model</span> She has scored data, created predictions, and also created a summary report which she will hand off to Bernie - see below.
+Debra has completed her tasks.  <span class="sql">She has connected to the SQL database, executed code from her R IDE that pushed (in part) execution to the SQL machine to clean the data, create new features, train five models and select the champion model.</span><span class="hdi">She has executed code from RStudio that pushed (in part) execution to Hadoop to clean the data, create new features, train five models and select the champion model</span> She has scored data, created predictions, and also created a summary report which she will hand off to Bernie - see below.
 <p/>
-While this task is complete for the current set of leads, our company will want to perform these actions for each new loan payment.  <span class="sql">Instead of going back to Debra each time, Danny can operationalize the code in TSQL files which he can then run himself each month for the newest campaign rollouts.</span> 
+While this task is complete for the current set of loans, our company will want to perform these actions for each new loan payment.  <span class="sql">Instead of going back to Debra each time, Danny can operationalize the code in TSQL files which he can then run himself each month for the newest loan payments.</span> 
 <p/>
 <div class="sql">
 Debra hands over her scripts to Danny who adds the code to the database as stored procedures, using embedded R code, or SQL queries.  You can see these procedures by logging into SSMS and opening the <code>Programmability>Stored Procedures</code> section of the <code>LoanChargeOff</code> database.
