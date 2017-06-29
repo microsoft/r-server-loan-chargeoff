@@ -60,7 +60,8 @@ xgboost_model <- function(HDFSWorkDir = NULL,
   HDFSIntermediateDir <- file.path(HDFSWorkDir, "temp")
   
   if (! (dir.exists(myLocalTrainDir))){
-    system(paste("mkdir -p -m 777 ", myLocalTrainDir, sep="")) # make new directory if doesn't exist
+    # make new directory if doesn't exist
+    system(paste("mkdir -p -m 777 ", myLocalTrainDir, sep="")) 
   } 
   
   # ############################################################################
@@ -76,7 +77,7 @@ xgboost_model <- function(HDFSWorkDir = NULL,
   ## Set compute context and load libraries
   ############################################################################################################
   
-  print("Start Step6: xgboost training and evaluation...")
+  print("Start xgboost training and evaluation...")
   hdfsFS <- RxHdfsFileSystem()
   library(xgboost) 
   
@@ -102,9 +103,14 @@ xgboost_model <- function(HDFSWorkDir = NULL,
   print("Training XGBoost model...")
   
   rxSetComputeContext('local')
-  train_data <- rxDataStep(inData = trainingSet,maxRowsByCols = NULL)    #convert XDF format to data frame 
-  train_label <- train_data$charge_off                                   #train data charge_off
-  train_numeric <- data.matrix(train_data, rownames.force = NA)          #convert categorical features to numeric 
+  #convert XDF format to data frame 
+  train_data <- rxDataStep(inData = trainingSet,maxRowsByCols = NULL)    
+  
+  #train data charge_off
+  train_label <- train_data$charge_off                                   
+  
+  #convert categorical features to numeric 
+  train_numeric <- data.matrix(train_data, rownames.force = NA)          
   
   #remove columns from data
   cols.dont.want <- c("memberId","loanId","loan_open_date", "paydate", "charge_off")  
@@ -120,25 +126,40 @@ xgboost_model <- function(HDFSWorkDir = NULL,
   ############################################################################################################
   
   print("predicting on xgboost model...")
-  test_data <- rxDataStep(inData = testingSet, maxRowsByCols = NULL)     #convert XDF format to data frame 
-  test_label <- test_data$charge_off                                     #test data charge_off 
-  test_numeric <- data.matrix(test_data, rownames.force = NA)            #convert categorical features to numeric 
+  
+  #convert XDF format to data frame 
+  test_data <- rxDataStep(inData = testingSet, maxRowsByCols = NULL)     
+  
+  #test data charge_off 
+  test_label <- test_data$charge_off                                     
+  
+  #convert categorical features to numeric 
+  test_numeric <- data.matrix(test_data, rownames.force = NA)            
   
   test_numeric <- test_numeric[, ! colnames(test_numeric) %in% cols.dont.want, drop = F]
   
-  xgb_pred <- predict(XGB_model, test_numeric)                           #predict using trained model
-  xgb_prediction <- as.numeric(xgb_pred > 0.5)                           #evaluate results to 0 or 1
+  #predict using trained model
+  xgb_pred <- predict(XGB_model, test_numeric)                           
   
-  test_numeric_df <- data.frame(test_data)                            #convert matrix results to data frame
-  test_numeric_df$"Probability.XGBoost.1" <- xgb_pred                 #add scored results column to test data
-  test_numeric_df$"predictedLabel" <- xgb_prediction                  #add predicted results column to test data
-  test_numeric_df$"charge_off" <- test_label                          #add observed results column to test data
+  #evaluate results to 0 or 1
+  xgb_prediction <- as.numeric(xgb_pred > 0.5)                           
+  
+  #convert matrix results to data frame
+  test_numeric_df <- data.frame(test_data)                            
+  
+  #add scored results column to test data
+  test_numeric_df$"Probability.XGBoost.1" <- xgb_pred    
+  
+  #add predicted results column to test data
+  test_numeric_df$"predictedLabel" <- xgb_prediction                  
+  
+  #add observed results column to test data
+  test_numeric_df$"charge_off" <- test_label                          
   
   #save test data with results as XDF file
   Prediction_Table_XGB <- RxXdfData(file = paste(HDFSIntermediateDir, "/PredictionTableXGBXdf", sep=""),fileSystem = hdfsFS)
   rxDataStep(inData = test_numeric_df, outFile = Prediction_Table_XGB, overwrite = TRUE)  
-  
-  
+    
   
   ############################################################################################################
   # Calculate TPR, TNR, AUC in local compute context
@@ -174,3 +195,6 @@ xgboost_model <- function(HDFSWorkDir = NULL,
   return(list(AUC = AUC_XGB, TPR = TPR_XGB, TNR = TNR_XGB))
   
 }
+
+#Invoke Function
+xgboost_model()
