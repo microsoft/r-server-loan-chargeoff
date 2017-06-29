@@ -18,9 +18,7 @@ After running this script models created during <strong>loanchargeoff_main.R</st
 The input to this script defaults to 10,000 loans to be scored with the model in the <strong>prod</strong> directory. After running this script the Hive table <code>loanchargeoff_predictions</code> now contains the predictions.  
 </li></ul>
 </div>
-<div class="sql">
-<a href="https://microsoft.github.io/r-server-loan-chargeoff/dba.html#workflow-automation"> SQL Workflow Automation </a> 
-</div>
+
 
 <div class="hdi">
 Below is a summary of the individual steps used for this solution. 

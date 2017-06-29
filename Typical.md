@@ -152,6 +152,7 @@ Debra can follow the steps listed in For the Database Analyst. To understand eac
 *   Step 4: Chargeoff Prediction (batch)
 *   Step 4a:  Chargeoff Prediction (OnDemand)
 
+<a href="https://microsoft.github.io/r-server-loan-chargeoff/dba.html#workflow-automation"> SQL Workflow Automation </a> 
 </div>
 
 
