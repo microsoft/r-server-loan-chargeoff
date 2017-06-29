@@ -37,10 +37,11 @@ The process to incorporate the XGBoost model into the Solution Template was spli
 ### Input Format
 
 The open-source XGBoost model in R takes in several types of input data including:
-o	Dense Matrix i.e. matrix
-o	Sparse Matrix i.e. Matrix::dgCMatrix
-o	Local Data Files e
-o	xgb.DMatrix
+
+* Dense Matrix i.e. matrix
+* Sparse Matrix i.e. Matrix::dgCMatrix
+* Local Data Files e
+* xgb.DMatrix
 
 ### Data Conversion and Processing
 
@@ -93,13 +94,13 @@ The testing data, predicted model scores, binary classification results, and obs
 
 One metric used for model evaluation was calculating the error of the model as the mean of the instances when the predicted results did not equal the actual charge off results in the testing data. This measure is included as an additional useful metric within the script but is not an output of the function. This method yielded about a 0.85% model error. 
 
-<strong>NOTE :For purposes of this documentation, the data used was `Loan_Data100000.csv`. All scores reflect usage of this dataset</strong>
+<strong>NOTE : For purposes of this documentation, the data used was `Loan_Data100000.csv`. All scores reflect usage of this dataset</strong>
 
 ### True Positive Rate (TPR) and True Negative Rate (TNR)
 
 The True Positive Rate (TPR) was another metric used for model evaluation. The TPR, also known as Sensitivity, is the ratio of positives that are correctly identified to the total number of positives identified. The TPR score of the predicted results for the XGBoost model was 0.9734.
 
-The True Negative Rate (TNR) was another metric used for model evaluation. The TNR, also known as Specificity, is the ratio of negatives that are correctly identified to the total number of negatives identified. The TNR score of the predicted results for the XGBoost model was 0.9912.**
+The True Negative Rate (TNR) was another metric used for model evaluation. The TNR, also known as Specificity, is the ratio of negatives that are correctly identified to the total number of negatives identified. The TNR score of the predicted results for the XGBoost model was 0.9912.
 
 ### ROC Curve and AUC
 
