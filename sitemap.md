@@ -16,6 +16,7 @@ title: Site Map
     * [SQL: Using a Jupyter Notebook](jupyter.html)
     * [SQL: Using RStudio with R Server](rstudio.html)
     * [HDI: Using an HDInsight Spark cluster for Loan ChargeOff Prediction](hdinsight.html)
+    * [HDI: Using xgboost package for Loan ChargeOff Prediction](xgboost.html)
     * [HDI: Configuring Operationalization with R Server](deployr.html)
 * [Quick Start](START_HERE.html)
     * [On-Prem: Setup SQL Server 2016 ](SetupSQL.html)

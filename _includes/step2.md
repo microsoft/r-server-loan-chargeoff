@@ -58,6 +58,10 @@ In <span class="sql">both Visual Studio and</span> RStudio, there are multiple w
 <li> <strong>step5_loan_prediction.R</strong> takes the new data created in the step4 and the champion model created in step3, output the predicted label and probability to be charge-off for each loan in next three months.
 </li>
 
+<li> <strong>loanchargeoff_xgboost.R</strong> This step is optional. For more details : 
+<a href="https://microsoft.github.io/r-server-loan-chargeoff/xgboost.html">Using XGBoost package in HDInsight Spark Cluster for Loan ChargeOff Prediction</a>
+</li>
+
 <li class="hdi">
 After creating the model, Debra runs <strong>Copy_Dev2Prod.R</strong> to copy the model information from the <strong>dev</strong> folder to the <strong>prod</strong> folder, then runs <strong>loanchargeoff_scoring.R</strong> to create predictions for her new data. 
 </li>
