@@ -104,5 +104,9 @@ Press <code>Test</code>.
 </span>
 </li>
 <p></p>
-You are now ready to use this connection in PowerBI by following the <a href="Visualize_Results.html">instructions here</a>.
+You are now ready to use this connection in PowerBI
+<p></p>
+Download the <a href="https://github.com/Microsoft/r-server-loan-chargeoff/blob/master/HDI/LoanChargeOffPredictionDashboardHDI.pbix">LoanChargeOffPredictionDashboardHDI.pbix</a> and open it on your desktop
+<p></p>
+Click on Get Data and choose ODBC connection and use the above connection. 
 	
