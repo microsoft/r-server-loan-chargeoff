@@ -139,25 +139,6 @@ OPTIONAL: You can execute the R code on your local computer if you wish, but you
 You can use your favorite IDE to follow along.  If you use Visual Studio, you can add <a href="https://www.visualstudio.com/vs/rtvs/">R Tools for Visual Studio</a>.  Otherwise you might want to try <a href="rstudio.html">R Studio</a>. 
 </div>
 
-<div class="sql">
-<p/>
-Now that Debra's environment is set up, she  opens her IDE and creates a Project.  To follow along with her, open the <strong>D:\LoanChargeOff\R</strong> directory on <span class="cig">the VM desktop </span> <span class="onp">your computer</span>.  
-
-Debra can follow the steps listed in For the Database Analyst. To understand each of the steps, Debra should execute each of the steps including the optional step in feature selection.
-
-* Step 1: Creating Tables
-* Step 2: Creating Views with Features and Labels
-* Step 2a: Demonstrate feature selection using MicrosoftML package 
-* Step 3: Training and Testing Model
-* Step 4: Chargeoff Prediction (batch)
-* Step 4a:  Chargeoff Prediction (OnDemand)
-
-<span>
-Details of above steps : <a href="https://microsoft.github.io/r-server-loan-chargeoff/dba.html#workflow-automation"> SQL Workflow Automation </a> 
-</span>
-
-</div>
-
 
     {% include step2.md %}
 

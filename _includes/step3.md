@@ -10,6 +10,7 @@ While this task is complete for the current set of loans, our company will want 
 Debra hands over her scripts to Danny who adds the code to the database as stored procedures, using embedded R code, or SQL queries.  You can see these procedures by logging into SSMS and opening the <code>Programmability>Stored Procedures</code> section of the <code>LoanChargeOff</code> database.
 <img src="images/storedproc.png">
 <p/>
+
 Log into SSMS using SQL Server Authentication - the username/password provided during deployment
 <p/>
 You can find this script in the <strong>SQLR</strong> directory, and execute it yourself by following the <a href="Powershell_Instructions.html">PowerShell Instructions</a>.  <span class="cig">
