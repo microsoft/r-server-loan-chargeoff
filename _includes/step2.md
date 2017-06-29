@@ -1,10 +1,6 @@
 
 Now you're ready to follow along with Debra as she creates the scripts needed for this solution. <span class="sql"> If you are using Visual Studio, you will see these file in the <code>Solution Explorer</code> tab on the right. In RStudio, the files can be found in the <code>Files</code> tab, also on the right. </span> 
 
-<span class="sql">
-<a href="https://microsoft.github.io/r-server-loan-chargeoff/dba.html#workflow-automation"> SQL Workflow Automation </a> 
-</span>
-
 <div class="hdi">The steps described below each create a function to perform their task.  The individual steps are described in more detail below.  The following scripts are then used to execute the steps.  
 <ul><li>
 <strong>loanchargeoff_main.R</strong> is used to define the data and directories and then run all of the steps to process data, perform feature engineering, training, and scoring.  

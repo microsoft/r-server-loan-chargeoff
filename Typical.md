@@ -156,16 +156,6 @@ Debra can follow the steps listed in For the Database Analyst. To understand eac
 <a href="https://microsoft.github.io/r-server-loan-chargeoff/dba.html#workflow-automation"> SQL Workflow Automation </a> 
 </span>
 
-    {% include step2.md %}
-
- <a name="step3" id="step3"></a>
-
-   {% include step3.md %}
-
-<a name="step4" id="step4"></a>
-
-    {% include step4.md %}
-
 </div>
 
 
