@@ -50,7 +50,6 @@ The following are required to run the scripts in this solution:
 <li>SQL Database which the user has write permission and execute stored procedures.</li> 
 <li>For more information about SQL server 2016 and R service, please visit: <a href="https://msdn.microsoft.com/en-us/library/mt604847.aspx">https://msdn.microsoft.com/en-us/library/mt604847.aspx</a></li> 
 </ul>
-</div>
 
 
 ## Workflow Automation
