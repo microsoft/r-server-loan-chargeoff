@@ -49,7 +49,7 @@ Under Name, Enter <code>LoanChargeOff</code>. Under Server enter the MachineName
 <img src="images/odbc3.png" width="50%" >
 </li>
 <li class="hdi">
-Under Name, Enter <code>LoanChargeOff</code>. Add the Host name (of the form <i>myclustername.azurehdinsight.net</i>).  For username, enter <code>admin</code>.  Enter the password you chose when you created the cluster.
+Under Name, Enter <code>LoanChargeOff</code>. Add the Host name (of the form <i>myclustername.azurehdinsight.net</i>).  For username and password enter the values you chose when you created the cluster.
 <br/>
 <img src="images/odbcs3.png" width="50%" >
 </li>
