@@ -21,7 +21,7 @@ Follow the instructions below to set up a connection between your SQL Server dat
 Follow the instructions below to set up a connection between your Hive table and PowerBI.  Perform these steps after you have <a href="Typical.html">created the <code>loanchargeoff_predictions</code> table by executiong the <strong>LoanChargeOff_main.R</strong> and <strong>LoanChargeOff_scoring</strong> </a> scripts.
 </div>
 <ol>
-<li class="hdi">Download and install the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=49883">Spark ODBC driver.</a></li>
+<li class="hdi">Download and install the <a href="https://www.microsoft.com/en-us/download/details.aspx?id=49883">Spark ODBC driver.</a> If you already have this driver, make sure it version 1.2.4.1005 or greater. </li>
 <li>	Push the <code>Windows</code> key on your keyboard</li>
 <li>	Type <code>ODBC</code> </li>
 <li>	Open the correct app depending on what type of computer you are using (64 bit or 32 bit). To find out if your computer is running 32-bit or 64-bit Windows, do the following:
