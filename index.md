@@ -26,7 +26,7 @@ On the VM created for you from the <a href="https://aka.ms/loanchargeoffsql">Cor
 </div>
 
 <div class="onp">
-For customers who prefer an on-premise solution, the implementation with SQL Server R Services is a great option that takes advantage of the powerful combination of SQL Server and the R language.  A Windows PowerShell script to invoke the SQL scripts that execute the end-to-end modeling process is provided for convenience. 
+For customers who prefer an on-premise solution, the implementation with SQL Server R Services is a great option that takes advantage of the powerful combination of SQL Server and the R language.  A Windows PowerShell script to invoke the SQL scripts that execute the end-to-end modeling process is provided for convenience. Note that you may need to upgrade R Services to install at least the earliest version that shipped with MicrosoftML package. Instructions to upgrade R Services on SQL Server 2016 are <a href="https://docs.microsoft.com/en-us/sql/advanced-analytics/r/use-sqlbindr-exe-to-upgrade-an-instance-of-sql-server">here</a>.
 </div>
 
 <div class="hdi">
