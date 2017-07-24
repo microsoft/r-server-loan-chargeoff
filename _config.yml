@@ -7,7 +7,7 @@ gems:
   - jekyll-redirect-from
 
 cig_text: SQL Server 2016 on Azure
-onp_text: SQL Server 2016 On-Prem 
+onp_text: SQL Server 2016 On-Prem (with MicrosoftML)
 hdi_text: HDInsight Spark 
 
 pbix_hdidownload_url: "https://github.com/Microsoft/r-server-loan-chargeoff/blob/master/HDI/LoanChargeOffPredictionDashboardHDI.pbix"
