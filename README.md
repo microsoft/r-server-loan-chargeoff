@@ -1,5 +1,9 @@
 <img src="Resources/Images/management.jpg" align="right">
 
+> Discover more examples at [Microsoft Machine Learning Server](https://github.com/Microsoft/ML-Server)
+
+Deploy this solution from the Cortana Intelligence Gallery with [SQL Server](https://aka.ms/loanchargeoffsql) or [HDInsight Spark Cluster](https://aka.ms/loanchargeoffhdi).
+
 # Loan ChargeOff Risk - Predicting probability of loans getting charged off
 ## Implemented on SQL Server 2016 R Services and R Server for HDInsight Cluster
 
