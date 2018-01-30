@@ -1,4 +1,3 @@
-loanId	loan_open_date	memberId	loanAmount	interestRate	grade	term	installment	isJointApplication	purpose
 60898	8/12/2015	100003	26782.82569	1.720683973	3	48	557.9755352	0	debtconsolidation
 19684	11/12/2014	100063	35871.41314	1.876812474	1	60	597.8568857	0	debtconsolidation
 76153	5/12/2016	100066	23172.07563	2.293623304	1	36	643.6687676	0	business
