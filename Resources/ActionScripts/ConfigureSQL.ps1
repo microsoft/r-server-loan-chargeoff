@@ -171,7 +171,7 @@ $tableSchema = $dataPath + "\" + $dataFile + ".xml"
 $dataSet = Import-Csv $destination
 Write-Host -ForegroundColor 'cyan' ("         Loading $dataFile.csv into SQL Table") 
 ##Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
-invoke-expression "bcp $dataFile in $destination -S $ServerName -d $dbName -T -k -c -Force"
+invoke-expression "bcp $dataFile in $destination -S $ServerName -d $dbName -T -k -c"
 
 Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
 }
