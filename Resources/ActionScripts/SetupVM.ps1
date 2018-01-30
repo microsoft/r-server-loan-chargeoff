@@ -174,6 +174,10 @@ $Query = "ALTER SERVER ROLE [sysadmin] ADD MEMBER $username"
 Invoke-Sqlcmd -Query $Query -ErrorAction SilentlyContinue
 
 
+
+##Unzip Data Files 
+Expand-Archive -LiteralPath 'c:\Solutions\Loan\Data\10kRecords.zip' -DestinationPath 'c:\Solutions\Loan\Data\' -Force
+
 ####Run Configure SQL to Create Databases and Populate with needed Data
 $ConfigureSql = "C:\Solutions\$SolutionName\Resources\ActionScripts\ConfigureSQL.ps1  $ServerName $SolutionName $InstallPy $InstallR $Prompt"
 Invoke-Expression $ConfigureSQL 
