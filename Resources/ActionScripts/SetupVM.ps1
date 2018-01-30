@@ -30,7 +30,7 @@ $Prompt = 'N'
 $SolutionName = "Loan"
 $SolutionFullName = "r-server-loan-chargeoff" 
 $JupyterNotebook = "LoanChargeOff.ipynb"
-$Shortcut = "frauddetection_Help.url"
+$Shortcut = "LoanChargeOff_Help.url"
 
 
 ### DON'T FORGET TO CHANGE TO MASTER LATER...
