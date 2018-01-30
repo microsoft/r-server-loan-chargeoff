@@ -176,7 +176,7 @@ Invoke-Sqlcmd -Query $Query -ErrorAction SilentlyContinue
 
 
 ##Unzip Data Files 
-Expand-Archive -LiteralPath "$SolutionData\10kRecords.zip" -DestinationPath $SolutionData -Force
+#Expand-Archive -LiteralPath "$SolutionData\10kRecords.zip" -DestinationPath $SolutionData -Force
 
 ####Run Configure SQL to Create Databases and Populate with needed Data
 $ConfigureSql = "C:\Solutions\$SolutionName\Resources\ActionScripts\ConfigureSQL.ps1  $ServerName $SolutionName $InstallPy $InstallR $Prompt"
