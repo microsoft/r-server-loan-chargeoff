@@ -27,7 +27,7 @@ $Prompt = 'N'
 
 
 ##Change Values here for Different Solutions 
-$SolutionName = "Loan"
+$SolutionName = "LoanChargeOff"
 $SolutionFullName = "r-server-loan-chargeoff" 
 $JupyterNotebook = "LoanChargeOff.ipynb"
 $Shortcut = "LoanChargeOff_Help.url"
@@ -55,7 +55,7 @@ $checkoutDir = $SolutionName
 $SolutionPath = $solutionTemplatePath + '\' + $checkoutDir
 $desktop = "C:\Users\Public\Desktop\"
 $scriptPath = $SolutionPath + "\Resources\ActionScripts\"
-$SolutionData = $SolutionPath + "\Data\"
+$SolutionData = $SolutionPath + "\Data"
 
 
 
@@ -176,7 +176,7 @@ Invoke-Sqlcmd -Query $Query -ErrorAction SilentlyContinue
 
 
 ##Unzip Data Files 
-Expand-Archive -LiteralPath 'c:\Solutions\Loan\Data\10kRecords.zip' -DestinationPath 'c:\Solutions\Loan\Data\' -Force
+Expand-Archive -LiteralPath "$SolutionData\10kRecords.zip" -DestinationPath $SolutionData -Force
 
 ####Run Configure SQL to Create Databases and Populate with needed Data
 $ConfigureSql = "C:\Solutions\$SolutionName\Resources\ActionScripts\ConfigureSQL.ps1  $ServerName $SolutionName $InstallPy $InstallR $Prompt"
