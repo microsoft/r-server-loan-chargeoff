@@ -164,8 +164,8 @@ Write-Host -ForeGroundColor 'cyan' (" Import CSV File(s). This Should take about
 # upload csv files into SQL tables
 foreach ($dataFile in $dataList)
 {
-$destination = $SolutionData + $dataFile + ".csv" 
-#$destination = $SolutionData + $dataFile + ".txt" 
+#$destination = $SolutionData + $dataFile + ".csv" 
+$destination = $SolutionData + $dataFile + ".txt" 
 $tableName = $DBName + ".dbo." + $dataFile
 $tableSchema = $dataPath + "\" + $dataFile + ".xml"
 $dataSet = Import-Csv $destination
