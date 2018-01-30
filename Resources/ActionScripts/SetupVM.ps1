@@ -55,7 +55,7 @@ $checkoutDir = $SolutionName
 $SolutionPath = $solutionTemplatePath + '\' + $checkoutDir
 $desktop = "C:\Users\Public\Desktop\"
 $scriptPath = $SolutionPath + "\Resources\ActionScripts\"
-$SolutionData = $SolutionPath + "\Data"
+$SolutionData = $SolutionPath + "\Data\"
 
 
 
