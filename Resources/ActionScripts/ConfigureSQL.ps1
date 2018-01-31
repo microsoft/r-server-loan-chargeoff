@@ -171,6 +171,8 @@ Write-Host -ForeGroundColor 'cyan' (" Import CSV File(s). This Should take about
  SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
 
 
+ Write-Host -ForeGroundColor 'cyan' (" Data has been Loaded from Csv Files")
+
 
 # upload csv files into SQL tables
 foreach ($dataFile in $dataList)
