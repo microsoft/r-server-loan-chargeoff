@@ -161,13 +161,13 @@ Write-Host -ForeGroundColor 'cyan' (" Import CSV File(s). This Should take about
  ##Move this to top 
 
 
- $qry = "BULK INSERT loan_info_10k FROM C:\Solutions\LoanChargeOff\Data\loan_info_10k.txt"
+ $qry = "BULK INSERT loan_info_10k FROM 'C:\Solutions\LoanChargeOff\Data\loan_info_10k.txt'"
  SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
 
- $qry = "BULK INSERT member_info_10k FROM C:\Solutions\LoanChargeOff\Data\member_info_10k.txt"
+ $qry = "BULK INSERT member_info_10k FROM 'C:\Solutions\LoanChargeOff\Data\member_info_10k.txt'"
  SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
 
- $qry = "BULK INSERT payments_info_10k FROM C:\Solutions\LoanChargeOff\Data\payments_info_10k.txt"
+ $qry = "BULK INSERT payments_info_10k FROM 'C:\Solutions\LoanChargeOff\Data\payments_info_10k.txt'"
  SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
 
 
