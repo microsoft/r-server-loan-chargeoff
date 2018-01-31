@@ -213,10 +213,10 @@ $shortcut.Save()
 
 
 ## copy Jupyter Notebook files
-Move-Item $SolutionPath\R\$JupyterNotebook  c:\tmp\
-sed -i "s/XXYOURSQLPW/$password/g" c:\tmp\$JupyterNotebook
-sed -i "s/XXYOURSQLUSER/$username/g" c:\tmp\$JupyterNotebook
-Move-Item  c:\tmp\$JupyterNotebook $SolutionPath\R\
+# Move-Item $SolutionPath\R\$JupyterNotebook  c:\tmp\
+# sed -i "s/XXYOURSQLPW/$password/g" c:\tmp\$JupyterNotebook
+# sed -i "s/XXYOURSQLUSER/$username/g" c:\tmp\$JupyterNotebook
+# Move-Item  c:\tmp\$JupyterNotebook $SolutionPath\R\
 
 
 
@@ -227,10 +227,10 @@ Move-Item  c:\tmp\$JupyterNotebook $SolutionPath\R\
 
 if ($InstallPy -eq "Yes")
 {
-    Move-Item $SolutionPath\Python\$JupyterNotebook  c:\tmp\
-    sed -i "s/XXYOURSQLPW/$password/g" c:\tmp\$JupyterNotebook
-    sed -i "s/XXYOURSQLUSER/$username/g" c:\tmp\$JupyterNotebook
-    Move-Item  c:\tmp\$JupyterNotebook $SolutionPath\Python\
+    # Move-Item $SolutionPath\Python\$JupyterNotebook  c:\tmp\
+    # sed -i "s/XXYOURSQLPW/$password/g" c:\tmp\$JupyterNotebook
+    # sed -i "s/XXYOURSQLUSER/$username/g" c:\tmp\$JupyterNotebook
+    # Move-Item  c:\tmp\$JupyterNotebook $SolutionPath\Python\
 }
 
 # install modules for sample website
