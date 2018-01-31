@@ -44,7 +44,7 @@ train_model <- function(model_name = "logistic_regression",
                         train_set = "loan_chargeoff_train_10k",
                         test_set = "loan_chargeoff_test_10k",
                         score_set = "loan_chargeoff_eval_score_10k",
-                        connection_string = "Driver=SQL Server;Server=.;Database=LoanChargeOff;UID=<sql username>;PWD=<sql password>"
+                        connection_string = "Driver=SQL Server;Server=.;Database=LoanChargeOff_R;Trusted_Connection=True"
                         )
 {
 

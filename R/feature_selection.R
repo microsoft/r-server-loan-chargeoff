@@ -13,7 +13,7 @@ library(MicrosoftML)
 #                created and dataset imported (it's already been run for 10k loans data set)
 #                   
 ###########################################################################################################################################
-select_features <- function(connection_string = "Driver=SQL Server;Server=.;Database=LoanChargeOff;UID=<sql username>;PWD=<sql password>",
+select_features <- function(connection_string = "Driver=SQL Server;Server=.;Database=LoanChargeOff_R;Trusted_Connection=True",
                             train_set = "loan_chargeoff_train_10k",
                             test_set = "loan_chargeoff_test_10k")
 {

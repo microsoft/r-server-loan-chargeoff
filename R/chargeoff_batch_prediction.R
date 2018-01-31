@@ -15,10 +15,10 @@ library(MicrosoftML)
 #                2. Modelling must have been completed
 #                   
 ###########################################################################################################################################
-batch_score <- function (connection_string = "Driver=SQL Server;Server=.;Database=LoanChargeOff;UID=<sql username>;PWD=<sql password>",
+batch_score <- function (connection_string = "Driver=SQL Server;Server=.;Database=LoanChargeOff_R;Trusted_Connection=True",
                          best_models_file = "loan_chargeoff_best_model_10k.rdata",
                          score_set = "loan_chargeoff_score_10k",
-                         score_prediction = "loan_chargeoff_prediction_10k")
+                         score_prediction = "loan_chargeoff_prediction_10k_R")
 {
     load(best_models_file)
     if (!exists("best_model"))
