@@ -158,7 +158,7 @@ try
 {
 
 Write-Host -ForeGroundColor 'cyan' (" Import CSV File(s). This Should take about 30 Seconds Per File")
- ##Move this to top 
+
 
 
  $qry = "BULK INSERT loan_info_10k FROM 'C:\Solutions\LoanChargeOff\Data\loan_info_10k.txt'"
