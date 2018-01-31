@@ -161,23 +161,37 @@ Write-Host -ForeGroundColor 'cyan' (" Import CSV File(s). This Should take about
  ##Move this to top 
 
 
+ $qry = "BULK INSERT loan_info_10k FROM C:\Solutions\LoanChargeOff\Data\loan_info_10k.txt"
+ SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
+
+ $qry = "BULK INSERT member_info_10k FROM C:\Solutions\LoanChargeOff\Data\member_info_10k.txt"
+ SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
+
+ $qry = "BULK INSERT payments_info_10k FROM C:\Solutions\LoanChargeOff\Data\payments_info_10k.txt"
+ SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
+
+
+
 # upload csv files into SQL tables
 foreach ($dataFile in $dataList)
 {
 #$destination = $SolutionData + $dataFile + ".csv" 
-$destination = "'"+ $SolutionData + $dataFile + ".txt'" 
-$tableName = $DBName + ".dbo." + $dataFile
-$tableSchema = $dataPath + "\" + $dataFile + ".xml"
-$dataSet = Import-Csv $destination
-Write-Host -ForegroundColor 'cyan' ("         Loading $dataFile.csv into SQL Table") 
+#$destination = "'"+ $SolutionData + $dataFile + ".txt'" 
+#$tableName = $DBName + ".dbo." + $dataFile
+#$tableSchema = $dataPath + "\" + $dataFile + ".xml"
+#$dataSet = Import-Csv $destination
+#Write-Host -ForegroundColor 'cyan' ("         Loading $dataFile.csv into SQL Table") 
 ##Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
 ##invoke-expression "bcp $dataFile in $destination -S $ServerName -d $dbName -T  -k -c"
 #invoke-expression "bcp $tableName in $destination  -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -T"
-$qry = "BULK INSERT $tableName FROM $destination"
-SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
-Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
+#$qry = "BULK INSERT $tableName FROM $destination"
+#SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
+#Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
 }
 }
+
+
+
 catch
 {
 Write-Host -ForegroundColor DarkYellow "Exception in populating database tables:"
