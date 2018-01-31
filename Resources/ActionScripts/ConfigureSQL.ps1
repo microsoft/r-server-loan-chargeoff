@@ -172,7 +172,9 @@ $dataSet = Import-Csv $destination
 Write-Host -ForegroundColor 'cyan' ("         Loading $dataFile.csv into SQL Table") 
 ##Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
 ##invoke-expression "bcp $dataFile in $destination -S $ServerName -d $dbName -T  -k -c"
-bcp $tableName in $destination  -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -T
+#invoke-expression "bcp $tableName in $destination  -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -T"
+$qry = "BULK INSERT $tableName FROM $destination"
+SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
 Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
 }
 }
