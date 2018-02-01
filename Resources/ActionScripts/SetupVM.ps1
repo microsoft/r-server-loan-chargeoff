@@ -89,6 +89,20 @@ Rscript install.R
 }
 
 
+
+cd $dataDirPath
+
+# List of data files to be downloaded
+$dataList = "loan_info_10k", "member_info_10k", "payments_info_10k", "loan_info_100k", "member_info_100k", "payments_info_100k", "loan_info_1m", "member_info_1m", "payments_info_1m"
+$dataExtn = ".csv"
+$hashExtn = ".hash"
+foreach ($dataFile in $dataList)
+{
+    $down = $baseurl + '/' + $dataFile + $dataExtn
+    Write-Host -ForeGroundColor 'magenta' "Downloading file $down..."
+    Start-BitsTransfer -Source $down  
+}
+
 #################################################################
 ##DSVM Does not have SQLServer Powershell Module Install or Update 
 #################################################################
