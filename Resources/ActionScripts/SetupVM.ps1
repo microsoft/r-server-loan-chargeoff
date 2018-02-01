@@ -14,7 +14,11 @@ param(
 [ValidateNotNullOrEmpty()] 
 [string]$password,
 
-[parameter(Mandatory=$false, Position=4)]
+[parameter(Mandatory=$True, Position=4)]
+[ValidateNotNullOrEmpty()] 
+[string]$baseurl,
+
+[parameter(Mandatory=$false, Position=5)]
 [ValidateNotNullOrEmpty()] 
 [string]$Prompt
 )
@@ -24,6 +28,7 @@ $startTime = Get-Date
 
 #$Prompt= if ($Prompt -match '^y(es)?$') {'Y'} else {'N'}
 $Prompt = 'N'
+$isStandAlone = 'Y'
 
 
 ##Change Values here for Different Solutions 
@@ -89,8 +94,9 @@ Rscript install.R
 }
 
 
-
-cd $dataDirPath
+if ($isStandAlone -eq 'N')
+{
+cd $SolutionData
 
 # List of data files to be downloaded
 $dataList = "loan_info_10k", "member_info_10k", "payments_info_10k", "loan_info_100k", "member_info_100k", "payments_info_100k", "loan_info_1m", "member_info_1m", "payments_info_1m"
@@ -102,7 +108,7 @@ foreach ($dataFile in $dataList)
     Write-Host -ForeGroundColor 'magenta' "Downloading file $down..."
     Start-BitsTransfer -Source $down  
 }
-
+}
 #################################################################
 ##DSVM Does not have SQLServer Powershell Module Install or Update 
 #################################################################
