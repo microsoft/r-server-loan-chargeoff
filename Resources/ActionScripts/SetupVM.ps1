@@ -30,9 +30,9 @@ $startTime = Get-Date
 #$Prompt= if ($Prompt -match '^y(es)?$') {'Y'} else {'N'}
 $Prompt = 'N'
 
-if($baseurl::IsNullOrEmpty) {$isStandalone = 'Y'} ELSE {$isStandalone = 'N'}
-
-#$isStandAlone = 'N'
+# if($baseurl::IsNullOrEmpty) {$isStandalone = 'Y'} ELSE {$isStandalone = 'N'}
+# write-host $baseurl
+# #$isStandAlone = 'N'
 
 
 ##Change Values here for Different Solutions 
@@ -98,7 +98,7 @@ Rscript install.R
 }
 
 
-if ($isStandAlone -eq 'N')
+if(!$baseurl::IsNullOrEmpty)
 {
 cd $SolutionData
 
