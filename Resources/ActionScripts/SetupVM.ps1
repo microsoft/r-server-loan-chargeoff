@@ -43,7 +43,7 @@ $Shortcut = "LoanChargeOffHelp.url"
 
 
 ### DON'T FORGET TO CHANGE TO MASTER LATER...
-$Branch = "Dev" 
+$Branch = "master" 
 $InstallR = 'Yes'  ## If Solution has a R Version this should be 'Yes' Else 'No'
 $InstallPy = 'No' ## If Solution has a Py Version this should be 'Yes' Else 'No'
 $SampleWeb = 'No' ## If Solution has a Sample Website  this should be 'Yes' Else 'No' 
