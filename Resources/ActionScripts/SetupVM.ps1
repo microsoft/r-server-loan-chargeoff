@@ -98,7 +98,12 @@ Rscript install.R
 }
 
 
-if(!$baseurl::IsNullOrEmpty)
+Write-Host $baseurl
+
+#if(!$baseurl::IsNullOrEmpty)
+if($baseurl)
+
+
 {
 cd $SolutionData
 
