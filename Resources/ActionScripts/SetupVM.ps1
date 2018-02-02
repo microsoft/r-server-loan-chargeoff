@@ -28,7 +28,7 @@ $startTime = Get-Date
 
 #$Prompt= if ($Prompt -match '^y(es)?$') {'Y'} else {'N'}
 $Prompt = 'N'
-$isStandAlone = 'Y'
+$isStandAlone = 'N'
 
 
 ##Change Values here for Different Solutions 
