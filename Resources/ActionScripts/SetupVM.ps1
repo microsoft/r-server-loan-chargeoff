@@ -30,7 +30,7 @@ $startTime = Get-Date
 #$Prompt= if ($Prompt -match '^y(es)?$') {'Y'} else {'N'}
 $Prompt = 'N'
 
-if($baseurl -eq $null) {$isStandalone = 'Y'} ELSE {$isStandalone = 'N'}
+if($baseurl::IsNullOrEmpty) {$isStandalone = 'Y'} ELSE {$isStandalone = 'N'}
 
 #$isStandAlone = 'N'
 
