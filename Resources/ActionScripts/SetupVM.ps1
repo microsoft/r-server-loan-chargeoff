@@ -20,6 +20,10 @@ param(
 
 [parameter(Mandatory=$false, Position=5)]
 [ValidateNotNullOrEmpty()] 
+[string]$isStandalone,
+
+[parameter(Mandatory=$false, Position=6)]
+[ValidateNotNullOrEmpty()] 
 [string]$Prompt
 )
 $startTime = Get-Date
@@ -28,7 +32,10 @@ $startTime = Get-Date
 
 #$Prompt= if ($Prompt -match '^y(es)?$') {'Y'} else {'N'}
 $Prompt = 'N'
-$isStandAlone = 'N'
+
+if($isStandalone -eq $null) {$isStandalone = 'Y'} ELSE {$isStandalone = 'N'}
+
+##$isStandAlone = 'N'
 
 
 ##Change Values here for Different Solutions 
