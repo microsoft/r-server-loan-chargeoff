@@ -18,11 +18,8 @@ param(
 [ValidateNotNullOrEmpty()] 
 [string]$baseurl,
 
-[parameter(Mandatory=$false, Position=5)]
-[ValidateNotNullOrEmpty()] 
-[string]$isStandalone,
 
-[parameter(Mandatory=$false, Position=6)]
+[parameter(Mandatory=$false, Position=5)]
 [ValidateNotNullOrEmpty()] 
 [string]$Prompt
 )
