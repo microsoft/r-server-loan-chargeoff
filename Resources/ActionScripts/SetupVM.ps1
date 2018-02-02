@@ -2,24 +2,29 @@
 
 [CmdletBinding()]
 param(
-[parameter(Mandatory=$True, Position=1)]
-[ValidateNotNullOrEmpty()] 
-[string]$serverName,
+    [parameter(Mandatory=$false, Position=1)]
+    [ValidateNotNullOrEmpty()] 
+    [string]$isStandAlone,
+
 
 [parameter(Mandatory=$True, Position=2)]
 [ValidateNotNullOrEmpty()] 
-[string]$username,
+[string]$serverName,
 
 [parameter(Mandatory=$True, Position=3)]
 [ValidateNotNullOrEmpty()] 
-[string]$password,
+[string]$username,
 
 [parameter(Mandatory=$True, Position=4)]
+[ValidateNotNullOrEmpty()] 
+[string]$password,
+
+[parameter(Mandatory=$True, Position=5)]
 [ValidateNotNullOrEmpty()] 
 [string]$baseurl,
 
 
-[parameter(Mandatory=$false, Position=5)]
+[parameter(Mandatory=$false, Position=6)]
 [ValidateNotNullOrEmpty()] 
 [string]$Prompt
 )
@@ -30,9 +35,9 @@ $startTime = Get-Date
 #$Prompt= if ($Prompt -match '^y(es)?$') {'Y'} else {'N'}
 $Prompt = 'N'
 
-##if($isStandalone -eq $null) {$isStandalone = 'N'} ELSE {$isStandalone = 'N'}
+if($isStandalone -eq $null) {$isStandalone = 'Y'} ELSE {$isStandalone = 'N'}
 
-$isStandAlone = 'N'
+#$isStandAlone = 'N'
 
 
 ##Change Values here for Different Solutions 
