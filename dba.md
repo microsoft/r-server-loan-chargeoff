@@ -33,7 +33,7 @@ solution.
           </div>
 </div>
 <p>
-With the simulated data and R scripts contained in this solution, application analyst is able to use SQL Server 2016 to evaluate the solution end to end, including the steps needed to deploy machine learning model in SQL Server and consumed by business application. This template deploys a Data Science Virtual Machine (DSVM) that has SQL Server 2016 with Microsoft R Server 9.1 installed.
+With the simulated data and R scripts contained in this solution, application analyst is able to use SQL Server 2017 to evaluate the solution end to end, including the steps needed to deploy machine learning model in SQL Server and consumed by business application. This template deploys a Data Science Virtual Machine (DSVM) that has SQL Server 2017 with Microsoft ML Server installed.
 </p>
 
 For businesses that prefer an on-prem solution, the implementation with SQL Server R Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server). In this template, we implemented all steps in SQL stored procedures: data preprocessing, and feature engineering are implemented in pure SQL, while data cleaning, and the model training, scoring and evaluation steps are implemented with SQL stored procedures calling R (Microsoft R Server) code.
@@ -45,10 +45,11 @@ All the steps can be executed on SQL Server client environment (SQL Server Manag
 
 The following are required to run the scripts in this solution:
 <ul>
-<li>SQL Server 2016 with Microsoft R Server installed and configured.  </li>   
+<li>SQL Server (2016 or higher) with Microsoft R Server  (version 9.1.0) installed and configured.  </li>   
 <li>The SQL user name and password, and the user configured properly to execute R scripts in-memory.</li> 
 <li>SQL Database which the user has write permission and execute stored procedures.</li> 
-<li>For more information about SQL server 2016 and R service, please visit: <a href="https://msdn.microsoft.com/en-us/library/mt604847.aspx">https://msdn.microsoft.com/en-us/library/mt604847.aspx</a></li> 
+<li>For more information about SQL server and R service, please visit: <a href="https://msdn.microsoft.com/en-us/library/mt604847.aspx">https://msdn.microsoft.com/en-us/library/mt604847.aspx</a></li> 
+</ul>
 </ul>
 
 

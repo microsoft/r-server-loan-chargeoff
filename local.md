@@ -12,7 +12,7 @@ solution.
 
 ## Setup for Local Code Execution
 
-You can execute code on your local computer and push the computations to the SQL Server on the VM  that was created by the Cortana Intelligence Gallery. But first you must perform the following steps. 
+You can execute code on your local computer and push the computations to the SQL Server on the VM  that was created by the Azure AI Gallery. But first you must perform the following steps. 
 
 ## On the VM: Configure VM for Remote Access
 
@@ -41,4 +41,4 @@ This will create a folder **loanchargeoff** containing the full solution package
 Finally, in the **chargeoff_batch_prediction.R** file, replace  `Server=.` in the connection_string with the DNS of the VM followed by ",1433".
 
 
-<a href="CIG_Workflow.html#step2">Return to Typical Workflow for Cortana Intelligence Gallery Deployment<a>
+<a href="CIG_Workflow.html#step2">Return to Typical Workflow for Azure AI Gallery Deployment<a>
