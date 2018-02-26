@@ -2,7 +2,7 @@
 
 [CmdletBinding()]
 param(
-[parameter(Mandatory=$True, Position=1)]
+[parameter(Mandatory=$false, Position=1)]
 [ValidateNotNullOrEmpty()] 
 [string]$serverName,
 
@@ -16,13 +16,17 @@ param(
 
 [parameter(Mandatory=$false, Position=4)]
 [ValidateNotNullOrEmpty()] 
-[string]$baseurl,
-
-
-[parameter(Mandatory=$false, Position=5)]
-[ValidateNotNullOrEmpty()] 
 [string]$Prompt
 )
+$startTime = Get-Date
+
+$Query = "SELECT SERVERPROPERTY('ServerName')"
+$si = invoke-sqlcmd -Query $Query
+$si = $si.Item(0)
+
+
+$serverName = if([string]::IsNullOrEmpty($servername)) {$si}
+
 $startTime = Get-Date
 
 
@@ -54,7 +58,9 @@ $Prompt = 'N'
 $setupLog = "c:\tmp\setup_log.txt"
 Start-Transcript -Path $setupLog -Append
 $startTime = Get-Date
-Write-Host -ForegroundColor 'Green'  "  Start time:" $startTime 
+Write-Host "Start time:" $startTime 
+
+Write-Host "ServerName set to $ServerName"
 
 
 ###These probably don't need to change , but make sure files are placed in the correct directory structure 
@@ -65,17 +71,6 @@ $SolutionPath = $solutionTemplatePath + '\' + $checkoutDir
 $desktop = "C:\Users\Public\Desktop\"
 $scriptPath = $SolutionPath + "\Resources\ActionScripts\"
 $SolutionData = $SolutionPath + "\Data\"
-
-
-
-####$Query = "SELECT SERVERPROPERTY('ServerName')"
-##$si = invoke-sqlcmd -Query $Query
-##$si = $si.Item(0)
-
-
-###$serverName = if($serverName -eq $null) {$si}
-
-##WRITE-HOST " ServerName set to $ServerName"
 
 
 
@@ -91,7 +86,7 @@ ELSE {Invoke-Expression $clone}
 
 If ($InstalR -eq 'Yes')
 {
-Write-Host -ForeGroundColor magenta "Installing R Packages"
+Write-Host "Installing R Packages"
 Set-Location "C:\Solutions\$SolutionName\Resources\ActionScripts\"
 # install R Packages
 Rscript install.R 
@@ -140,13 +135,13 @@ if ($EnableFileStream -eq 'Yes')
     {
     netsh advfirewall firewall add rule name="Open Port 139" dir=in action=allow protocol=TCP localport=139
     netsh advfirewall firewall add rule name="Open Port 445" dir=in action=allow protocol=TCP localport=445
-    Write-Host -ForeGroundColor cyan " Firewall as been opened for filestream access..."
+    Write-Host "Firewall as been opened for filestream access..."
     }
 If ($EnableFileStream -eq 'Yes')
     {
     Set-Location "C:\Program Files\Microsoft\ML Server\PYTHON_SERVER\python.exe" 
     .\setup.py install
-    Write-Host -ForeGroundColor cyan " Py Instal has been updated to latest version..."
+    Write-Host "Py Instal has been updated to latest version..."
     }
 
 
@@ -160,13 +155,13 @@ If ($EnableFileStream -eq 'Yes')
 ### Change Authentication From Windows Auth to Mixed Mode 
 Invoke-Sqlcmd -Query "EXEC xp_instance_regwrite N'HKEY_LOCAL_MACHINE', N'Software\Microsoft\MSSQLServer\MSSQLServer', N'LoginMode', REG_DWORD, 2;" -ServerInstance "LocalHost" 
 
-Write-Host -ForeGroundColor 'cyan' " Configuring SQL to allow running of External Scripts "
+Write-Host "Configuring SQL to allow running of External Scripts "
 ### Allow Running of External Scripts , this is to allow R Services to Connect to SQL
 Invoke-Sqlcmd -Query "EXEC sp_configure  'external scripts enabled', 1"
 
 ### Force Change in SQL Policy on External Scripts 
 Invoke-Sqlcmd -Query "RECONFIGURE WITH OVERRIDE" 
-Write-Host -ForeGroundColor 'cyan' " SQL Server Configured to allow running of External Scripts "
+Write-Host  "SQL Server Configured to allow running of External Scripts "
 
 ### Enable FileStreamDB if Required by Solution 
 if ($EnableFileStream -eq 'Yes') 
@@ -187,7 +182,7 @@ if ($EnableFileStream -eq 'Yes')
     }
 ELSE
     { 
-    Write-Host -ForeGroundColor 'cyan' " Restarting SQL Services "
+    Write-Host  "Restarting SQL Services "
     ### Changes Above Require Services to be cycled to take effect 
     ### Stop the SQL Service and Launchpad wild cards are used to account for named instances  
     Restart-Service -Name "MSSQ*" -Force
@@ -212,7 +207,7 @@ Invoke-Sqlcmd -Query $Query -ErrorAction SilentlyContinue
 $ConfigureSql = "C:\Solutions\$SolutionName\Resources\ActionScripts\ConfigureSQL.ps1  $ServerName $SolutionName $InstallPy $InstallR $Prompt"
 Invoke-Expression $ConfigureSQL 
 
-Write-Host -ForegroundColor 'Cyan' " Done with configuration changes to SQL Server"
+Write-Host "Done with configuration changes to SQL Server"
 
 
 
@@ -232,7 +227,7 @@ if (!$?) {
 ##Create Shortcuts and Autostart Help File 
 Copy-Item "$ScriptPath\$Shortcut" C:\Users\Public\Desktop\
 Copy-Item "$ScriptPath\$Shortcut" "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\"
-Write-Host -ForeGroundColor cyan " Help Files Copied to Desktop"
+Write-Host "Help Files Copied to Desktop"
 
 
 $WsShell = New-Object -ComObject WScript.Shell
@@ -276,9 +271,9 @@ Move-Item  c:\tmp\server.js $SolutionPath\Website
 
 $endTime = Get-Date
 
-Write-Host -foregroundcolor 'green'(" $SolutionFullName Workflow Finished Successfully!")
+Write-Host ("$SolutionFullName Workflow Finished Successfully!")
 $Duration = New-TimeSpan -Start $StartTime -End $EndTime 
-Write-Host -ForegroundColor 'green'(" Total Deployment Time = $Duration") 
+Write-Host (" Total Deployment Time = $Duration") 
 
 Stop-Transcript
 
