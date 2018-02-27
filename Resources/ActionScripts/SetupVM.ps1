@@ -6,18 +6,24 @@ param(
 [ValidateNotNullOrEmpty()] 
 [string]$serverName,
 
-[parameter(Mandatory=$True, Position=2)]
+[parameter(Mandatory=$false, Position=2)]
 [ValidateNotNullOrEmpty()] 
-[string]$username,
+[string]$baseurl,
 
 [parameter(Mandatory=$True, Position=3)]
 [ValidateNotNullOrEmpty()] 
+[string]$username,
+
+[parameter(Mandatory=$True, Position=4)]
+[ValidateNotNullOrEmpty()] 
 [string]$password,
 
-[parameter(Mandatory=$false, Position=4)]
+[parameter(Mandatory=$false, Position=5)]
 [ValidateNotNullOrEmpty()] 
 [string]$Prompt
 )
+
+
 
 #################################################################
 ##DSVM Does not have SQLServer Powershell Module Install or Update 
