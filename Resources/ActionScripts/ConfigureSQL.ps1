@@ -151,51 +151,27 @@ If ($InstallR -eq 'Yes') {
     ##########################################################################
 
     $RStart = Get-Date
-    try {
+    
 
-        Write-Host ("Import CSV File(s). This Should take about 30 Seconds Per File")
+        try {
 
-
-
-        $qry = "BULK INSERT loan_info_10k FROM 'C:\Solutions\LoanChargeOff\Data\loan_info_10k.txt'"
-        SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
-
-        $qry = "BULK INSERT member_info_10k FROM 'C:\Solutions\LoanChargeOff\Data\member_info_10k.txt'"
-        SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
-
-        $qry = "BULK INSERT payments_info_10k FROM 'C:\Solutions\LoanChargeOff\Data\payments_info_10k.txt'"
-        SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
-
-        #  $qry = "BULK INSERT loan_info_100k FROM 'C:\Solutions\LoanChargeOff\Data\loan_info_100k.txt'"
-        #  SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
-
-        #  $qry = "BULK INSERT member_info_100k FROM 'C:\Solutions\LoanChargeOff\Data\member_info_100k.txt'"
-        #  SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
-
-        #  $qry = "BULK INSERT payments_info_100k FROM 'C:\Solutions\LoanChargeOff\Data\payments_info_100k.txt'"
-        #  SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
-
-
-
-        Write-Host (" Data has been Loaded from Csv Files")
-
-
-        # upload csv files into SQL tables
-        foreach ($dataFile in $dataList) {
-            #$destination = $SolutionData + $dataFile + ".csv" 
-            #$destination = "'"+ $SolutionData + $dataFile + ".txt'" 
-            #$tableName = $DBName + ".dbo." + $dataFile
-            #$tableSchema = $dataPath + "\" + $dataFile + ".xml"
-            #$dataSet = Import-Csv $destination
-            #Write-Host ("         Loading $dataFile.csv into SQL Table") 
-            ##Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
-            ##invoke-expression "bcp $dataFile in $destination -S $ServerName -d $dbName -T  -k -c"
-            #invoke-expression "bcp $tableName in $destination  -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 100000 -T"
-            #$qry = "BULK INSERT $tableName FROM $destination"
-            #SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
-            #Write-Host (" $datafile table loaded from CSV File(s).")
+            Write-Host (" Import CSV File(s). This Should take about 30 Seconds Per File")
+            #$dataList = "LengthOfStay"
+    
+    
+            # upload csv files into SQL tables
+            foreach ($dataFile in $dataList) {
+                $destination = $SolutionData + $dataFile + ".csv" 
+                $tableName = $DBName + ".dbo." + $dataFile
+                $tableSchema = $dataPath + "\" + $dataFile + ".xml"
+                $dataSet = Import-Csv $destination
+                Write-Host ("         Loading $dataFile.csv into SQL Table") 
+                Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
+    
+        
+                Write-Host ("$datafile table loaded from CSV File(s).")
+            }
         }
-    }
 
 
 
@@ -205,6 +181,20 @@ If ($InstallR -eq 'Yes') {
         throw
     }
     Write-Host ("Finished loading .csv File(s).")
+
+   #     Write-Host ("Import CSV File(s). This Should take about 30 Seconds Per File")
+
+
+
+    #     $qry = "BULK INSERT loan_info_10k FROM 'C:\Solutions\LoanChargeOff\Data\loan_info_10k.txt'"
+    #     SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
+
+    #     $qry = "BULK INSERT member_info_10k FROM 'C:\Solutions\LoanChargeOff\Data\member_info_10k.txt'"
+    #     SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
+
+    #     $qry = "BULK INSERT payments_info_10k FROM 'C:\Solutions\LoanChargeOff\Data\payments_info_10k.txt'"
+    #     SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $qry -ConnectionTimeout  0 -QueryTimeout 0
+
 
     Write-Host ("Training Model and Scoring Data...")
 
