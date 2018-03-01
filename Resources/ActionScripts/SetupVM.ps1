@@ -10,11 +10,11 @@ param(
     [ValidateNotNullOrEmpty()] 
     [string]$baseurl,
 
-    [parameter(Mandatory = $True, Position = 3)]
+    [parameter(Mandatory = $false, Position = 3)]
     [ValidateNotNullOrEmpty()] 
     [string]$username,
 
-    [parameter(Mandatory = $True, Position = 4)]
+    [parameter(Mandatory = $false, Position = 4)]
     [ValidateNotNullOrEmpty()] 
     [string]$password,
 
@@ -111,18 +111,15 @@ if ($isAdmin -eq 'True') {
     }
 
 
-    Write-Host $baseurl
 
     #if(!$baseurl::IsNullOrEmpty)
     if ($baseurl)
-
     {
-        cd $SolutionData
+        Set-Location $SolutionData
 
         # List of data files to be downloaded
-        $dataList =  "loan_info_100k", "member_info_100k", "payments_info_100k", "loan_info_1m", "member_info_1m", "payments_info_1m"
+        $dataList = "loan_info_100k", "member_info_100k", "payments_info_100k", "loan_info_1m", "member_info_1m", "payments_info_1m"
         $dataExtn = ".csv"
-        $hashExtn = ".hash"
         foreach ($dataFile in $dataList) {
             $down = $baseurl + '/' + $dataFile + $dataExtn
             Write-Host "Downloading file $down..."
@@ -239,12 +236,7 @@ if ($isAdmin -eq 'True') {
         if($SampleWeb  -eq "Yes")
         {
         cd $SolutionPath\Website\
-        npm install
-        # Move-Item $SolutionPath\Website\server.js  c:\tmp\
-        # sed -i "s/XXYOURSQLPW/$password/g" c:\tmp\server.js
-        # sed -i "s/XXYOURSQLUSER/$username/g" c:\tmp\server.js
-        # Move-Item  c:\tmp\server.js $SolutionPath\Website
-        
+        npm install    
         (Get-Content $SolutionPath\Website\server.js).replace('XXYOURSQLPW', $password) | Set-Content $SolutionPath\Website\server.js
         (Get-Content $SolutionPath\Website\server.js).replace('XXYOURSQLUSER', $username) | Set-Content $SolutionPath\Website\server.js    
         }
