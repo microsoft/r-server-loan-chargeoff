@@ -159,21 +159,21 @@ If ($InstallR -eq 'Yes') {
             #$dataList = "LengthOfStay"
     
     
-            # upload csv files into SQL tables
-            foreach ($dataFile in $dataList) {
-                $destination = $SolutionData + $dataFile + ".csv" 
-                $tableName = $DBName + ".dbo." + $dataFile
-                $tableSchema = $dataPath + "\" + $dataFile + ".xml"
-                $dataSet = Import-Csv $destination
-                Write-Host ("         Loading $dataFile.csv into SQL Table") 
-                Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
+            # upload csv files into SQL table      
+
+           foreach ($dataFile in $dataList)
+        {
+            $destination = $solutionData + $dataFile +".csv"
+            $tableName = $dbName + ".dbo." + $dataFile 
+            $tableSchema = $dataPath + $dataFile + ".xml"
+            bcp $tableName format nul -T -c -x -f $tableSchema -S $ServerName 
+            bcp $tableName in $destination -T -S $ServerName -c -F2  -C "RAW" -b 50000 -t'|'
+        
     
         
                 Write-Host ("$datafile table loaded from CSV File(s).")
             }
         }
-
-
 
     catch {
         Write-Host -ForegroundColor DarkYellow "Exception in populating database tables:"
@@ -232,14 +232,16 @@ Configuring $SolutionName Solution for Py
         #$dataList = "LengthOfStay"
 
 
-        # upload csv files into SQL tables
-        foreach ($dataFile in $dataList) {
-            $destination = $SolutionData + $dataFile + ".csv" 
-            $tableName = $DBName + ".dbo." + $dataFile
-            $tableSchema = $dataPath + "\" + $dataFile + ".xml"
-            $dataSet = Import-Csv $destination
-            Write-Host ("         Loading $dataFile.csv into SQL Table") 
-            Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
+        # upload csv files into SQL table      
+
+       foreach ($dataFile in $dataList)
+    {
+        $destination = $solutionData + $dataFile +".csv"
+        $tableName = $dbName + ".dbo." + $dataFile 
+        $tableSchema = $dataPath + $dataFile + ".xml"
+        bcp $tableName format nul -T -c -x -f $tableSchema -S $ServerName 
+        bcp $tableName in $destination -T -S $ServerName -c -F2  -C "RAW" -b 50000 -t'|'
+    
 
     
             Write-Host ("$datafile table loaded from CSV File(s).")
