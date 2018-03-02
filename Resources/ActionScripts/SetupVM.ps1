@@ -265,9 +265,10 @@ if ($isAdmin -eq 'True') {
 
 
 ELSE 
-{ Start-Sleep -s 20
+{ 
     
     Write-Host "To install this Solution you need to run Powershell as an Administrator. This program will close automatically in 20 seconds"
+    Start-Sleep -s 20
 
 
 ## Close Powershell 
