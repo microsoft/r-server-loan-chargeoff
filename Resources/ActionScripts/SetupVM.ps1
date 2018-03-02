@@ -244,7 +244,7 @@ if ($isAdmin -eq 'True') {
 
     $endTime = Get-Date
 
-    Write-Host ("$SolutionFullName Workflow Finished Successfully!")
+    Write-Host ("$SolutionFullName Workflow Finished Successfully! You can close the PowerShell window.")
     $Duration = New-TimeSpan -Start $StartTime -End $EndTime 
     Write-Host ("Total Deployment Time = $Duration") 
 
