@@ -254,11 +254,22 @@ if ($isAdmin -eq 'True') {
     ##Launch HelpURL 
     Start-Process "https://microsoft.github.io/$SolutionFullName/Typical.html"
 
+    ## Close Powershell if not run on 
+    if ($baseurl)
+    {Exit-PSHostProcess
+    EXIT}
+
 }
+
+
+
+
 ELSE 
-{Write-Host "To install this Solution you need to run Powershell as an Administrator"}
+{ Start-Sleep -s 20
+    
+    Write-Host "To install this Solution you need to run Powershell as an Administrator. This program will close automatically in 20 seconds"
 
 
 ## Close Powershell 
 Exit-PSHostProcess
-EXIT 
+EXIT }
