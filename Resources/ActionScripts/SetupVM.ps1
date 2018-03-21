@@ -52,9 +52,7 @@ if ($isAdmin -eq 'True') {
     #$Prompt= if ($Prompt -match '^y(es)?$') {'Y'} else {'N'}
     $Prompt = 'N'
 
-    # if($baseurl::IsNullOrEmpty) {$isStandalone = 'Y'} ELSE {$isStandalone = 'N'}
-    # write-host $baseurl
-    # #$isStandAlone = 'N'
+
 
 
     ##Change Values here for Different Solutions 
@@ -144,12 +142,17 @@ if ($isAdmin -eq 'True') {
     ############################################################################################
     #Configure SQL to Run our Solutions 
     ############################################################################################
+    
+    
+    if([string]::IsNullOrEmpty($serverName))   
+        {$Query = "SELECT SERVERPROPERTY('ServerName')"
+        $si = Invoke-Sqlcmd  -Query $Query
+        $si = $si.Item(0)}
+    else 
+        {$si = $serverName}
+    $serverName = $si
 
-
-    $Query = "SELECT SERVERPROPERTY('ServerName')"
-    $si = invoke-sqlcmd -Query $Query
-    $si = $si.Item(0)
-    $serverName = if ([string]::IsNullOrEmpty($servername)) {$si}
+    Write-Host "Servername set to $serverName"
 
     if ($isMixedMode -eq 'Yes') {
         ### Change Authentication From Windows Auth to Mixed Mode 
