@@ -72,7 +72,7 @@ if ($isAdmin -eq 'True') {
     $Prompt = 'N'
 
 
-    $setupLog = "c:\tmp\LoanChargeOffSetup.ps1"
+    $setupLog = "c:\tmp\lco_setup_log.txt"
     Start-Transcript -Path $setupLog -Append
     $startTime = Get-Date
     Write-Host "Start time:" $startTime 
