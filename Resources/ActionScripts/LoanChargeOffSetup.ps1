@@ -32,33 +32,17 @@ $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIde
         
 if ($isAdmin -eq 'True') {
 
-    #################################################################
-    ##DSVM Does not have SQLServer Powershell Module Install or Update 
-    #################################################################
 
 
-    Write-Host "Installing SQLServer Power Shell Module or Updating to latest "
-
-
-    if (Get-Module -ListAvailable -Name SQLServer) 
-    {Update-Module -Name "SQLServer" -MaximumVersion 21.0.17199}
-    Else 
-    {Install-Module -Name SqlServer -RequiredVersion 21.0.17199 -Scope AllUsers -AllowClobber -Force}
-
-    #Set-PSRepository -Name PSGallery -InstallationPolicy Untrusted
-    Import-Module -Name SqlServer -MaximumVersion 21.0.17199 -Force
-
-
-    #$Prompt= if ($Prompt -match '^y(es)?$') {'Y'} else {'N'}
-    $Prompt = 'N'
-
-
+    $setupLog = "c:\tmp\lco_setup_log.txt"
+    Start-Transcript -Path $setupLog
+    $startTime = Get-Date
+    Write-Host "Start time:" $startTime 
 
 
     ##Change Values here for Different Solutions 
     $SolutionName = "LoanChargeOff"
     $SolutionFullName = "r-server-loan-chargeoff" 
-    $JupyterNotebook = "LoanChargeOff.ipynb"
     $Shortcut = "LoanChargeOffHelp.url"
 
 
@@ -71,15 +55,6 @@ if ($isAdmin -eq 'True') {
     $isMixedMode = 'No' ## If Solution Requires SQL Mixed Mode Authentication this should be 'Yes' Else 'No' 
     $Prompt = 'N'
 
-
-    $setupLog = "c:\tmp\lco_setup_log.txt"
-    Start-Transcript -Path $setupLog -Append
-    $startTime = Get-Date
-    Write-Host "Start time:" $startTime 
-
-    Write-Host "ServerName set to $ServerName"
-
-
     ###These probably don't need to change , but make sure files are placed in the correct directory structure 
     $solutionTemplateName = "Solutions"
     $solutionTemplatePath = "C:\" + $solutionTemplateName
@@ -88,6 +63,40 @@ if ($isAdmin -eq 'True') {
     $desktop = "C:\Users\Public\Desktop\"
     $scriptPath = $SolutionPath + "\Resources\ActionScripts\"
     $SolutionData = $SolutionPath + "\Data\"
+
+
+##################################################################
+##DSVM Does not have SQLServer Powershell Module Install or Update 
+##################################################################
+
+
+
+    if (Get-Module -ListAvailable -Name SQLServer) 
+    {
+    Write-Host 
+    ("Updating SQLServer Power Shell Module")    
+    Update-Module -Name "SQLServer" -MaximumVersion 21.0.17199
+    Import-Module -Name SqlServer -MaximumVersion 21.0.17199 -Force
+    }
+    Else 
+    {
+    Write-Host 
+    ("Installing SQLServer Power Shell Module")  
+    Install-Module -Name SqlServer -RequiredVersion 21.0.17199 -Scope AllUsers -AllowClobber -Force
+    Import-Module -Name SqlServer -MaximumVersion 21.0.17199 -Force
+    }
+
+
+
+    if ($SampleWeb -eq "Yes") 
+    {
+    if([string]::IsNullOrEmpty($username)) 
+        {
+        $Credential = $Host.ui.PromptForCredential("Need credentials", "Please supply an user name and password to configure SQL for mixed authentication.", "", "")
+        $username = $credential.Username
+        $password = $credential.GetNetworkCredential().password 
+        }  
+    }
 
 
 
@@ -101,42 +110,52 @@ if ($isAdmin -eq 'True') {
     if (Test-Path $SolutionPath) { Write-Host " Solution has already been cloned"}
     ELSE {Invoke-Expression $clone}
 
-    If ($InstalR -eq 'Yes') {
-        Write-Host "Installing R Packages"
+    If ($InstalR -eq 'Yes') 
+        {
+        Write-Host 
+        ("Installing R Packages")
         Set-Location "C:\Solutions\$SolutionName\Resources\ActionScripts\"
         # install R Packages
         Rscript install.R 
-    }
+        }
+
+
 
 
 
     #if(!$baseurl::IsNullOrEmpty)
     if ($baseurl)
-    {
+        {
         Set-Location $SolutionData
 
         # List of data files to be downloaded
         $dataList = "loan_info_100k", "member_info_100k", "payments_info_100k", "loan_info_1m", "member_info_1m", "payments_info_1m"
         $dataExtn = ".csv"
-        foreach ($dataFile in $dataList) {
+        foreach ($dataFile in $dataList) 
+            {
             $down = $baseurl + '/' + $dataFile + $dataExtn
-            Write-Host "Downloading file $down..."
+            Write-Host 
+            ("Downloading file $down")
             Start-BitsTransfer -Source $down  
+            }
         }
-    }
 
 
     ## if FileStreamDB is Required Alter Firewall ports for 139 and 445
-    if ($EnableFileStream -eq 'Yes') {
+    if ($EnableFileStream -eq 'Yes') 
+        {
         netsh advfirewall firewall add rule name="Open Port 139" dir=in action=allow protocol=TCP localport=139
         netsh advfirewall firewall add rule name="Open Port 445" dir=in action=allow protocol=TCP localport=445
-        Write-Host "Firewall as been opened for filestream access..."
-    }
-    If ($EnableFileStream -eq 'Yes') {
+        Write-Host 
+        ("Firewall as been opened for filestream access")
+        }
+    If ($EnableFileStream -eq 'Yes') 
+        {
         Set-Location "C:\Program Files\Microsoft\ML Server\PYTHON_SERVER\python.exe" 
         .\setup.py install
-        Write-Host "Py Instal has been updated to latest version..."
-    }
+        Write-Host 
+        ("Py Instal has been updated to latest version...")
+        }
 
 
     ############################################################################################
@@ -145,16 +164,21 @@ if ($isAdmin -eq 'True') {
     
     
     if([string]::IsNullOrEmpty($serverName))   
-        {$Query = "SELECT SERVERPROPERTY('ServerName')"
+        {
+        $Query = "SELECT SERVERPROPERTY('ServerName')"
         $si = Invoke-Sqlcmd  -Query $Query
-        $si = $si.Item(0)}
+        $si = $si.Item(0)
+        }
     else 
         {$si = $serverName}
-    $serverName = $si
+        
+        $serverName = $si
 
-    Write-Host "Servername set to $serverName"
+    Write-Host 
+    ("Servername set to $serverName")
 
-    if ($isMixedMode -eq 'Yes') {
+    if ($isMixedMode -eq 'Yes') 
+        {
         ### Change Authentication From Windows Auth to Mixed Mode 
         Invoke-Sqlcmd -Query "EXEC xp_instance_regwrite N'HKEY_LOCAL_MACHINE', N'Software\Microsoft\MSSQLServer\MSSQLServer', N'LoginMode', REG_DWORD, 2;" -ServerInstance "LocalHost" 
 
@@ -163,19 +187,23 @@ if ($isAdmin -eq 'True') {
 
         $Query = "ALTER SERVER ROLE [sysadmin] ADD MEMBER $username"
         Invoke-Sqlcmd -Query $Query -ErrorAction SilentlyContinue
-        Write-Host "SQL Server Authentication switched to mixed mode"
-    }
+        Write-Host 
+        ("SQL Server Authentication switched to mixed mode")
+        }
 
-    Write-Host "Configuring SQL to allow running of External Scripts "
+    Write-Host 
+    ("Configuring SQL to allow running of External Scripts")
     ### Allow Running of External Scripts , this is to allow R Services to Connect to SQL
     Invoke-Sqlcmd -Query "EXEC sp_configure  'external scripts enabled', 1"
 
     ### Force Change in SQL Policy on External Scripts 
     Invoke-Sqlcmd -Query "RECONFIGURE WITH OVERRIDE" 
-    Write-Host  "SQL Server Configured to allow running of External Scripts "
+    Write-Host  
+    ("SQL Server Configured to allow running of External Scripts")
 
     ### Enable FileStreamDB if Required by Solution 
-    if ($EnableFileStream -eq 'Yes') {
+    if ($EnableFileStream -eq 'Yes') 
+        {
         # Enable FILESTREAM
         $instance = "MSSQLSERVER"
         $wmi = Get-WmiObject -Namespace "ROOT\Microsoft\SqlServer\ComputerManagement14" -Class FilestreamSettings | where-object {$_.InstanceName -eq $instance}
@@ -189,44 +217,45 @@ if ($isAdmin -eq 'True') {
         Invoke-Sqlcmd "RECONFIGURE WITH OVERRIDE"
         Stop-Service "MSSQ*"
         Start-Service "MSSQ*"
-    }
-    ELSE { 
+        }
+    ELSE 
+        { 
         Write-Host  "Restarting SQL Services "
         ### Changes Above Require Services to be cycled to take effect 
         ### Stop the SQL Service and Launchpad wild cards are used to account for named instances  
         Restart-Service -Name "MSSQ*" -Force
-    }
+        }
 
-
-    ##Unzip Data Files 
-    #Expand-Archive -LiteralPath "$SolutionData\10kRecords.zip" -DestinationPath $SolutionData -Force
 
     ####Run Configure SQL to Create Databases and Populate with needed Data
     $ConfigureSql = "C:\Solutions\$SolutionName\Resources\ActionScripts\ConfigureSQL.ps1  $ServerName $SolutionName $InstallPy $InstallR $Prompt"
     Invoke-Expression $ConfigureSQL 
 
-    Write-Host "Done with configuration changes to SQL Server"
+    Write-Host 
+    ("Done with configuration changes to SQL Server")
 
 
 
 
-    Write-Host (" Installing latest Power BI...")
+    Write-Host 
+    ("Installing latest Power BI...")
     # Download PowerBI Desktop installer
     Start-BitsTransfer -Source "https://go.microsoft.com/fwlink/?LinkId=521662&clcid=0x409" -Destination powerbi-desktop.msi
 
     # Silently install PowerBI Desktop
     msiexec.exe /i powerbi-desktop.msi /qn /norestart  ACCEPT_EULA=1
 
-    if (!$?) {
+    if (!$?) 
+        {
         Write-Host -ForeGroundColor Red " Error installing Power BI Desktop. Please install latest Power BI manually."
-    }
+        }
 
 
     ##Create Shortcuts and Autostart Help File 
     Copy-Item "$ScriptPath\$Shortcut" C:\Users\Public\Desktop\
     Copy-Item "$ScriptPath\$Shortcut" "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\"
-    Write-Host "Help Files Copied to Desktop"
-
+    Write-Host 
+    ("Help Files Copied to Desktop")
 
     $WsShell = New-Object -ComObject WScript.Shell
     $shortcut = $WsShell.CreateShortcut($desktop + $checkoutDir + ".lnk")
@@ -235,21 +264,23 @@ if ($isAdmin -eq 'True') {
 
 
     # install modules for sample website
-    if ($SampleWeb -eq "Yes") {
-        if($SampleWeb  -eq "Yes")
+    if($SampleWeb  -eq "Yes")
         {
-        cd $SolutionPath\Website\
-        npm install    
+        Set-Location $SolutionPath\Website\npm install    
         (Get-Content $SolutionPath\Website\server.js).replace('XXYOURSQLPW', $password) | Set-Content $SolutionPath\Website\server.js
         (Get-Content $SolutionPath\Website\server.js).replace('XXYOURSQLUSER', $username) | Set-Content $SolutionPath\Website\server.js    
         }
-    }
+    
 
     $endTime = Get-Date
 
-    Write-Host ("$SolutionFullName Workflow Finished Successfully! You can close the PowerShell window.")
-    $Duration = New-TimeSpan -Start $StartTime -End $EndTime 
-    Write-Host ("Total Deployment Time = $Duration") 
+        Write-Host 
+        ("$SolutionFullName Workflow Finished Successfully! You can close the PowerShell window.")
+    
+        $Duration = New-TimeSpan -Start $StartTime -End $EndTime 
+    
+        Write-Host 
+        ("Total Deployment Time = $Duration") 
 
     Stop-Transcript
 
@@ -270,7 +301,7 @@ if ($isAdmin -eq 'True') {
 ELSE 
 { 
     
-    Write-Host "To install this Solution you need to run Powershell as an Administrator. This program will close automatically in 20 seconds"
+    Write-Host ("To install this Solution you need to run Powershell as an Administrator. This program will close automatically in 20 seconds")
     Start-Sleep -s 20
 
 
