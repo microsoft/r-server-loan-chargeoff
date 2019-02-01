@@ -1,11 +1,16 @@
 <img src="Resources/Images/management.jpg" align="right">
 
-> Discover more examples at [Microsoft Machine Learning Server](https://github.com/Microsoft/ML-Server)
-
-Deploy this solution from the Cortana Intelligence Gallery with [SQL Server](https://aka.ms/loanchargeoffsql) or [HDInsight Spark Cluster](https://aka.ms/loanchargeoffhdi).
-
 # Loan ChargeOff Risk - Predicting probability of loans getting charged off
-## Implemented on SQL Server 2016 R Services and R Server for HDInsight Cluster
+
+### Deploy to Azure on SQL Server
+[![Deploy to Azure (SQL Server)](https://raw.githubusercontent.com/Azure/Azure-CortanaIntelligence-SolutionAuthoringWorkspace/master/docs/images/DeployToAzure.PNG)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fr-server-loan-chargeoff%2Fmaster%2FArmTemplates%2Floan-chargeoff_arm.json)
+
+### Deploy to Azure on HDInsight
+[![Deploy to Azure (HDInsight)](https://raw.githubusercontent.com/Azure/Azure-CortanaIntelligence-SolutionAuthoringWorkspace/master/docs/images/DeployToAzure.PNG)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fr-server-loan-chargeoff%2Fmaster%2FArmTemplates%2Floan-chargeoff_hdi_arm.json)
+
+## More samples and information
+
+> Discover more examples at [Microsoft Machine Learning Server](https://github.com/Microsoft/ML-Server)
 
 For all documentation, visit the [Loan ChargeOff Risk Website](https://microsoft.github.io/r-server-loan-chargeoff).
 
