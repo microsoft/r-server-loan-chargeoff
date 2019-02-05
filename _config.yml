@@ -1,13 +1,13 @@
 author:
         name: Microsoft
 
-description: Use SQL Server 2017 + R Services to build and deploy a machine learning model which predicts whether a loan will charge off in the next three months.
+description: Use SQL Server ML Services to build and deploy a machine learning model which predicts whether a loan will charge off in the next three months.
 
 gems:
   - jekyll-redirect-from
 
-cig_text: SQL Server 2017 on Azure
-onp_text: SQL Server 2017 On-Prem (with MicrosoftML)
+cig_text: SQL Server VM on Azure
+onp_text: SQL Server On-Premises (with MicrosoftML)
 hdi_text: HDInsight Spark 
 db_name: LoanChargeOff_R
 folder_name: LoanChargeOff

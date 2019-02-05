@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Using RStudio with R Server
+title: Using RStudio with ML Server
 ---
 <div class="alert alert-success" role="alert"> This page describes the 
 <strong>
@@ -25,14 +25,14 @@ RStudio is already installed and configured on the edge node of your cluster.  T
 </div>
 
 ## Set Up RStudio for R Client
-RStudio needs to use R Server for the code in this solution.  Follow the instructions below to set up RStudio to use R Server and/or to verify that you are using the correct version.  
+RStudio needs to use ML Server for the code in this solution.  Follow the instructions below to set up RStudio to use ML Server and/or to verify that you are using the correct version.  
 <div class="hdi">(These steps are is not necessary for the version on the cluster edge node.)</div>
 <ol>
 <li>Launch RStudio.</li>
 <li> Update the path to R.</li>
 <ol type="a">
 <li>From the <code>Tools</code> menu, choose <code>Global Options</code>.</li>
-<li>In the General tab, update the path to R to point to R Server:</li>
+<li>In the General tab, update the path to R to point to ML Server:</li>
 <ul><li>When you install R from the SQL Server 2017 install program, the path is <code>C:\Program Files\Microsoft\MLServer\R_SERVER</code>.  </li>
 </ul>
 </ol>
@@ -42,4 +42,4 @@ RStudio needs to use R Server for the code in this solution.  Follow the instruc
 
  
 
-<a href="CIG_Workflow.html#step2">Return to Typical Workflow for Azure AI Gallery Deployment<a>
+<a href="CIG_Workflow.html#step2">Return to Typical Workflow for 'Deploy to Azure' Deployment<a>

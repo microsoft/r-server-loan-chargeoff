@@ -12,9 +12,9 @@ solution.
 ## HDInsight Cluster 
 --------------------------------
 
-An initial cluster was created when you used the `Deploy` button from [Azure AI Gallery](https://aka.ms/loanchargeoffhdi). Along with the cluster, a storage account was created.  This is where all data is stored.  
+An initial cluster was created when you used the 'Deploy to Azure' button on the <a href="START_HERE.html">Quick start</a> page. Along with the cluster, a storage account was created.  This is where all data is stored.  
 
-When you are finished using the entire solution, you can delete all your resources on the [Azure AI Gallery Deployments](https://start.cortanaintelligence.com/Deployments?type=loanchargeoffhdi)  page. On this page, hover over a line to reveal the trash can icon on the far right.  Then click the trash can to delete the deployment.
+When you are finished using the entire solution, you can delete all your resources fom Azure.
 
 If you would like to continue using the solution, you can delete the cluster while  keeping the storage account. You can then re-use the storage account later on a new cluster. 
 
@@ -49,5 +49,5 @@ Once your cluster is ready, go to RStudio and Import the files by with the <code
 ## Scaling a Cluster
 You can also [use the Azure portal](https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-administer-use-portal-linux#scale-clusters) to scale your cluster.
 
-## Scaling Microsoft R Server Operationalization Compute Nodes
+## Scaling Microsoft ML Server Operationalization Compute Nodes
 This solution currently uses a single node for Operationalization - the cluster edge node.  [View instructions here](https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-r-server-get-started#how-to-scale-microsoft-r-server-operationalization-compute-nodes-on-hdinsight-worker-nodes) to add compute nodes to the Operationalization Server.

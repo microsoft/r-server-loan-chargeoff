@@ -20,13 +20,13 @@ This loan chargeoff prediction uses a simulated loan history data to predict pro
 Loan manager is also presented with the trends and analysis of the chargeoff loans by branch locations. Characteristics of the loans that are highly probable of getting chargedoff have lower credit score for example will help loan managers to make a business plan for loan offering in that geographical area.   
 
 <div class="sql"> 
-SQL Server R Services brings the compute to the data by allowing R to run on the same computer as the database. It includes a database service that runs outside the SQL Server process and communicates securely with the R runtime.
+SQL Server ML Services brings the compute to the data by allowing R to run on the same computer as the database. It includes a database service that runs outside the SQL Server process and communicates securely with the R runtime.
 
 This solution template walks through how to create and clean up a set of simulated data, use various algorithms to train the R models, select the best performant model and perform chargeoff predictions and save the prediction results back to SQL Server. A PowerBI report connects to the prediction result table and show interactive reports with the user on the predictive analytics.
 </div>
 
 <div class="hdi">
-Microsoft R Server on HDInsight Spark clusters provides distributed and scalable machine learning capabilities for big data, leveraging the combined power of R Server and Apache Spark. This solution demonstrates how to develop machine learning models for Loan ChargeOff Prediction (including data processing, feature engineering, training and evaluating models), deploy the models as a web service (on the edge node) and consume the web service remotely with Microsoft R Server on Azure HDInsight Spark clusters.
+Microsoft ML Server on HDInsight Spark clusters provides distributed and scalable machine learning capabilities for big data, leveraging the combined power of er and Apache Spark. This solution demonstrates how to develop machine learning models for Loan ChargeOff Prediction (including data processing, feature engineering, training and evaluating models), deploy the models as a web service (on the edge node) and consume the web service remotely with Microsoft ML Server on Azure HDInsight Spark clusters.
 
 The final predictions are saved to a Hive table containing loan chargeoff predictions. This data is then visualized in Power BI.
 </div>

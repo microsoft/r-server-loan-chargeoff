@@ -53,7 +53,7 @@ If you want to follow along and have *not* run the PowerShell script, you must t
 
 <div class="cig">
 <p/><p>
-This step has already been done on your deployed Azure AI Gallery VM.
+This step has already been done on your 'Deploy to Azure' VM.
 </p>
 </div>
 
@@ -65,7 +65,7 @@ You can perform these steps in your environment by using the instructions  <a hr
 
 <div class="hdi">
 <p/><p>
-The cluster has been created and data loaded for you when you used the Deploy button in the <a href="https://aka.ms/loanchargeoffhdi">Azure AI Gallery</a>. <strong>Once you complete the walkthrough, you will want to delete this cluster as it incurs expense whether it is in use or not - see <a href="https://microsoft.github.io/r-server-loan-chargeoff/hdinsight">HDInsight Cluster Maintenance</a> for more details.</strong>
+The cluster has been created and data loaded for you when you used the Deploy button on the <a href="START_HERE.md">Quick Start page</a>. <strong>Once you complete the walkthrough, you will want to delete this cluster as it incurs expense whether it is in use or not - see <a href="https://microsoft.github.io/r-server-loan-chargeoff/hdinsight">HDInsight Cluster Maintenance</a> for more details.</strong>
 </p>
 </div>
 
@@ -75,12 +75,12 @@ The cluster has been created and data loaded for you when you used the Deploy bu
 ## Step 2: Data Prep and Modeling with Debra the Data Scientist
 -----------------------------------------------------------------
 
-Now let’s meet Debra, the Data Scientist. Debra’s job is to use loan payment data to predict loan chargeoff risk. <span class="sql">Debra’s preferred language for developing the models is using R and SQL. She uses Microsoft R Services with SQL Server 2017 as it provides the capability to run large datasets and also is not constrained by memory restrictions of Open Source R.</span><span class="hdi">Debra will develop these models using <a href="https://azure.microsoft.com/en-us/services/hdinsight/">HDInsight</a>, the managed cloud Hadoop solution with integration to Microsoft R Server.</span>  
+Now let’s meet Debra, the Data Scientist. Debra’s job is to use loan payment data to predict loan chargeoff risk. <span class="sql">Debra’s preferred language for developing the models is using R and SQL. She uses Microsoft ML Services with SQL Server 2017 as it provides the capability to run large datasets and also is not constrained by memory restrictions of Open Source R.</span><span class="hdi">Debra will develop these models using <a href="https://azure.microsoft.com/en-us/services/hdinsight/">HDInsight</a>, the managed cloud Hadoop solution with integration to Microsoft ML Server.</span>  
 
 After analyzing the data she opted to create multiple models and choose the best one.  She will create five machine learning models and compare them, then use the one she likes best to compute a prediction for each loan, and then select the loan with the highest probability of chargeoff.  
 
 <div class="sql">
-Debra will work on her own machine, using  <a href = "https://msdn.microsoft.com/en-us/microsoft-r/install-r-client-windows">R Client</a> to execute these R scripts. <span class="cig">R Client is already installed on the VM.</span>  She will also use an IDE to run R.  
+Debra will work on her own machine, using  <a href = "https://docs.microsoft.com/en-us/machine-learning-server/r-client/what-is-microsoft-r-client">R Client</a> to execute these R scripts. <span class="cig">R Client is already installed on the VM.</span>  She will also use an IDE to run R.  
 </div>
 
 <div class="cig">
@@ -93,7 +93,7 @@ On your VM, R Tools for Visual Studio is installed.  You will however have to ei
 <p/>
 <a name="rstudiologin"></a>
 
-Debra will develop her R scripts in the Open Source Edition of RStudio Server, installed on her cluster's edge node.  You can follow along on <a href="https://aka.ms/loanchargeoffhdi">your own cluster deployed by Cortana Analytics Gallery</a>.  Access RStudio by using the url of the form: <br/> <code>http://CLUSTERNAME.azurehdinsight.net/rstudio</code>. 
+Debra will develop her R scripts in the Open Source Edition of RStudio Server, installed on her cluster's edge node.  You can follow along on <a href="https://aka.ms/loanchargeoffhdi">your own cluster deployed by using the 'Deploy to Azure' button on the <a href="START_HERE.md">Quick Start page</a>.  Access RStudio by using the url of the form: <br/> <code>http://CLUSTERNAME.azurehdinsight.net/rstudio</code>. 
 <p/>
 <div class="alert alert-info" role="alert">
 When you first visit the url to access RStudio, you will see two different logins.  Use the username and  password you created when you deployed the HDInsight solution for both of these prompts.

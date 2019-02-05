@@ -13,7 +13,7 @@ The following is the directory structure for this template:
 - [**SQLR**](#operationalize-in-sql) This contains T-SQL code to pre-process the datasets, train the models, identify the champion model and provide predictions. It also contains a PowerShell script to automate the entire process, including loading the data into the database (not included in the T-SQL code).
 - [**HDI**](#hdinsight-solution-on-spark-cluster) This contains the R code to pre-process the datasets, train the models, identify the champion model and provide predictions on a Spark cluster. 
 
-In this template with SQL Server R Services, two versions of the SQL implementation and another version for HDInsight implementation:
+In this template with SQL Server ML Services, two versions of the SQL implementation and another version for HDInsight implementation:
 
 1. [**Model Development in R IDE**](#model-development-in-r)  . Run the R code in R IDE (e.g., RStudio, R Tools for Visual Studio).
 2. [**Operationalize in SQL**](#operationalize-in-sql). Run the SQL code in SQL Server using SQLR scripts from SSMS or from the PowerShell script.
@@ -104,7 +104,7 @@ These files are in the **HDI/RSparkCluster** directory.
 <tr><td>loanchargeoff_main.R </td><td> is used to define the data and directories and then run all of the steps to process data, perform feature engineering, training, and scoring. </td></tr>
 <tr><td>loanchargeoff_scoring.R</td><td>uses the previously trained model and invokes the steps to process data, perform feature engineering and scoring.</td></tr>
 <tr><td>loanchargeoff_deployment.R </td><td> create a web service and test it on the edge node </td></tr>
-<tr><td>loanchargeoff_web_scoring.R </td><td> access the web service on any computer with Microsoft R Server 9.1.0 installed</td></tr>
+<tr><td>loanchargeoff_web_scoring.R </td><td> access the web service on any computer with Microsoft ML Server installed</td></tr>
 <tr><td>loan_main.R</td><td> Main R script that executes the rest of the R scripts </td></tr>
 <tr><td>loan_scoring.R </td><td> Perform loan scoring using the model with the best performance  </td></tr>
 <tr><td>step1_get_training_testing_data.R  </td><td> Read input data which contains all the history information for all the loans from HDFS. Extract training/testing data based on process date (paydate) from the input data. </td></tr>

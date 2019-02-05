@@ -2,12 +2,6 @@
 <p>You can access this dashboard in either of the following ways:</p>
 <p/>
 <ul>
-  <li class="sql">
-    <p>Visit the <a href="{{ site.pbix_sqlview_url }}">online version</a>.</p>
-  </li>
-  <li class="hdi">
-    <p>Visit the <a href="{{ site.pbix_hdiview_url }}">online version</a>.</p>
-  </li>
   <li class="cig">
     <p>Open the PowerBI file from the <strong>D:\LoanChargeOffSolution\Reports</strong> directory on the deployed VM desktop.</p>
     </li>

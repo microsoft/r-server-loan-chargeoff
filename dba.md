@@ -29,14 +29,14 @@ solution.
         </div>
     </div>
     <div class="col-md-6">
-      SQL Server R Services takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server package) by allowing R to run on the same server as the database. It includes a database service that runs outside the SQL Server process and communicates securely with the R runtime. This allows the application analyst to use the power of SQL Server to build advanced analytics application.
+      SQL Server ML Services takes advantage of the power of SQL Server and RevoScaleR (Microsoft ML Server package) by allowing R to run on the same server as the database. It includes a database service that runs outside the SQL Server process and communicates securely with the R runtime. This allows the application analyst to use the power of SQL Server to build advanced analytics application.
           </div>
 </div>
 <p>
 With the simulated data and R scripts contained in this solution, application analyst is able to use SQL Server 2017 to evaluate the solution end to end, including the steps needed to deploy machine learning model in SQL Server and consumed by business application. This template deploys a Data Science Virtual Machine (DSVM) that has SQL Server 2017 with Microsoft ML Server installed.
 </p>
 
-For businesses that prefer an on-prem solution, the implementation with SQL Server R Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server). In this template, we implemented all steps in SQL stored procedures: data preprocessing, and feature engineering are implemented in pure SQL, while data cleaning, and the model training, scoring and evaluation steps are implemented with SQL stored procedures calling R (Microsoft R Server) code.
+For businesses that prefer an on-prem solution, the implementation with SQL Server ML Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft ML Server). In this template, we implemented all steps in SQL stored procedures: data preprocessing, and feature engineering are implemented in pure SQL, while data cleaning, and the model training, scoring and evaluation steps are implemented with SQL stored procedures calling R (Microsoft ML Server) code.
 
 All the steps can be executed on SQL Server client environment (SQL Server Management Studio). We provide a Windows PowerShell script which invokes the SQL scripts and demonstrates the end-to-end modeling process.
 
@@ -45,10 +45,10 @@ All the steps can be executed on SQL Server client environment (SQL Server Manag
 
 The following are required to run the scripts in this solution:
 <ul>
-<li>SQL Server (2016 or higher) with Microsoft R Server  (version 9.1.0) installed and configured.  </li>   
+<li>SQL Server (2016 or higher) with Microsoft ML Server installed and configured.  </li>   
 <li>The SQL user name and password, and the user configured properly to execute R scripts in-memory.</li> 
 <li>SQL Database which the user has write permission and execute stored procedures.</li> 
-<li>For more information about SQL server and R service, please visit: <a href="https://msdn.microsoft.com/en-us/library/mt604847.aspx">https://msdn.microsoft.com/en-us/library/mt604847.aspx</a></li> 
+<li>For more information about SQL server and ML Services, please visit: <a href="https://docs.microsoft.com/en-us/sql/advanced-analytics/what-s-new-in-sql-server-machine-learning-services">https://docs.microsoft.com/en-us/sql/advanced-analytics/what-s-new-in-sql-server-machine-learning-services</a></li> 
 </ul>
 </ul>
 

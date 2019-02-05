@@ -21,9 +21,9 @@ You can find this script in the <strong>SQLR</strong> directory, and execute it 
 <div class="hdi">
 <p/>
 In the steps above, we saw the first way of scoring new data, using <strong>loanchargeoff_scoring.R</strong> script. 
-Debra now creates an analytic web service  with <a href="https://msdn.microsoft.com/en-us/microsoft-r/operationalize/about">R Server Operationalization</a> that incorporates these same steps: data processing and scoring.
+Debra now creates an analytic web service  with <a href="https://docs.microsoft.com/en-us/machine-learning-server/what-is-operationalization">ML Server Operationalization</a> that incorporates these same steps: data processing and scoring.
 <p/>
- <strong>loanchargeoff_deployment.R</strong> will create a web service and test it on the edge node.  If you wish, you can also download the file <strong>loanchargeoff_web_scoring.R</strong> and access the web service on any computer with Microsoft R Server 9.1.0 installed.  
+ <strong>loanchargeoff_deployment.R</strong> will create a web service and test it on the edge node.  If you wish, you can also download the file <strong>loanchargeoff_web_scoring.R</strong> and access the web service on any computer with Microsoft ML Server installed.  
 <p/>
 <div class="alert alert-info" role="alert">
 Before running  <strong>loanchargeoff_web_scoring.R</strong> on any computer, you must first connect to edge node from that computer.

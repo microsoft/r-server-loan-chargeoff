@@ -10,6 +10,6 @@ solution.
  {% include choices.md %}
 </div> 
 
-## HDInsight Spark Deployment from Azure AI Gallery 
+## HDInsight Spark Deployment 
 
- [Click here](https://aka.ms/loanchargeoffhdi) to access the HDInsight Spark Deployment - if it comes back to this page, this version of the solution has not yet been published in the Azure AI Gallery.
+ Use the corresponding 'Deploy to Azure' button on the <a href="START_HERE.md">Quick Start page</a> to access the HDInsight Spark Deployment.
