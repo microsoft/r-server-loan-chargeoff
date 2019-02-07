@@ -1,6 +1,7 @@
 <img src="Resources/Images/management.jpg" align="right">
 
 # Loan ChargeOff Risk - Predicting probability of loans getting charged off
+This scenario is important to mitigate risk, especially in finance.
 
 ### Deploy to Azure on SQL Server
 [![Deploy to Azure (SQL Server)](https://raw.githubusercontent.com/Azure/Azure-CortanaIntelligence-SolutionAuthoringWorkspace/master/docs/images/DeployToAzure.PNG)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fr-server-loan-chargeoff%2Fmaster%2FArmTemplates%2Floan-chargeoff_arm.json)
